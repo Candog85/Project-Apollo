@@ -1,1 +1,1 @@
-# 10045-Simplifying-the-College-Search-Process-Through-Digestible-Data
+# Simplifying the College Search Process Through Digestible Data
