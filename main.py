@@ -29,26 +29,26 @@ def connect_db():
     )
     return conn
 
-# # User Login Manager
-# login_manager = flask_login.LoginManager()
-# login_manager.init_app(app)
-# login_manager.login_view=("/login")
+# User Login Manager
+login_manager = flask_login.LoginManager()
+login_manager.init_app(app)
+login_manager.login_view=("/login")
 
-# # Classes
-# class User:
-#     is_authenticated = True
-#     is_anonymous = False
-#     is_active = True
+# Classes
+class User:
+    is_authenticated = True
+    is_anonymous = False
+    is_active = True
 
-#     def __init__(self, user_id, username, email, first_name, last_name):
-#         self.id = user_id
-#         self.username = username
-#         self.email = email
-#         self.first_name = first_name
-#         self.last_name = last_name
+    def __init__(self, user_id, username, email, first_name, last_name):
+        self.id = user_id
+        self.username = username
+        self.email = email
+        self.first_name = first_name
+        self.last_name = last_name
 
-#     def get_id(self):
-#         return str(self.id)
+    def get_id(self):
+        return str(self.id)
 
 # Homepage initialization
 @app.route("/")
@@ -87,8 +87,6 @@ def index():
         conn.close()
         return "Done"
     return render_template("homepage.html.jinja")
-
-
 
 if __name__ == '__main__':
     app.run(debug=True)
