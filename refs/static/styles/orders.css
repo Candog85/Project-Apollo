@@ -1,0 +1,16 @@
+body {
+    background-color: #f8f9fa;
+}
+
+h1.kanit {
+    font-family: 'Kanit', sans-serif;
+}
+
+.table thead th {
+    text-align: center;
+}
+
+.table tbody td {
+    vertical-align: middle;
+    text-align: center;
+}

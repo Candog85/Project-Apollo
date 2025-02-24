@@ -1,3 +1,4 @@
+# All imports
 from flask import Flask, render_template, request
 import pymysql
 from dynaconf import Dynaconf
@@ -14,7 +15,6 @@ app = Flask(__name__)
 conf = Dynaconf(
     settings_file = ["settings.toml"]
 )
-
 
 # Establish database connection
 def connect_db():
@@ -49,6 +49,18 @@ class User:
 
     def get_id(self):
         return str(self.id)
+    
+# Load User Session
+@login_manager.user_loader
+def load_user(id):
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute(f"SELECT * FROM `user` WHERE `id` = {id};")
+    result = cursor.fetchone()
+    cursor.close()
+    conn.close
+    if result is not None:
+        return User(result["id"], result["username"], result["email"], result["name"])
 
 # Homepage initialization
 @app.route("/")
@@ -69,6 +81,7 @@ def index():
         regents = request.form['regents']
         name = request.form['name']
         username = request.form['username']
+        email = request.form['email']
 
         # Connect to the database
         conn = connect_db()
@@ -91,15 +104,23 @@ def index():
 if __name__ == '__main__':
     app.run(debug=True)
 
+# Test delete
+@app.route("remove", methods=["POST"])
+@flask_login.login_required
+def remove():
+    conn = connect_db()
+    cursor = conn.cursor()
+    user_id = flask_login.current_user.id
+    cursor.execute(f"DELETE FROM `test` WHERE `user_id` = {user_id};")
+
+## User account system
+
+## Search system
 def requestinfo(schoolname='', schoolstate=''):
-
-    count=0
-
+    count = 0
     api="https://api.data.gov/ed/collegescorecard/v1/schools?api_key=fEZsVdtKgtVU4ODIpjHcP8vDttDK0ftSGZaWDcAk"
-
     queries={}
     request=''
-
     if schoolname:
         queries.update({"school.name":(f"{schoolname}")})
     

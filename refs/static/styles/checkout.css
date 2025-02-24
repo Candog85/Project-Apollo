@@ -1,0 +1,9 @@
+.product-name {
+    color: #05668D;
+    font-weight: bold;
+}
+
+.divider {
+    border-bottom: 1px solid black;
+    margin: 10px 0;
+}

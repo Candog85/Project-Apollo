@@ -1,0 +1,63 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+    <div class="container-fluid">
+        <!-- Brand Logo -->
+        <a class="navbar-brand fw-bold text-primary" href="/">Proquipment</a>
+
+        <!-- Mobile Toggler -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navbar Content -->
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <!-- Left Links -->
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link fw-semibold" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fw-semibold" href="/browse">Browse</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fw-semibold" href="/cart">Cart</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fw-semibold" href="/orders">Orders</a>
+                </li>
+
+                <!-- Account Dropdown (Visible when logged in) -->
+                {% if user_logged_in %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle fw-semibold" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Account
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/profile">Profile</a></li>
+                        <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                    </ul>
+                </li>
+                {% else %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle fw-semibold" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Account
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/login">Login</a></li>
+                        <li><a class="dropdown-item" href="/signup">Sign Up</a></li>
+                    </ul>
+                </li>
+                {% endif %}
+            </ul>
+
+            <!-- Right Search Box -->
+            <form class="d-flex" role="search" action="/browse" method="GET">
+                <input class="form-control me-2 border-primary" type="search" name="query" placeholder="Search products"
+                    aria-label="Search">
+                <button class="btn btn-outline-primary" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+</nav>

@@ -1,0 +1,33 @@
+body {
+    background-color: #f8f9fa;
+}
+
+.card {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    border: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.textLapis {
+    color: #05668D;
+}
+
+.btn-custom {
+    background-color: #05668D;
+    color: #ffffff;
+}
+
+.btn-custom:hover {
+    background-color: #02475e;
+}
+
+.link-custom {
+    color: #05668D;
+    text-decoration: none;
+}
+
+.link-custom:hover {
+    text-decoration: underline;
+}
