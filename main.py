@@ -73,45 +73,8 @@ def test_fetch():
     conn.close()
     return render_template("homepage.html.jinja", testers = pulled)
 
-@app.route('/', methods=['GET', 'POST'])
-def index():
-    if request.method == 'POST':
-        # Get form data
-        user_id = request.form['user_id']
-        regents = request.form['regents']
-        name = request.form['name']
-        username = request.form['username']
-        email = request.form['email']
-
-        # Connect to the database
-        conn = connect_db()
-        cursor = conn.cursor()
-
-        # Insert data into the database
-        insert_query = """INSERT INTO `test` (user_id, regents, name, username)
-                          VALUES (user_id, regents, name, username)"""
-        cursor.execute(insert_query)
-
-        # Commit changes to the database
-        conn.commit()
-
-        # Close the connection
-        cursor.close()
-        conn.close()
-        return "Done"
-    return render_template("homepage.html.jinja")
-
 if __name__ == '__main__':
     app.run(debug=True)
-
-# Test delete
-@app.route("remove", methods=["POST"])
-@flask_login.login_required
-def remove():
-    conn = connect_db()
-    cursor = conn.cursor()
-    user_id = flask_login.current_user.id
-    cursor.execute(f"DELETE FROM `test` WHERE `user_id` = {user_id};")
 
 ## User account system
 
