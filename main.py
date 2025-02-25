@@ -16,13 +16,16 @@ conf = Dynaconf(
     settings_file = ["settings.toml"]
 )
 
+
+app.secret_key = conf.secret_key
+
 # Establish database connection
 def connect_db():
     """Connect to the phpMyAdmin database (LOCAL STEAM NETWORK ONLY)"""
     conn = pymysql.connect(
         host = "db.steamcenter.tech",
         database = "apollo",
-        user = "fchowdury",
+        user = conf.user,
         password = conf.password,
         autocommit = True,
         cursorclass = pymysql.cursors.DictCursor
@@ -76,32 +79,31 @@ def test_fetch():
 if __name__ == '__main__':
     app.run(debug=True)
 
-## User account system
+@app.route('/getdata')
+def get_data():
+    colleges = []
+    for page in range(0,1):
+        response=requests.get(f"https://api.data.gov/ed/collegescorecard/v1/schools?api_key=fEZsVdtKgtVU4ODIpjHcP8vDttDK0ftSGZaWDcAk&fields=school.name,latest.cost.attendance.academic_year&page=1&per_page={page}")
 
-## Search system
-def requestinfo(schoolname='', schoolstate=''):
-    count = 0
-    api="https://api.data.gov/ed/collegescorecard/v1/schools?api_key=fEZsVdtKgtVU4ODIpjHcP8vDttDK0ftSGZaWDcAk"
-    queries={}
-    request=''
-    if schoolname:
-        queries.update({"school.name":(f"{schoolname}")})
-    
-    if schoolstate:
-        queries.update({"school.state":(f"{schoolstate}")})
+        results = response.json()['results']
 
-    for query in queries:
-        request+=(f"{query}={queries[query]}")
-        count+=1
-    
-    request=f"{api}&{request}"
+        colleges.extend(results)
 
-    test=requests.get(request).json()
+    for college in colleges:
 
-    for key in test:{ 
-        print(key,":", test[key]) 
-    }
-        
-    return request
+        name=college["school.name"]
+        tuition=college["latest.cost.attendance.academic_year"]
 
-print(requestinfo("Harvard University"))
+
+        conn = connect_db()
+        cursor = conn.cursor()
+
+        request.path
+
+        cursor.execute(f"""
+
+        INSERT INTO `Colleges` (`name`, `tuition`)
+        VALUES ('{name}', '{tuition}')
+                            
+                            """)
+    return
