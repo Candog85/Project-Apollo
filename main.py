@@ -25,7 +25,7 @@ def connect_db():
     conn = pymysql.connect(
         host = "db.steamcenter.tech",
         database = "apollo",
-        user = conf.user,
+        user = conf.username,
         password = conf.password,
         autocommit = True,
         cursorclass = pymysql.cursors.DictCursor
