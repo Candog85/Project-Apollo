@@ -17,14 +17,16 @@
 
     <div class="container my-5">
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-            {% for test in testers %}
+
             <div class="col">
                 <div class="card h-100 shadow-sm">
                     <div class="card-body" style="background-color: #05668D; color: #F0F8FF;">
-                        <h5 class="card-title">{{ test["user_id"] }}</h5>
-                        <p class="card-text mb-3"><strong>Regents:</strong> $ {{ test["regents"] }}</p>
-                        <p class="card-text mb-3"><strong>Name:</strong> {{ test["name"] }}</p>
-                        <p class="card-text mb-3"><strong>Username:</strong> {{ test["username"] }}</p>
+                        <h1>Apollo</h1>
+                        <p class="card-text">Apollo is a web application designed to help users find the best colleges
+                            for their specific needs, such as GPA, major, and career interests. With its intuitive
+                            interface and easy-to-use features, Apollo aims to make college search a more enjoyable and
+                            stress-free experience.</p>
+
                     </div>
                 </div>
             </div>
@@ -33,7 +35,9 @@
     </div>
 
     <div class="container my-5">
-        <h2 class="mb-4 text-center">Insert Data into Database</h2>
+
+        <h2 class="mb-4 text-center">Welcome</h2>
+
         <form method="POST">
             <div class="mb-3">
                 <label for="user_id" class="form-label">User ID</label>
