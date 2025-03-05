@@ -67,7 +67,7 @@ class User:
 def load_user(id):
     conn = connect_db()
     cursor = conn.cursor()
-    cursor.execute(f"SELECT * FROM `user` WHERE `id` = {id};")
+    cursor.execute(f"SELECT * FROM `User` WHERE `id` = {id};")
     result = cursor.fetchone()
     cursor.close()
     conn.close
@@ -124,7 +124,7 @@ def login_page():
         password = request.form["passVer"]
         conn = connect_db()
         cursor = conn.cursor()
-        cursor.execute(f"SELECT * FROM `user` WHERE `username` = '{username}';")
+        cursor.execute(f"SELECT * FROM `User` WHERE `username` = '{username}';")
         result = cursor.fetchone()
         
         if result is None:
@@ -149,3 +149,24 @@ def college_browse():
     cursor.execute(f"SELECT * FROM `College`;")
     colleges = cursor.fetchall()
     return render_template("browse.html.jinja", results = colleges)
+
+# User input
+@app.route("/settings", methods=["POST", "GET"])
+def user_input():
+    
+    customer_id=flask_login.current_user.id
+    
+    conn = connect_db()
+    cursor = conn.cursor()
+    
+    cursor.execute(f"""
+                   
+    SELECT * 
+    FROM `User`
+    WHERE `id` = %s               
+                   
+    """, (customer_id))
+    
+    results=cursor.fetchall()
+    
+    return render_template("settings.html.jinja", results=results[0])
