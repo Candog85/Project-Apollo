@@ -6,34 +6,34 @@
             <span class="navbar-toggler-icon"></span>
         </button>
 
-            <img src="/static/images/logo_1.png" alt="Bootstrap" width="45" height="45">
+        <img src="/static/images/logo_1.png" alt="Bootstrap" width="45" height="45">
 
-            <form class="d-flex" role="search">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <form class="d-flex" role="search">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle btn-outline-warning" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false" >
-                            Pages
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/">User Input</a></li>
-                            <li><a class="dropdown-item" href="/">College Requirements</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="/logout">Logout</a></li>
-                        </ul>
-                    </li>
-                </ul>
-                <div class="d-flex">
-            {%if current_user.is_authenticated%}
-            Welcome {{current_user.username}} !
-            {%else%}
-            <a href="/sign_in.html.jinja" class="btn btn-outline-warning">Sign In</a>
-            {%endif%}
-        </div>
-            </form>
-        </div>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle btn-outline-warning" href="#" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Pages
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/">User Input</a></li>
+                        <li><a class="dropdown-item" href="/">College Requirements</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <div class="d-flex">
+                {%if current_user.is_authenticated%}
+                Welcome {{current_user.username}} !
+                {%else%}
+                <a href="/sign_in" class="btn btn-outline-warning">Sign In</a>
+                {%endif%}
+            </div>
+        </form>
+    </div>
     </div>
 </nav>
