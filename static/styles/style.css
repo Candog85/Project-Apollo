@@ -1,8 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Marcellus&display=swap');
 
+::placeholder {
+    color: red;
+}
+
 :root{
     --bs-emphasis-color:#DEB64B;
     --bs-body-bg:#202020;
+    --bs-secondary-color:#ffffff; 
 }
 
 .btn-outline-warning{
@@ -46,5 +51,18 @@ a:hover {
     color:#DEB64B
 }
 
+.card{
+    color: #ffffff;
+}
 
+.form-control{
+    color:#ffffff
+}
 
+/* .asd:hover{
+    color: white;
+} */
+/* 
+.asd:active{
+    color:white;
+} */
