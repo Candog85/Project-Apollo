@@ -119,8 +119,8 @@ def login_page():
     if flask_login.current_user.is_authenticated:
         return redirect("/")
     if request.method == "POST":
-        username = request.form["userVer"].strip()
-        password = request.form["passVer"]
+        username = request.form["username"].strip()
+        password = request.form["password"]
         conn = connect_db()
         cursor = conn.cursor()
         cursor.execute(f"SELECT * FROM `User` WHERE `username` = '{username}';")
