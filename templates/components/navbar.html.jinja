@@ -12,32 +12,32 @@
         <form class="d-flex" role="search">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
-                     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/settings">User Input</a>
-        </li>
-        {# <li class="nav-item">
-          <a class="nav-link" href="#">Pricing</a>
-        </li> #}
-        
-        <li class="nav-item my-auto px-2">
-        {%if current_user.is_authenticated%}
-            Welcome {{current_user.name}}
-            {%else%}
-            <a href="/sign_in" class="btn btn-outline-secondary">Login</a>
-            {%endif%}
-        </li>
-      </ul>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/settings">User Input</a>
+                        </li>
+                        {# <li class="nav-item">
+                            <a class="nav-link" href="#">Pricing</a>
+                        </li> #}
+
+                        <li class="nav-item my-auto px-2">
+                            {%if current_user.is_authenticated%}
+                            Welcome {{current_user.name}}
+                            {%else%}
+                            <a href="/sign_in" class="btn btn-outline-secondary">Login</a>
+                            {%endif%}
+                        </li>
+                    </ul>
+                </div>
+
+            </ul>
+            </li>
+            </ul>
+        </form>
     </div>
-    
-                        </ul>
-                    </li>
-                </ul>
-            </form>
-        </div>
     </div>
 </nav>
