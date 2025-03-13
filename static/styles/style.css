@@ -36,6 +36,10 @@ body{
 .navbar li{
     float: center;
 }
+.navbar a.btn {
+    padding: 7.5px;
+}
+
 .text-center {
     text-align: center;
   }
