@@ -21,6 +21,12 @@
 
 <body>
   {% include "components/navbar.html.jinja" %}
+  
+  {% for message in get_flashed_messages() %}
+      <div class="alert alert-danger" role="alert">
+        {{ message }}
+      </div>
+      {% endfor %}
 
   <!-- Sign in Form -->
   <br>
@@ -33,13 +39,7 @@
 
       <div class="b-example-divider"></div>
 
-
-      {% for message in get_flashed_messages() %}
-      <div class="alert alert-danger" role="alert">
-        {{ message }}
-      </div>
-      {% endfor %}
-      <div class="container col-6">
+    <div class="container col-6">
 
         <form action="/sign_in" method="post">
           <div class="form-floating">

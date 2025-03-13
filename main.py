@@ -151,6 +151,7 @@ def college_browse():
 
 # User input
 @app.route("/settings", methods=["POST", "GET"])
+@flask_login.login_required
 def user_input():
     
     customer_id=flask_login.current_user.id
@@ -169,3 +170,10 @@ def user_input():
     results=cursor.fetchall()
     
     return render_template("settings.html.jinja", results=results[0])
+
+# Log out
+@app.route('/logout')
+@flask_login.login_required
+def logout():
+    flask_login.logout_user()
+    return redirect('/')
