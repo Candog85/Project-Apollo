@@ -29,12 +29,16 @@
                         </div>
                         {%if current_user.is_authenticated%}
 
-                        <li class="nav-item my-auto px-2">
+
+                        <li class="nav-item my-auto">
                             <a class="btn btn-outline-warning px-1" href="/logout">Logout</a>
                         </li>
 
+                        <div style="padding: 5px;">
+                        </div>
+
                         <li class="my-auto px-1">
-                         Welcome {{current_user.name}}
+                            Welcome {{current_user.name}}
                         </li>
 
                         {%else%}
