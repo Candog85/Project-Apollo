@@ -15,22 +15,33 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="/">Home</a>
+                            <a class="btn btn-outline-warning px-1" aria-current="page" href="/">Home</a>
                         </li>
+                        <div style="padding: 5px;">
+                        </div>
                         <li class="nav-item">
-                            <a class="nav-link" href="/settings">User Input</a>
+                            <a class="btn btn-outline-warning px-1" href="/settings">User Input</a>
                         </li>
                         {# <li class="nav-item">
                             <a class="nav-link" href="#">Pricing</a>
                         </li> #}
+                        <div style="padding: 5px;">
+                        </div>
+                        {%if current_user.is_authenticated%}
 
                         <li class="nav-item my-auto px-2">
-                            {%if current_user.is_authenticated%}
-                            Welcome {{current_user.name}}
-                            {%else%}
-                            <a href="/sign_in" class="btn btn-outline-secondary">Login</a>
-                            {%endif%}
+                            <a class="btn btn-outline-warning px-1" href="/logout">Logout</a>
                         </li>
+
+                        <li class="my-auto px-1">
+                         Welcome {{current_user.name}}
+                        </li>
+
+                        {%else%}
+                        <li>
+                            <a href="/sign_in" class="btn btn-outline-warning px-1">Login</a>
+                        </li>
+                        {%endif%}
                     </ul>
                 </div>
 
