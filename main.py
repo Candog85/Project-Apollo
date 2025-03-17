@@ -71,7 +71,7 @@ def load_user(id):
     cursor.close()
     conn.close
     if result is not None:
-        return User(result["id"], result["username"], result["email"], result["name"])
+        return User(result["id"], result["username"], result["first_name"], result["last_name"])
 
 
     conn.close
@@ -81,16 +81,29 @@ def load_user(id):
 ## Signup page
 @app.route("/sign_up", methods=["POST", "GET"])
 def signup_page():
+    
     if flask_login.current_user.is_authenticated:
         return redirect("/")
+    
     if request.method == "POST":
-        name = request.form["name"]
-        username = request.form["username"]
-        email = request.form["email"]
-        password = request.form["pass"]
-        confirm_password = request.form["confpass"]
+        
+        username = request.form["username"].lower()
+        
+        password = request.form["password"].lower()
+        
+        first_name = request.form["first_name"].lower()
+        
+        last_name = request.form["last_name"].lower()
+        
+        email = request.form["email"].lower()
+        
+        zip_code = request.form["zip_code"]
+        
+        confirm_password = request.form["confirm_password"].lower()
+        
         conn = connect_db()
         cursor = conn.cursor()
+        
         if len(username.strip()) > 20:
             flash("Username must be 20 characters or less.")
         else:
@@ -102,8 +115,12 @@ def signup_page():
                 else:
                     try:
                         cursor.execute(f"""
-                            
-                        """)
+                        
+                        INSERT INTO `User`
+                        (`username`, `password`, `first_name`, `last_name`, `email`, `zip_code`)
+                        VALUES
+                        (%s, %s, %s, %s, %s, %s)
+                        """,(username, password, first_name, last_name, email, zip_code))
                     except pymysql.err.IntegrityError:
                         flash("Username or email is already in use.")
                     else:
@@ -111,7 +128,7 @@ def signup_page():
                     finally:
                         cursor.close()
                         conn.close()
-    return render_template("sign_up.html.jinja")
+    return redirect("/#sign_up")
 
 ## Sign in page
 @app.route("/sign_in", methods=["POST", "GET"])
@@ -131,7 +148,7 @@ def login_page():
         elif password != result["password"]:
             flash("Your username and/or password is incorrect.")
         else:
-            user = User(result["id"], result["username"], result["email"], result["name"])
+            user = User(result["id"], result["username"], result["first_name"], result["last_name"] )
             # Log user in
             flask_login.login_user(user)
             return redirect("/")
