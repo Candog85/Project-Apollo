@@ -103,6 +103,7 @@
 
     <main>
 
+
         <div class="my-4">
             <div class="px-4 py-5 my-5 text-center">
                 <img class="d-block mx-auto mb-4" src="static/logo/apollo_logo.png" alt="" width="225px" height="225px">
@@ -115,7 +116,8 @@
                         process, and to take off that stress off their shoulders.</p>
                     <h1 class="display-5 fw-bold text-body-emphasis custom-txt">Find Your Future!</h1>
                     <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-                        <a href="/sign_in"><button type="button" class="btn btn-outline-warning btn-lg px-4 gap-3">Sign
+                        <a href="#sign_up"><button type="button" class="btn btn-outline-warning btn-lg px-4 gap-3">Sign
+
                                 In</button></a>
                         <a href="/settings"><button type="button"
                                 class="btn btn-outline-warning btn-lg px-4 gap-3">Continue</button></a>
@@ -139,19 +141,20 @@
 
                     <div class="form-floating my-3">
                         <input type="text" name="username" class="form-control" id="floatingInput"
-                            placeholder="JohnDoe123" required value="{{ request.form.get('username', '') }}">
+                            placeholder="JohnDoe123" required>
+
                         <label for="floatingInput">Username</label>
                     </div>
 
                     <div class="form-floating my-3">
                         <input type="password" name="password" class="form-control" id="floatingPassword"
-                            placeholder="password" required value="{{ request.form.get('password', '') }}">
+                            placeholder="password" required>
                         <label for="floatingPassword">Password</label>
                     </div>
 
                     <div class="form-floating my-3">
                         <input type="password" name="confirm_password" class="form-control" id="floatingPassword"
-                            placeholder="password" required value="{{ request.form.get('confirm_pass', '') }}">
+                            placeholder="password" required>
                         <label for="floatingPassword">Re-Enter Password</label>
                     </div>
 
@@ -159,13 +162,14 @@
 
                         <div class="form-floating mx-1 my-3 col-6">
                             <input type="text" name="first_name" class="form-control" id="floatingInput"
-                                placeholder="John" required value="{{ request.form.get('first_name', '') }}">
+                                placeholder="John" required>
+
                             <label for="floatingInput">First Name</label>
                         </div>
 
                         <div class="form-floating mx-1 my-3 col-6">
                             <input type="text" name="last_name" class="form-control" id="floatingInput"
-                                placeholder="Doe" required value="{{ request.form.get('last_name', '') }}">
+                                placeholder="Doe" required>
                             <label for="floatingInput">Last Name</label>
                         </div>
 
@@ -175,13 +179,13 @@
 
                         <div class="form-floating mx-1 my-3 col-8">
                             <input type="email" name="email" class="form-control" id="floatingInput"
-                                placeholder="name@example.com" required value="{{ request.form.get('email', '') }}">
+                                placeholder="name@example.com" required>
                             <label for="floatingInput">Email Address</label>
                         </div>
 
                         <div class="form-floating mx-1 my-3 col-4">
                             <input type="number" name="zip_code" class="form-control" id="floatingInput"
-                                placeholder="12345" required value="{{ request.form.get('email', '') }}">
+                                placeholder="12345" required>
                             <label for="floatingInput">Zip Code</label>
                         </div>
 

@@ -86,20 +86,20 @@ def signup_page():
         return redirect("/")
     
     if request.method == "POST":
+
+        username = request.form["username"]
         
-        username = request.form["username"].lower()
+        password = request.form["password"]
         
-        password = request.form["password"].lower()
+        first_name = request.form["first_name"]
         
-        first_name = request.form["first_name"].lower()
+        last_name = request.form["last_name"]
         
-        last_name = request.form["last_name"].lower()
-        
-        email = request.form["email"].lower()
+        email = request.form["email"]
         
         zip_code = request.form["zip_code"]
         
-        confirm_password = request.form["confirm_password"].lower()
+        confirm_password = request.form["confirm_password"]
         
         conn = connect_db()
         cursor = conn.cursor()
@@ -198,8 +198,75 @@ def user_input():
     
     results=cursor.fetchall()
     
-    return render_template("settings.html.jinja", results=results[0])
+    results=results[0]
+    
+    results['tuition_budget']=(f"${results['tuition_budget']:,d}")
+    
+    results['population_preferences']=(f"{results['population_preferences']:,d}")
+    
+    print(results)
+    
+    return render_template("settings.html.jinja", results=results)
 
+@app.route("/settings/update", methods=["POST", "GET"])
+@flask_login.login_required
+def update():
+
+    customer_id=flask_login.current_user.id
+    
+    conn = connect_db()
+    cursor = conn.cursor()
+    
+    try:
+        
+        username = request.form["username"]
+        
+        password = request.form["password"]
+    
+        confirm_password = request.form["confirm_password"]
+        
+        
+        if password!=confirm_password:
+            flash("Passwords do not match!", "error")
+            return redirect("/settings")
+        
+        
+        first_name = request.form["first_name"]
+        
+        last_name = request.form["last_name"]
+        
+        email = request.form["email"]
+        
+        zip_code = int(request.form["zip_code"])
+        
+        sat_score = int(request.form["sat_score"])
+    
+        tuition_budget = int(request.form["tuition_budget"].replace(",","").replace("$",""))  
+    
+        population_preferences = int(request.form["population_preferences"].replace(",",""))
+    
+        cursor.execute("""
+                    
+        UPDATE `User` 
+        SET `username`= %s, 
+            `password`=%s, 
+            `first_name`=%s, 
+            `last_name`=%s, 
+            `email`=%s, 
+            `zip_code`=%s, 
+            `sat_score`=%s, 
+            `tuition_budget`=%s, 
+            `population_preferences`=%s
+        WHERE id = %s;              
+                    
+        """, (username, password, first_name, last_name, email, zip_code, sat_score, tuition_budget, population_preferences, customer_id))
+        
+        flash("Settings updated succesfully", "success")
+    
+    except:
+        flash("One or more of your fields are invalid!", 'error')
+    
+    return redirect("/settings")
 # Log out
 @app.route('/logout')
 @flask_login.login_required
