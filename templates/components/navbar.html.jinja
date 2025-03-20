@@ -1,7 +1,15 @@
 <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand p-1" href="/"> <img src="/static/logo/apollo_logo.png" alt="Logo" width="45" height="45"
-                class="rounded mx-auto d-block"></a>
+        <div flex-container class="d-flex flex-row px-1 me-auto mb-2 mb-lg-0 align-items-center">
+
+            <div class="navbar-brand p-1 marcellus-sc-regular custom-txt" href="/">
+                Apollo
+            </div>
+
+            <div>
+                <img src="/static/logo/logo2.png" alt="Logo" width="50" height="50" class="rounded d-block">
+            </div>
+        </div>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -20,6 +28,11 @@
                         </div>
                         <li class="nav-item">
                             <a class="btn btn-outline-warning px-1" href="/settings">User Input</a>
+                        </li>
+                        <div style="padding: 5px;">
+                        </div>
+                        <li class="nav-item">
+                            <a class="btn btn-outline-warning px-1" href="/analytics">Analytics</a>
                         </li>
                         {# <li class="nav-item">
                             <a class="nav-link" href="#">Pricing</a>

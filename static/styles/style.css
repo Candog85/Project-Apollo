@@ -1,8 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Marcellus&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Marcellus+SC&display=swap');
+
 
 ::placeholder {
     color: red;
 }
+
+.marcellus-sc-regular {
+    font-family: "Marcellus SC", serif;
+    font-weight: 400;
+    font-style: normal;
+  }  
 
 :root{
     --bs-emphasis-color:#DEB64B;
@@ -13,7 +20,7 @@
 .btn-outline-warning{
     --bs-btn-color: #DEB64B;
     --bs-btn-border-color: #DEB64B;
-    --bs-btn-hover-bg: #DEB64B;
+    /* --bs-btn-hover-bg: #DEB64B; */
 }
 
 body{
@@ -27,7 +34,7 @@ body{
 .navbar a{
     display: block;
     text-align: center;
-    color: white;
+    /* color: white; */
     padding: 15px;
 }
 .navbar a:hover{
