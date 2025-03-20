@@ -205,8 +205,9 @@ def user_input():
     results['population_preferences']=(f"{results['population_preferences']:,d}")
     
     print(results)
-    
     return render_template("settings.html.jinja", results=results)
+    
+
 
 @app.route("/settings/update", methods=["POST", "GET"])
 @flask_login.login_required
