@@ -9,6 +9,7 @@
     font-family: "Marcellus SC", serif;
     font-weight: 400;
     font-style: normal;
+
   }  
 
 :root{
@@ -17,57 +18,62 @@
     --bs-secondary-color:#ffffff; 
 }
 
-.btn-outline-warning{
+.btn-outline-warning {
     --bs-btn-color: #DEB64B;
     --bs-btn-border-color: #DEB64B;
     /* --bs-btn-hover-bg: #DEB64B; */
 }
 
-body{
+body {
     background-color: #202020;
     color: white;
 }
-.navbar ul{
+
+.navbar ul {
     list-style-type: none;
     overflow: hidden;
 }
-.navbar a{
+
+.navbar a {
     display: block;
     text-align: center;
     /* color: white; */
     padding: 15px;
 }
-.navbar a:hover{
+
+.navbar a:hover {
     background-color: #DEB64B;
 }
-.navbar li{
+
+.navbar li {
     float: center;
 }
+
 .navbar a.btn {
     padding: 7.5px;
 }
 
 .text-center {
     text-align: center;
-  }
+}
+
 /* mouse over link */
 a:hover {
     color: #202020;
 }
-@media screen and (max-width: 600px) {
-    
-  }
 
-.custom-txt{
-    color:#DEB64B
+@media screen and (max-width: 600px) {}
+
+.custom-txt {
+    color: #DEB64B
 }
 
-.card{
+.card {
     color: #ffffff;
 }
 
-.form-control{
-    color:#ffffff
+.form-control {
+    color: #ffffff
 }
 
 /* .asd:hover{
