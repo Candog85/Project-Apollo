@@ -17,7 +17,55 @@
 </head>
 
 <body>
-    <h1 class="h1">Insert your graphs here and design!</h1>
+
+    {% include "components/navbar.html.jinja" %}
+
+    <main class="container row g-4 mx-auto">
+
+        <div class="my-5">
+            <h1 class="h1 text-center">Analytics</h1>
+            <h6 class="h6 text-center">Add colleges to your list, generate graphs</h6>
+        </div>
+
+        {%for result in results%}
+
+        <div class="col-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{result['name']}}</h5>
+                    <p class="card-text text-secondary">{{result['city']}} , {{result['state']}}</p>
+                    <a href="" class="btn btn-secondary">View Product</a>
+                </div>
+            </div>
+        </div>
+
+        {%endfor%}
+        <div class="container">
+            <nav aria-label="row justify-content-center mx-auto text-center">
+                <ul class="pagination mx-auto justify-content-center">
+
+                    {%if page==1%}
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">4</a></li>
+                    <li class="page-item"><a class="page-link" href="#">5</a></li>
+                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                    {%else%}
+                    <li class="page-item"><a class="page-link" href="/analytics/page_{{page-1}}">Previous</a></li>
+                    <li class="page-item"><a class="page-link" href="#">{{page-2}}</a></li>
+                    <li class="page-item"><a class="page-link" href="#">{{page-1}}</a></li>
+                    <li class="page-item"><a class="page-link" href="#">{{page}}</a></li>
+                    <li class="page-item"><a class="page-link" href="#">{{page+1}}</a></li>
+                    <li class="page-item"><a class="page-link" href="#">{{page+2}}</a></li>
+                    <li class="page-item"><a class="page-link" href="/analytics/page_{{page+1}}">Next</a></li>
+                    {%endif%}
+                </ul>
+            </nav>
+        </div>
+
+    </main>
+
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
         crossorigin="anonymous"></script>
