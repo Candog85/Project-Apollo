@@ -1,70 +1,51 @@
 <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
     <div class="container-fluid">
-        <div flex-container class="d-flex flex-row px-1 me-auto mb-2 mb-lg-0 align-items-center">
+        <div class="d-flex flex-row px-1 me-auto mb-2 mb-lg-0 align-items-center">
 
-            <div class="navbar-brand p-1 marcellus-sc-regular custom-txt" href="/">
+            <a class="navbar-brand p-1 marcellus-sc-regular custom-txt" href="/">
                 Apollo
-            </div>
+            </a>
 
             <div>
                 <img src="/static/logo/logo2.png" alt="Logo" width="50" height="50" class="rounded d-block">
             </div>
         </div>
+
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-
-        <form class="d-flex" role="search">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="btn btn-outline-warning px-1" aria-current="page" href="/">Home</a>
+                </li>
 
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="btn btn-outline-warning px-1" aria-current="page" href="/">Home</a>
-                        </li>
-                        <div style="padding: 5px;">
-                        </div>
-                        <li class="nav-item">
-                            <a class="btn btn-outline-warning px-1" href="/settings">User Input</a>
-                        </li>
-                        <div style="padding: 5px;">
-                        </div>
-                        <li class="nav-item">
-                            <a class="btn btn-outline-warning px-1" href="/analytics">Analytics</a>
-                        </li>
-                        {# <li class="nav-item">
-                            <a class="nav-link" href="#">Pricing</a>
-                        </li> #}
-                        <div style="padding: 5px;">
-                        </div>
-                        {%if current_user.is_authenticated%}
+                <li class="nav-item">
+                    <a class="btn btn-outline-warning px-1" href="/settings">User Input</a>
+                </li>
 
+                <li class="nav-item">
+                    <a class="btn btn-outline-warning px-1" href="/analytics">Analytics</a>
+                </li>
 
-                        <li class="nav-item my-auto">
-                            <a class="btn btn-outline-warning px-1" href="/logout">Logout</a>
-                        </li>
+                {% if current_user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="btn btn-outline-warning px-1" href="/logout">Logout</a>
+                </li>
 
-                        <div style="padding: 5px;">
-                        </div>
-
-                        <li class="my-auto px-1">
-                            Welcome {{current_user.name}}
-                        </li>
-
-                        {%else%}
-                        <li>
-                            <a href="/sign_in" class="btn btn-outline-warning px-1">Login</a>
-                        </li>
-                        {%endif%}
-                    </ul>
-                </div>
-
+                <li class="nav-item">
+                    <span class="navbar-text">
+                        Welcome {{ current_user.name }}
+                    </span>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a href="/sign_in" class="btn btn-outline-warning px-1">Login</a>
+                </li>
+                {% endif %}
             </ul>
-            </li>
-            </ul>
-        </form>
-    </div>
+        </div>
     </div>
 </nav>
