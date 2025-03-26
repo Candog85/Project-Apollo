@@ -149,9 +149,11 @@ def signup_page():
 @app.route("/sign_in", methods=["POST", "GET"])
 def login_page():
     if flask_login.current_user.is_authenticated:
+        print('Redirect ran')
         return redirect("/")
     if request.method == "POST":
         username = request.form["username"].strip()
+        print(username)
         password = request.form["password"]
         conn = connect_db()
         cursor = conn.cursor()

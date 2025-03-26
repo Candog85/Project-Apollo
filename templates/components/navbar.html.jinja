@@ -2,13 +2,15 @@
     <div class="container-fluid">
         <div class="d-flex flex-row px-1 me-auto mb-2 mb-lg-0 align-items-center">
 
-            <a class="navbar-brand p-1 marcellus-sc-regular custom-txt" href="/">
-                Apollo
-            </a>
-
             <div>
                 <img src="/static/logo/logo2.png" alt="Logo" width="50" height="50" class="rounded d-block">
             </div>
+            <div class="navbar-brand p-1 marcellus-sc-regular">
+                <a href="/" class="custom-txt">
+                    Apollo
+                </a>
+            </div>
+
         </div>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -16,36 +18,37 @@
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="btn btn-outline-warning px-1" aria-current="page" href="/">Home</a>
-                </li>
+        <ul class="navbar-nav mb-2 mb-lg-0 topnav-right">
 
-                <li class="nav-item">
-                    <a class="btn btn-outline-warning px-1" href="/settings">User Input</a>
-                </li>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="btn btn-outline-warning px-1" aria-current="page" href="/">Home</a>
+                    </li>
+                    {%if current_user.is_authenticated%}
 
-                <li class="nav-item">
-                    <a class="btn btn-outline-warning px-1" href="/analytics">Analytics</a>
-                </li>
+                    <li class="nav-item px-1">
+                        <a class="btn btn-outline-warning px-1" href="/settings">Settings</a>
+                    </li>
 
-                {% if current_user.is_authenticated %}
-                <li class="nav-item">
-                    <a class="btn btn-outline-warning px-1" href="/logout">Logout</a>
-                </li>
+                    <li class="nav-item">
+                        <a class="btn btn-outline-warning px-1" href="/analytics">Analytics</a>
+                    </li>
+                    <li class="nav-item px-1">
+                        <a class="btn btn-outline-warning px-1" href="/logout">Logout</a>
+                    </li>
+                    <li class="my-auto px-1 custom-txt fs-5 ">
+                        Welcome {{current_user.name}}
+                        <div class="container">
+                            <hr class="opacity-75">
+                        </div>
 
-                <li class="nav-item">
-                    <span class="navbar-text">
-                        Welcome {{ current_user.name }}
-                    </span>
-                </li>
-                {% else %}
-                <li class="nav-item">
-                    <a href="/sign_in" class="btn btn-outline-warning px-1">Login</a>
-                </li>
-                {% endif %}
-            </ul>
-        </div>
+                    </li>
+                    {%endif%}
+            </div>
+
+        </ul>
+    </div>
+
     </div>
 </nav>
