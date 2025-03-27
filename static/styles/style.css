@@ -38,7 +38,7 @@ body{
     text-decoration: none;
 }
 .navbar a:hover{
-    color: #DEB64B;
+    background-color: #DEB64B;
 }
 .navbar li{
     float: center;

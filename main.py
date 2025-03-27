@@ -184,10 +184,10 @@ def college_browse():
     return render_template("browse.html.jinja", results = colleges)
 
 # Analytics page (college and user graphs for comparison and analysis)
-@app.route("/analytics/page_<page>", methods=["Post", "GET"])
-def analytics_page(page):
+@app.route("/analytics", methods=["Post", "GET"])
+def analytics_page():
     
-    page=int(page)
+    page = int(request.args.get('page', '1'))
     
     customer_id=flask_login.current_user.id
 
@@ -199,7 +199,7 @@ def analytics_page(page):
     SELECT * FROM `Colleges`
     LIMIT 16 OFFSET %s
     
-    """,(page))
+    """,((page-1) * 16))
     
     results=cursor.fetchall()
     
