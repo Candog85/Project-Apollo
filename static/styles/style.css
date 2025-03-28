@@ -38,6 +38,7 @@ body{
     text-decoration: none;
 }
 .navbar a:hover{
+    color: #202020;
     background-color: #DEB64B;
 }
 .navbar li{
@@ -62,6 +63,11 @@ a:hover {
     color:#DEB64B
 }
 
+#brand-name:hover{
+    background-color: #212529;
+    color: #DEB64B;
+}
+
 .card{
     color: #ffffff;
 }
@@ -73,6 +79,18 @@ a:hover {
 hr{
     margin: 0;
     color:#DEB64B;
+}
+
+#cog{
+    color:#DEB64B;
+}
+
+#graph{
+    color:#DEB64B;
+}
+
+#logout{
+    color: #DEB64B;
 }
 /* .underline {
     text-decoration: underline;
