@@ -188,26 +188,53 @@ def college_browse():
 def analytics_page():
     
     page = int(request.args.get('page', '1'))
+    query = request.args.get('query')
     
     customer_id=flask_login.current_user.id
 
     conn = connect_db()
     cursor = conn.cursor()
     
-    cursor.execute(f"""
+    if query==None:
+       cursor.execute(f"""
+        
+        SELECT * FROM `Colleges`
+        LIMIT 16 OFFSET %s
+        
+        """,((page-1) * 16))
     
-    SELECT * FROM `Colleges`
-    LIMIT 16 OFFSET %s
+    else:
+        cursor.execute(f"""
+        
+        SELECT * FROM `Colleges`
+        WHERE `name` LIKE '%{query}%'
+        LIMIT 16 OFFSET {(page-1) * 16}
+        
+        """)
     
-    """,((page-1) * 16))
-    
-    results=cursor.fetchall()
+    colleges=cursor.fetchall()
     
     cursor.close()
     conn.close()
     
-    return render_template("analytics.html.jinja", results=results, page=page)
+    return render_template("analytics.html.jinja", colleges=colleges, page=page, query=query)
     # Note: For now, the database connection and data fetcher are placeholders. This WILL be changed later as neccessary.
+@app.route("/college/<college_id>", methods=["POST", "GET"])
+def college(college_id):
+    
+    conn = connect_db()
+    cursor = conn.cursor()
+    
+    cursor.execute(f"""
+                   
+    SELECT * from `Colleges`
+    WHERE `id` = %s
+                   
+                   """,(college_id))  
+    
+    college=cursor.fetchone()
+    
+    return render_template("college.html.jinja", college_id=college_id, college=college)
 
 # User input on settings page
 @app.route("/settings", methods=["POST", "GET"])

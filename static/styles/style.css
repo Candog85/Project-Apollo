@@ -81,8 +81,28 @@ hr{
     color:#DEB64B;
 }
 
+.custom-button{
+    color: #DEB64B;
+    background-color: transparent;
+    border-color: #DEB64B;
+}
+
+.custom-button:hover{
+    color: #202020;
+    background-color: #DEB64B;
+
+}
+
+.form-control:focus{
+    color: #ffffff;
+}
+
 #cog{
     color:#DEB64B;
+}
+
+#cog:hover{
+    color: #202020;
 }
 
 #graph{
