@@ -219,8 +219,10 @@ def analytics_page():
     
     return render_template("analytics.html.jinja", colleges=colleges, page=page, query=query)
     # Note: For now, the database connection and data fetcher are placeholders. This WILL be changed later as neccessary.
+    
 @app.route("/college/<college_id>", methods=["POST", "GET"])
 def college(college_id):
+    
     
     conn = connect_db()
     cursor = conn.cursor()
@@ -234,12 +236,40 @@ def college(college_id):
     
     college=cursor.fetchone()
     
+    if college['tuition']==None:
+        college['tuition']="N/A"
+    else:
+        college['tuition']=f"${college['tuition']:,.2f}"
+    
+    if college['admission_rate']==None:
+        college['admission_rate']="N/A"
+    else:
+        college['admission_rate']=(f"{college['admission_rate']*100}%")
+        
+    college['size']=f"{college['size']:,}"
+    
+    
     return render_template("college.html.jinja", college_id=college_id, college=college)
+
+@app.route("/college/<college_id>/add", methods=["POST", "GET"])
+def add_college(college_id):
+    
+    customer_id=flask_login.current_user.id
+    
+    conn=connect_db()
+    cursor=conn.cursor()
+    
+    cursor.execute(f"""
+                   
+    INSERT INTO `CollegeList` (`list_id`, `college_id`)
+    VALUES (%s, %s)
+                   
+                   """,(customer_id, college_id))
 
 # User input on settings page
 @app.route("/settings", methods=["POST", "GET"])
 @flask_login.login_required
-def user_input():
+def settings():
     
     customer_id=flask_login.current_user.id
     

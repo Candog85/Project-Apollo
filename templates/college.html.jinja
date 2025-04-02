@@ -18,6 +18,8 @@
 
 <body>
 
+    {{college}}
+
     {% include "components/navbar.html.jinja" %}
 
     <div class="container row mx-auto">
@@ -25,40 +27,27 @@
         <div class="col-12 my-5">
             <div class="row">
 
-                <div class="col-md-4">
-                    <img src="" class="sticky-top img-fluid rounded-start" alt="..."
-                    style="padding-top: 60px;"
-                    >
-                </div>
-
-                <div class="col-8">
+                <div class="">
 
                     <div class="text-center">
                         <h5 class="h1">{{college['name']}}</h5>
-                        <p class="text-secondary fs-5">{{college['city']}}</p>
-                    </div>
-
-                    <div class="mx-5 my-5">
-                        <p class="fs-5">{{college['state']}}</p>
+                        <p class="text-secondary fs-5">{{college['city']}}, {{college['state']}}</p>
                     </div>
 
                     <div class="text-center mx-5 my-5">
-                        <h2 class="">$ USD</h2>
+                        <h2 class="">Tuition: {{college['tuition']}}</h2>
                     </div>
 
+                    <div class="text-center mx-5 my-5">
+                        <h2 class="">Admission Rate: {{college['admission_rate']}}</h2>
+                    </div>
 
-                    <form class="d-flex flex-column justify-content-center mb-5" method="post"
-                        action="">
+                    <div class="text-center mx-5 my-5">
+                        <h2 class="">Students Enrolled: {{college['size']}}</h2>
+                    </div>
 
-                        <div class="text-center col-6 mx-auto mb-3">
-                            <label for="quantity" class="form-label justify-content-start">Quantity</label>
-                            <input name="quantity" type="number" class="form-control" id="quantity" value="1" required>
-                        </div>
-
-
-
-                        <button type="submit" class="btn btn-secondary col-3 mx-auto">Add to cart</button>
-
+                    <form class="d-flex flex-column justify-content-center mb-5" method="post" action="">
+                        <button type="submit" class="btn btn-secondary col-3 mx-auto">Add to List</button>
                     </form>
                 </div>
 
