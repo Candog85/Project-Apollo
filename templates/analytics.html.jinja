@@ -14,6 +14,7 @@
     <meta name="description" content="">
     <meta name="author" content="Apolloists">
     <meta name="generator" content="Hugo 0.122.0">
+    <link rel="shortcut icon" href="../static/logo/apollo_logo.png" type="image/x-icon">
 </head>
 
 <body>
@@ -23,8 +24,8 @@
     <main class="container row g-4 mx-auto">
 
         <div class="my-5">
-            <h1 class="h1 text-center">Analytics</h1>
-            <h6 class="h6 text-center">Add colleges to your list, generate graphs</h6>
+            <h1 class="display-5 fw-bold text-body-emphasis custom-txt text-center">Analytics</h1>
+            <p class="lead mb-4 text-center">Add Colleges to Your List, Generate Graphs</p>
         </div>
 
         <div class="container flex-column d-flex align-items-center justify-content-center">
@@ -41,10 +42,58 @@
                 <input value="{{query}}" name="query" class="form-control me-2" type="text" placeholder="Search"
                     aria-label="Search">
                 {%endif%}
-                <button class="btn btn-outline-warning custom-button" type="submit">Search</button>
+                <button class="btn btn-outline-warning custom-button" type="submit">Search!</button>
             </form>
         </div>
-
+<div class="container mt-5">
+                <div class="container mt-5">
+                <nav aria-label="row justify-content-center mx-auto text-center">
+                    <ul class="pagination mx-auto justify-content-center">
+                        {%if page==1%}
+                        <li class="page-item"><button form="search_form" name="page" value="2" type="submit"
+                                class="page-link btn btn-outline-warning custom-button mx-2">2</button></li>
+                        <li class="page-item"><button form="search_form" name="page" value="3" type="submit"
+                                class="page-link btn btn-outline-warning custom-button mx-2">3</button></li>
+                        <li class="page-item"><button form="search_form" name="page" value="4" type="submit"
+                                class="page-link btn btn-outline-warning custom-button mx-2">4</button></li>
+                        <li class="page-item"><button form="search_form" name="page" value="5" type="submit"
+                                class="page-link btn btn-outline-warning custom-button mx-2">5</button></li>
+                        <li class="page-item"><button form="search_form" name="page" value="6" type="submit"
+                                class="page-link btn btn-outline-warning custom-button mx-2">6</button></li>
+                        <li class="page-item"><button form="search_form" name="page" value="{{page+1}}" type="submit"
+                                class="page-link btn btn-outline-warning custom-button mx-2">Next</button></li>
+                        {%elif page==2%}
+                        <li class="page-item"><button form="search_form" name="page" value="{{page-1}}" type="submit"
+                                class="page-link btn btn-outline-warning custom-button mx-2">Previous</button></li>
+                        <li class="page-item"><button form="search_form" name="page" value="1" type="submit"
+                                class="page-link btn btn-outline-warning custom-button mx-2">1</button></li>
+                        <li class="page-item"><button id="active-page" form="search_form" name="page" value="2" type="submit"
+                                class="page-link btn btn-outline-warning custom-button mx-2">2</button></li>
+                        <li class="page-item"><button form="search_form" name="page" value="3" type="submit"
+                                class="page-link btn btn-outline-warning custom-button mx-2">3</button></li>
+                        <li class="page-item"><button form="search_form" name="page" value="4" type="submit"
+                                class="page-link btn btn-outline-warning custom-button mx-2">4</button></li>
+                        <li class="page-item"><button form="search_form" name="page" value="5" type="submit"
+                                class="page-link btn btn-outline-warning custom-button mx-2">5</button></li>
+                        <li class="page-item"><button form="search_form" name="page" value="{{page+1}}" type="submit"
+                                class="page-link btn btn-outline-warning custom-button mx-2">Next</button></li>
+                        {%else%}
+                        <li class="page-item"><button form="search_form" name="page" value="{{page-1}}" type="submit"
+                                class="page-link btn btn-outline-warning custom-button mx-2">Previous</button></li>
+                        <li class="page-item"><button form="search_form" name="page" value="{{page-2}}" type="submit"
+                                class="page-link btn btn-outline-warning custom-button mx-2">{{page-2}}</button></li>
+                        <li class="page-item"><button form="search_form" name="page" value="{{page-1}}" type="submit"
+                                class="page-link btn btn-outline-warning custom-button mx-2">{{page-1}}</button></li>
+                        <li class="page-item"><button id="active-page" form="search_form" name="page" value="{{page}}" type="submit"
+                                class="page-link btn btn-outline-warning custom-button mx-2">{{page}}</button></li>
+                        <li class="page-item"><button form="search_form" name="page" value="{{page+1}}" type="submit"
+                                class="page-link btn btn-outline-warning custom-button mx-2">{{page+1}}</button></li>
+                        <li class="page-item"><button form="search_form" name="page" value="{{page+2}}" type="submit"
+                                class="page-link btn btn-outline-warning custom-button mx-2">{{page+2}}</button></li>
+                        <li class="page-item"><button form="search_form" name="page" value="{{page+1}}" type="submit"
+                                class="page-link btn btn-outline-warning custom-button mx-2">Next</button></li>
+                        {%endif%}
+</div>        
         <div class="container row my-5">
             {%for college in colleges%}
 
@@ -59,7 +108,10 @@
                     </div>
                     <div class="card-footer">
                         <div class="d-flex align-items-end">
-                            <a href="/college/{{college['id']}}" class="btn btn-secondary">View College</a>
+
+                            <a href="/college/{{college['id']}}" class="btn btn-outline-warning custom-button">View
+                                College</a>
+
                         </div>
                     </div>
                 </div>
@@ -71,26 +123,48 @@
                     <ul class="pagination mx-auto justify-content-center">
 
                         {%if page==1%}
-                        <li class="page-item"><button form="search_form" name="page" value="1" type="submit"
-                                class="page-link">1</button></li>
                         <li class="page-item"><button form="search_form" name="page" value="2" type="submit"
-                                class="page-link">2</button></li>
+                                class="page-link btn btn-outline-warning custom-button mx-2">2</button></li>
                         <li class="page-item"><button form="search_form" name="page" value="3" type="submit"
-                                class="page-link">3</button></li>
+                                class="page-link btn btn-outline-warning custom-button mx-2">3</button></li>
                         <li class="page-item"><button form="search_form" name="page" value="4" type="submit"
-                                class="page-link">4</button></li>
+                                class="page-link btn btn-outline-warning custom-button mx-2">4</button></li>
                         <li class="page-item"><button form="search_form" name="page" value="5" type="submit"
-                                class="page-link">5</button></li>
+                                class="page-link btn btn-outline-warning custom-button mx-2">5</button></li>
                         <li class="page-item"><button form="search_form" name="page" value="6" type="submit"
-                                class="page-link">6</button></li>
+                                class="page-link btn btn-outline-warning custom-button mx-2">6</button></li>
+                        <li class="page-item"><button form="search_form" name="page" value="{{page+1}}" type="submit"
+                                class="page-link btn btn-outline-warning custom-button mx-2">Next</button></li>
+                        {%elif page==2%}
+                        <li class="page-item"><button form="search_form" name="page" value="{{page-1}}" type="submit"
+                                class="page-link btn btn-outline-warning custom-button mx-2">Previous</button></li>
+                        <li class="page-item"><button form="search_form" name="page" value="1" type="submit"
+                                class="page-link btn btn-outline-warning custom-button mx-2">1</button></li>
+                        <li class="page-item"><button id="active-page" form="search_form" name="page" value="2" type="submit"
+                                class="page-link btn btn-outline-warning custom-button mx-2">2</button></li>
+                        <li class="page-item"><button form="search_form" name="page" value="3" type="submit"
+                                class="page-link btn btn-outline-warning custom-button mx-2">3</button></li>
+                        <li class="page-item"><button form="search_form" name="page" value="4" type="submit"
+                                class="page-link btn btn-outline-warning custom-button mx-2">4</button></li>
+                        <li class="page-item"><button form="search_form" name="page" value="5" type="submit"
+                                class="page-link btn btn-outline-warning custom-button mx-2">5</button></li>
+                        <li class="page-item"><button form="search_form" name="page" value="{{page+1}}" type="submit"
+                                class="page-link btn btn-outline-warning custom-button mx-2">Next</button></li>
                         {%else%}
-                        <li class="page-item"><a class="page-link" href="/analytics/page_{{page-1}}">Previous</a></li>
-                        <li class="page-item"><a class="page-link" href="#">{{page-2}}</a></li>
-                        <li class="page-item"><a class="page-link" href="#">{{page-1}}</a></li>
-                        <li class="page-item"><a class="page-link" href="#">{{page}}</a></li>
-                        <li class="page-item"><a class="page-link" href="#">{{page+1}}</a></li>
-                        <li class="page-item"><a class="page-link" href="#">{{page+2}}</a></li>
-                        <li class="page-item"><a class="page-link" href="/analytics/page_{{page+1}}">Next</a></li>
+                        <li class="page-item"><button form="search_form" name="page" value="{{page-1}}" type="submit"
+                                class="page-link btn btn-outline-warning custom-button mx-2">Previous</button></li>
+                        <li class="page-item"><button form="search_form" name="page" value="{{page-2}}" type="submit"
+                                class="page-link btn btn-outline-warning custom-button mx-2">{{page-2}}</button></li>
+                        <li class="page-item"><button form="search_form" name="page" value="{{page-1}}" type="submit"
+                                class="page-link btn btn-outline-warning custom-button mx-2">{{page-1}}</button></li>
+                        <li class="page-item"><button id="active-page" form="search_form" name="page" value="{{page}}" type="submit"
+                                class="page-link btn btn-outline-warning custom-button mx-2">{{page}}</button></li>
+                        <li class="page-item"><button form="search_form" name="page" value="{{page+1}}" type="submit"
+                                class="page-link btn btn-outline-warning custom-button mx-2">{{page+1}}</button></li>
+                        <li class="page-item"><button form="search_form" name="page" value="{{page+2}}" type="submit"
+                                class="page-link btn btn-outline-warning custom-button mx-2">{{page+2}}</button></li>
+                        <li class="page-item"><button form="search_form" name="page" value="{{page+1}}" type="submit"
+                                class="page-link btn btn-outline-warning custom-button mx-2">Next</button></li>
                         {%endif%}
                     </ul>
                 </nav>

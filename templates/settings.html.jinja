@@ -21,16 +21,16 @@
 
     {% for category, message in get_flashed_messages(with_categories=true) %}
 
-        {%if category=="error"%}
-            <div class="alert alert-danger" role="alert">
-                {{ message }}
-            </div>
+    {%if category=="error"%}
+    <div class="alert alert-danger" role="alert">
+        {{ message }}
+    </div>
 
-        {%elif category=="success"%}
-            <div class="alert alert-warning" role="alert">
-                {{ message }}
-            </div>
-        {%endif%}
+    {%elif category=="success"%}
+    <div class="alert alert-warning" role="alert">
+        {{ message }}
+    </div>
+    {%endif%}
 
     {% endfor %}
 
@@ -88,48 +88,51 @@
                                 placeholder="12345" required value="{{results['zip_code']}}">
                             <label for="floatingInput">Zip Code</label>
                         </div>
-                        
-                        </div>
-                        
-                        <button class="btn btn-outline-warning w-100 py-2" type="submit">Update Info</button>
-                        </form>
-                    
 
-                </div>
-
-                <div class="container mt-5">
-                    <h1 class="h3 mb-3 fw-bold text-center custom-txt">College Parameters</h1>
-                    <form action="/settings/update" method="post">
-                    <div class="form-floating my-4">
-                        <input type="text" name="sat_score" class="form-control" id="floatingInput"
-                             required value="{{results['sat_score']}}">
-                        <label for="floatingInput">SAT Score</label>
                     </div>
 
-                    <div class="form-floating my-4">
-                        <input type="text" name="tuition_budget" class="form-control" id="floatingInput"
-                             required value="{{results['tuition_budget']}}">
-                        <label for="floatingInput">Tuition</label>
-                    </div>
-
-                    <div class="form-floating my-4">
-                        <input type="number" name="zip_code" class="form-control" id="floatingInput"
-                             required value="{{results['zip_code']}}">
-                        <label for="floatingInput">Zip code</label>
-                    </div>
-
-                    <div class="form-floating my-4">
-                        <input type="text" name="population_preferences" class="form-control" id="floatingInput"
-                             required value="{{results['population_preferences']}}">
-                        <label for="floatingInput">Population preferences</label>
-                    </div>
-
-                    <button class="btn btn-outline-warning w-100 py-2" type="submit">Submit</button>
-                    </form>
-                </div>
-
+                    <button class="btn btn-outline-warning w-100 py-2" type="submit">Update Info</button>
+                    <br><br>
             </form>
-        </main>
+
+    </div>
+    </div>
+
+    <div class="b-example-divider py-5"></div>
+
+    <div class="container col-6 mt-5">
+        <h1 class="h3 mb-3 fw-bold text-center custom-txt">College Parameters</h1>
+        <form action="/settings/update" method="post">
+            <div class="form-floating my-4">
+                <input type="text" name="sat_score" class="form-control" id="floatingInput" required
+                    value="{{results['sat_score']}}">
+                <label for="floatingInput">SAT Score</label>
+            </div>
+
+            <div class="form-floating my-4">
+                <input type="text" name="tuition_budget" class="form-control" id="floatingInput" required
+                    value="{{results['tuition_budget']}}">
+                <label for="floatingInput">Tuition</label>
+            </div>
+
+            <div class="form-floating my-4">
+                <input type="number" name="zip_code" class="form-control" id="floatingInput" required
+                    value="{{results['zip_code']}}">
+                <label for="floatingInput">Zip code</label>
+            </div>
+
+            <div class="form-floating my-4">
+                <input type="text" name="population_preferences" class="form-control" id="floatingInput" required
+                    value="{{results['population_preferences']}}">
+                <label for="floatingInput">Population preferences</label>
+            </div>
+
+            <button class="btn btn-outline-warning w-100 py-2" type="submit">Submit</button>
+        </form>
+    </div>
+
+    </form>
+    </main>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
