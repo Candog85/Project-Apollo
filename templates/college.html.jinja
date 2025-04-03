@@ -18,7 +18,7 @@
 
 <body>
 
-    {{college}}
+    {{added}}
 
     {% include "components/navbar.html.jinja" %}
 
@@ -46,9 +46,15 @@
                         <h2 class="">Students Enrolled: {{college['size']}}</h2>
                     </div>
 
-                    <form class="d-flex flex-column justify-content-center mb-5" method="post" action="">
+                    {%if added==False%}
+                    <form class="d-flex flex-column justify-content-center mb-5" method="post" action="/college/{{college['id']}}/add">
                         <button type="submit" class="btn btn-secondary col-3 mx-auto">Add to List</button>
                     </form>
+                    {%elif added==True%}
+                    <form class="d-flex flex-column justify-content-center mb-5" method="post" action="/college/{{college['id']}}/remove">
+                        <button type="submit" class="btn btn-secondary col-3 mx-auto">Remove from List</button>
+                    </form>
+                    {%endif%}
                 </div>
 
             </div>

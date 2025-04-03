@@ -27,6 +27,12 @@
             <h6 class="h6 text-center">Add colleges to your list, generate graphs</h6>
         </div>
 
+        <div class="container flex-column d-flex align-items-center justify-content-center">
+            <img class="col-12"src="static/images/plots/{{customer_id}}.png" alt="my plot">
+            <a href="/plot"><button class="btn btn-secondary col-12 mx-auto">Generate Plot</button></a>
+
+        </div>
+
         <div class="container col-6">
             <form id="search_form" class="d-flex mt-3 " role="search">
                 {%if query==None%}
@@ -52,7 +58,7 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                                            <div class="d-flex align-items-end">
+                        <div class="d-flex align-items-end">
                             <a href="/college/{{college['id']}}" class="btn btn-secondary">View College</a>
                         </div>
                     </div>
