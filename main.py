@@ -181,19 +181,8 @@ def login_page():
     return render_template("sign_in.html.jinja")
 
 # Browse colleges
-@app.route("/browse")
-def college_browse():
-    query = request.args.get("query")
-    conn = connect_db()
-    cursor = conn.cursor()
-    cursor.execute(f"SELECT * FROM `College`;")
-    colleges = cursor.fetchall()
-    return render_template("browse.html.jinja", results = colleges)
-
-# Analytics page (college and user graphs for comparison and analysis)
-@app.route("/analytics", methods=["Post", "GET"])
-def analytics_page():
-
+@app.route("/browse", methods=["Post", "GET"])
+def browse():
     #Browse area
     page = int(request.args.get('page', '1'))
     query = request.args.get('query')
@@ -225,11 +214,16 @@ def analytics_page():
     cursor.close()
     conn.close()
     
-    return render_template("analytics.html.jinja", colleges=colleges, page=page, query=query, customer_id=customer_id)
+    return render_template("browse.html.jinja", colleges=colleges, page=page, query=query, customer_id=customer_id)
     # Note: For now, the database connection and data fetcher are placeholders. This WILL be changed later as neccessary.  
 
+# Analytics page (college and user graphs for comparison and analysis)
+@app.route("/analytics", methods=["Post", "GET"])
+def analytics_page():
+    return render_template('analytics.html.jinja')
+
 @app.route('/plot')
-def create_figure():
+def plot():
     #Constant id (change to dynamic later)
     customer_id=flask_login.current_user.id
 
