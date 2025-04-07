@@ -108,12 +108,28 @@ hr{
     color: #202020;
 }
 
+#magnifying-glass{
+    color: #DEB64B;
+}
+
+#magnifying-glass:hover{
+    color: #202020;
+}
+
 #graph{
     color:#DEB64B;
 }
 
+#graph:hover{
+    color: #202020;
+}
+
 #logout{
     color: #DEB64B;
+}
+
+#logout:hover{
+    color: #202020;
 }
 
 #active-page{
