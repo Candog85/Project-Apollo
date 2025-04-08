@@ -1,15 +1,317 @@
-.bd-placeholder-img {
-    font-size: 1.125rem;
-    text-anchor: middle;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    user-select: none;
+@import url('https://fonts.googleapis.com/css2?family=Marcellus+SC&display=swap');
+
+/* --- Base Variables and Styles --- */
+:root {
+    --bs-emphasis-color: #DEB64B;
+    --bs-body-bg: #202020;
+    --bs-secondary-color: #ffffff;
+    /* Custom theme color (used for buttons, links, etc.) */
+    --theme-color: #DEB64B;
+    --background-color: #202020;
+    --text-color: #ffffff;
+    --hover-text-color: #202020;
+    /* Text color on theme background hover */
 }
 
-@media (min-width: 768px) {
-    .bd-placeholder-img-lg {
-        font-size: 3.5rem;
+/* Note: This override is unusual. --bs-warning-rgb expects RGB values (e.g., 222, 182, 75),
+   not a hex color directly assigned via var(). It might break Bootstrap components
+   expecting RGB values. Kept as per original request. */
+* {
+    --bs-warning-rgb: var(--bs-btn-color);
+    /* Inherits from .btn-outline-warning */
+    box-sizing: border-box;
+    /* More predictable box model */
+}
+
+::placeholder {
+    color: red;
+    /* Kept as per original */
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: sans-serif;
+    /* Set a default sans-serif, specific fonts can override */
+    line-height: 1.6;
+    /* Improved readability */
+}
+
+.marcellus-sc-regular {
+    font-family: "Marcellus SC", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+hr {
+    margin: 1rem 0;
+    /* Added vertical margin for spacing */
+    color: var(--theme-color);
+    opacity: 0.75;
+    /* Bootstrap default opacity for HR */
+    border-top: 1px solid;
+    /* Ensure border is visible */
+}
+
+/* --- Links & Buttons --- */
+a {
+    color: var(--theme-color);
+    /* Default link color */
+    text-decoration: none;
+    /* Remove default underline */
+    transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out;
+    /* Smooth transition */
+}
+
+a:hover,
+a:focus {
+    color: var(--hover-text-color);
+    /* Consistent hover/focus text color */
+    /* background-color: var(--theme-color); /* Applied specifically where needed (like navbar) */
+    text-decoration: none;
+    /* Ensure no underline on hover/focus */
+}
+
+/* Ensure focus is visible for accessibility */
+a:focus-visible {
+    outline: 2px solid var(--theme-color);
+    outline-offset: 2px;
+}
+
+/* Custom Button Style */
+.custom-button {
+    color: var(--theme-color);
+    background-color: transparent;
+    border: 1px solid var(--theme-color);
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    /* Slight rounding */
+    transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out;
+    display: inline-block;
+    /* Ensure proper alignment and padding */
+    text-align: center;
+    cursor: pointer;
+}
+
+.custom-button:hover,
+.custom-button:focus {
+    color: var(--hover-text-color);
+    background-color: var(--theme-color);
+    border-color: var(--theme-color);
+    outline: none;
+    /* Remove default outline as background changes */
+}
+
+/* Bootstrap Button Override */
+.btn-outline-warning {
+    --bs-btn-color: var(--theme-color);
+    --bs-btn-border-color: var(--theme-color);
+    --bs-btn-hover-bg: var(--theme-color);
+    --bs-btn-hover-color: var(--hover-text-color);
+    /* Ensure text color changes on hover */
+    --bs-btn-hover-border-color: var(--theme-color);
+    --bs-btn-focus-shadow-rgb: 222, 182, 75;
+    /* Actual RGB for #DEB64B */
+    --bs-btn-active-bg: var(--theme-color);
+    --bs-btn-active-border-color: var(--theme-color);
+    --bs-btn-active-color: var(--hover-text-color);
+}
+
+
+/* --- Navbar --- */
+.navbar {
+    padding: 0.5rem 1rem;
+    /* Add some padding */
+    background-color: #212529;
+    /* Assuming a standard dark navbar background */
+}
+
+.navbar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    /* Use flexbox for layout */
+    justify-content: center;
+    /* Center items horizontally */
+    align-items: center;
+    /* Center items vertically */
+    flex-wrap: wrap;
+    /* Allow items to wrap on smaller screens if needed */
+}
+
+.navbar li {
+    /* float: center; <-- Invalid CSS, removed */
+    margin: 0 0.5rem;
+    /* Add spacing between nav items */
+}
+
+.navbar a {
+    display: block;
+    /* Ensure padding is applied correctly */
+    text-align: center;
+    padding: 14px 16px;
+    /* Original padding */
+    text-decoration: none;
+    color: var(--text-color);
+    /* Default navbar link color */
+    transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out;
+    border-radius: 4px;
+    /* Optional: slightly rounded corners */
+}
+
+.navbar a:hover,
+.navbar a:focus {
+    color: var(--hover-text-color);
+    background-color: var(--theme-color);
+    outline: none;
+    /* Remove default outline as background changes */
+}
+
+/* Specific style for brand */
+#brand-name {
+    color: var(--theme-color);
+    /* Ensure brand uses theme color */
+}
+
+#brand-name:hover,
+#brand-name:focus {
+    background-color: transparent;
+    /* Keep background transparent */
+    color: var(--text-color);
+    /* Example: Hover to white */
+}
+
+/* Style for the currently active page link */
+#active-page,
+.navbar a.active {
+    /* Added class option for active state */
+    background-color: var(--theme-color);
+    color: var(--hover-text-color);
+}
+
+/* Reduced padding for buttons within navbar */
+.navbar a.btn {
+    padding: 0.375rem 0.75rem;
+    /* Bootstrap's default sm/md button padding */
+}
+
+/* --- Forms --- */
+.form-control {
+    background-color: var(--bs-body-bg);
+    /* Match body background */
+    color: var(--text-color);
+    border: 1px solid var(--theme-color);
+    /* Theme color border */
+}
+
+.form-control:focus {
+    color: var(--text-color);
+    background-color: var(--bs-body-bg);
+    border-color: var(--theme-color);
+    /* Keep border color on focus */
+    box-shadow: 0 0 0 0.25rem rgba(222, 182, 75, 0.5);
+    /* Theme color focus glow */
+    outline: none;
+}
+
+/* --- Cards --- */
+.card {
+    background-color: #2f2f2f;
+    /* Slightly lighter dark background for cards */
+    color: var(--text-color);
+    border: 1px solid #444;
+    /* Subtle border for card */
+    margin-bottom: 1.5rem;
+    /* Spacing below cards */
+}
+
+/* --- Utility Classes --- */
+.text-center {
+    text-align: center;
+}
+
+.custom-txt {
+    color: var(--theme-color);
+}
+
+/* --- Specific Icon Styling --- */
+/* Consider using a common class like .icon-interactive if possible */
+#cog,
+#magnifying-glass,
+#graph,
+#logout {
+    color: var(--theme-color);
+    transition: color 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+#cog:hover,
+#cog:focus,
+#magnifying-glass:hover,
+#magnifying-glass:focus,
+#graph:hover,
+#graph:focus,
+#logout:hover,
+#logout:focus {
+    color: var(--hover-text-color);
+    /* Change text color on hover/focus */
+    /* If these are links (<a> or <button>), add focus visible style */
+}
+
+/* Add focus-visible for keyboard users if these are interactive */
+#cog:focus-visible,
+#magnifying-glass:focus-visible,
+#graph:focus-visible,
+#logout:focus-visible {
+    outline: 2px solid var(--theme-color);
+    outline-offset: 2px;
+}
+
+
+/* --- Responsiveness --- */
+/* Adjustments for smaller screens (e.g., tablets and phones) */
+@media screen and (max-width: 768px) {
+    .navbar ul {
+        flex-direction: column;
+        /* Stack items vertically */
+        align-items: stretch;
+        /* Stretch items to full width */
     }
+
+    .navbar li {
+        margin: 0.25rem 0;
+        /* Adjust vertical spacing */
+        width: 100%;
+        /* Make list items take full width */
+    }
+
+    .navbar a {
+        padding: 10px 15px;
+        /* Adjust padding for vertical layout */
+        text-align: center;
+        /* Ensure text remains centered */
+    }
+
+    /* Example: Reduce body padding on small screens */
+    body {
+        padding: 0 10px;
+        /* Add some horizontal padding */
+    }
+
+    /* Example: Slightly smaller base font size */
+    /* html {
+        font-size: 95%;
+    } */
+}
+
+
+/* --- Bootstrap Example CSS (Keep if used, remove if unused) --- */
+/* These seem like boilerplate/example styles. Verify if they are needed. */
+.border-warning {
+    /* --bs-border-color-rgb: var(--bs-warning-rgb); <-- This would use the potentially problematic override */
+    border-color: var(--theme-color) !important;
+    /* Direct override using the theme color */
 }
 
 .b-example-divider {
@@ -50,10 +352,24 @@
     -webkit-overflow-scrolling: touch;
 }
 
+.bd-placeholder-img {
+    font-size: 1.125rem;
+    text-anchor: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+
+@media (min-width: 768px) {
+    .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+    }
+}
+
+/* These btn-bd and bd-mode styles are likely part of a specific Bootstrap theme/example */
 .btn-bd-primary {
     --bd-violet-bg: #712cf9;
     --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
-
     --bs-btn-font-weight: 600;
     --bs-btn-color: var(--bs-white);
     --bs-btn-bg: var(--bd-violet-bg);
