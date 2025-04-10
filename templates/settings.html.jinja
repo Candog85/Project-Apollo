@@ -38,7 +38,7 @@
         <h1 class="h3 mb-3 fw-bold text-center custom-txt">College Parameters</h1>
         <form action="/settings/update" method="post">
             <div class="form-floating my-4">
-                <input type="text" name="sat_score" class="form-control" id="floatingInput" required
+                <input type="number" name="sat_score" class="form-control" id="floatingInput" required
                     value="{{results['sat_score']}}">
                 <label for="floatingInput">SAT Score</label>
             </div>
@@ -56,7 +56,7 @@
             </div>
 
             <div class="form-floating my-4">
-                <input type="text" name="population_preferences" class="form-control" id="floatingInput" required
+                <input type="number" name="population_preferences" class="form-control" id="floatingInput" required
                     value="{{results['population_preferences']}}">
                 <label for="floatingInput">Population preferences</label>
             </div>
@@ -64,6 +64,7 @@
             <button class="btn btn-outline-warning w-100 py-2" type="submit">Submit</button>
         </form>
     </div>
+
     </form>
     </div>
     
@@ -71,7 +72,7 @@
 
     <div class="container col-6 mt-5">
         <main class="form-signin w-100 m-auto">
-            <form action="/settings/update" method="post">
+            <form action="/settings/update_user" method="post">
 
                 <div class="container mt-5">
                     <h1 class="h3 mb-3 fw-bold text-center custom-txt">Account settings</h1>
@@ -95,7 +96,6 @@
                     </div>
 
                     <div class="d-flex justify-content-center">
-
                         <div class="form-floating mx-1 my-3 col-6">
                             <input type="text" name="first_name" class="form-control" id="floatingInput"
                                 placeholder="John" required value="{{results['first_name']}}">
@@ -107,11 +107,9 @@
                                 placeholder="Doe" required value="{{results['last_name']}}">
                             <label for="floatingInput">Last Name</label>
                         </div>
-
                     </div>
 
                     <div class="d-flex justify-content-center">
-
                         <div class="form-floating mx-1 my-3 col-8">
                             <input type="email" name="email" class="form-control" id="floatingInput"
                                 placeholder="name@example.com" required value="{{results['email']}}">
@@ -123,7 +121,6 @@
                                 placeholder="12345" required value="{{results['zip_code']}}">
                             <label for="floatingInput">Zip Code</label>
                         </div>
-
                     </div>
 
                     <button class="btn btn-outline-warning w-100 py-2" type="submit">Update Info</button>
@@ -131,6 +128,7 @@
             </form>
         </main>
     </div>
+
     </div>
 
 
