@@ -3,14 +3,14 @@ from flask import Flask, render_template, request, redirect, flash, Response
 import pymysql
 from dynaconf import Dynaconf
 import flask_login
-import requests
-import io
-import random
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 from math import radians, cos, sin, asin, sqrt
 import matplotlib.pyplot as plt
 import base64
+from io import BytesIO
+import io
+import random
 
 # Declare Flask application
 app = Flask(__name__)
@@ -222,26 +222,25 @@ def browse():
 def analytics_page():
     return render_template('analytics.html.jinja')
 
-@app.route('/plot')
+@app.route('/plot.png')
 def plot():
     #Constant id (change to dynamic later)
-    customer_id=flask_login.current_user.id
+    customer_id=1
 
     #Settings for which graph to generate (will change dynamically)
-    comparing_catagory=2
-
+    comparing_catagory=1
 
     compare_sat=False
     compare_tuition=False
     compare_distance=False
 
-    if comparing_catagory==0:
+    if comparing_catagory==1:
         compare_sat=True
         
-    elif comparing_catagory==1:
+    elif comparing_catagory==2:
         compare_tuition=True
         
-    elif comparing_catagory==2:
+    elif comparing_catagory==3:
         compare_distance=True
 
     if compare_sat==True:
@@ -267,7 +266,7 @@ def plot():
     LEFT JOIN `Colleges`
     ON `CollegeList`.`college_id` = `Colleges`.`id`
     AND `CollegeList`.`user_id`= %s 
-           """,(customer_id))
+            """,(customer_id))
 
     #Stores college results
     college_results=cursor.fetchall()
@@ -357,38 +356,70 @@ def plot():
             
             data.append(int(haversine(student_coordinates['lng'], student_coordinates['lat'], college['longitude'], college['latitude'])))
 
+    assert data
 
-    fig=plt.figure(figsize=(10, 6), facecolor='#202020', edgecolor='#DEB64B')
+    #Creates figure
+    fig=Figure(figsize=(10,6), facecolor='#202020', edgecolor='#ffffff')
 
-    bar=plt.bar(names,data, color='#DEB64B', edgecolor='#202020', )
-    plt.title(f"{comparing}")
-
-    bar[0].set_color('#202020')
-    bar[0].set_edgecolor('#DEB64B')
-
-    ax=plt.gca()
-
-    ax.set_facecolor('#202020')
-
-    ax.spines['top'].set_color('#DEB64B')
-    ax.spines['right'].set_color('#DEB64B')
-    ax.spines['bottom'].set_color('#DEB64B')
-    ax.spines['left'].set_color('#DEB64B')
-
-    ax.tick_params(axis='x', colors='#DEB64B')
-
-    ax.tick_params(axis='y', colors='#DEB64B')
-
-    plt.xticks(rotation=320, ha='left')
-
-    if compare_tuition==True:
-        ax.yaxis.set_major_formatter('${x:,.0f}')
-        
-    plt.tight_layout()
-        
-    plt.savefig(f'static/images/plots/{customer_id}.png',dpi=100)
+    #Set figure background color
+    fig.set_facecolor('#202020')
     
-    return redirect('/analytics')
+    #Tightens figure
+    fig.set_layout_engine("tight")
+
+    #Creates a subplot over figure
+    subplot=fig.subplots(1)
+
+    #Subplot background color
+    subplot.set_facecolor('#202020')
+    
+    subplot.tick_params("both", colors="#DEB64B", labelcolor="#DEB64B")
+    
+    #Spine colors
+    subplot.spines['bottom'].set_color('#DEB64B')
+    subplot.spines['top'].set_color('#DEB64B') 
+    subplot.spines['right'].set_color('#DEB64B')
+    subplot.spines['left'].set_color('#DEB64B')
+    
+    #Axes colors
+    subplot.xaxis.label.set_color('#DEB64B')
+    subplot.yaxis.label.set_color('#DEB64B')
+    
+    if compare_tuition:
+
+        #Label names
+        subplot.set_xlabel('Colleges')
+        subplot.set_ylabel('Tuition')
+        
+        #Creates a bar graph in the subplot
+        bar=subplot.bar(names,data,color='#202020', edgecolor='#DEB64B')
+        
+        #Formats to use currency
+        subplot.yaxis.set_major_formatter('${x:1.2f}')
+    
+    elif compare_sat==True:
+        
+        # Label names
+        subplot.set_xlabel('Colleges')
+        subplot.set_ylabel('SAT Score')
+        
+        # Create a bar graph in the subplot
+        bar=subplot.bar(names,data,color='#202020', edgecolor='#DEB64B')
+        
+        # Changes the first bar to gold
+        bar[0].set_color('#DEB64B')
+        
+        # Changes the y label range to fit SAT scores
+        subplot.set_yticks((1600, 1400, 1200, 1000, 800, 600, 400, 200))
+        
+        #Rotates the College labels to 
+        subplot.xaxis.set_tick_params(rotation=315)
+
+    fig.savefig("graph1.png", dpi='figure')
+    
+    output = io.BytesIO()
+    FigureCanvas(fig).print_png(output)
+    return Response(output.getvalue(), mimetype='image/png')
 
 @app.route("/college/<college_id>", methods=["POST", "GET"])
 def college(college_id):

@@ -1,0 +1,163 @@
+@import url('https://fonts.googleapis.com/css2?family=Marcellus+SC&display=swap');
+
+*{
+    --bs-warning-rgb:var(--bs-btn-color)
+}
+
+::placeholder {
+    color: red;
+}
+
+.marcellus-sc-regular {
+    font-family: "Marcellus SC", serif;
+    font-weight: 400;
+    font-style: normal;
+  }  
+
+:root{
+    --bs-emphasis-color:#DEB64B;
+    --bs-body-bg:#202020;
+    --bs-secondary-color:#ffffff; 
+}
+
+.btn-outline-warning{
+    --bs-btn-color: #DEB64B;
+    --bs-btn-border-color: #DEB64B;
+    /* --bs-btn-hover-bg: #DEB64B; */
+}
+
+body{
+    background-color: #202020;
+    color: white;
+}
+.navbar ul{
+    list-style-type: none;
+    overflow: hidden;
+}
+.navbar a{
+    display: block;
+    text-align: center;
+    padding: 15px;
+    text-decoration: none;
+}
+.navbar a:hover{
+    color: #202020;
+    background-color: #DEB64B;
+}
+.navbar li{
+    float: center;
+}
+.navbar a.btn {
+    padding: 7.5px;
+}
+
+.text-center {
+    text-align: center;
+  }
+/* mouse over link */
+a:hover {
+    color: #202020;
+}
+@media screen and (max-width: 600px) {
+    
+  }
+
+.custom-txt{
+    color:#DEB64B
+}
+
+#brand-name:hover{
+    background-color: #212529;
+    color: #DEB64B;
+}
+
+.card{
+    color: #ffffff;
+}
+
+.form-control{
+    color:#ffffff
+}
+
+hr{
+    margin: 0;
+    color:#DEB64B;
+}
+
+.custom-button{
+    color: #DEB64B;
+    background-color: transparent;
+    border-color: #DEB64B;
+}
+
+.custom-button:hover{
+    color: #202020;
+    background-color: #DEB64B;
+
+}
+
+.form-control:focus{
+    color: #ffffff;
+}
+
+#cog{
+    color:#DEB64B;
+}
+
+#cog:hover{
+    color: #202020;
+}
+
+#magnifying-glass{
+    color: #DEB64B;
+}
+
+#magnifying-glass:hover{
+    color: #202020;
+}
+
+#graph{
+    color:#DEB64B;
+}
+
+#graph:hover{
+    color: #202020;
+}
+
+#logout{
+    color: #DEB64B;
+}
+
+#logout:hover{
+    color: #202020;
+}
+
+#active-page{
+    background-color: #DEB64B;
+    color: black;
+}
+
+.b-example-divider {
+    width: 100%;
+    height: 3rem;
+    background-color: rgba(0, 0, 0, .1);
+    border: solid rgba(0, 0, 0, .15);
+    border-width: 1px 0;
+    box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+}
+
+.border-warning {
+    color: #DEB64B;
+}
+
+/* .underline {
+    text-decoration: underline;
+    text-decoration-color: #202020;
+  } */
+/* .asd:hover{
+    color: white;
+} */
+/* 
+.asd:active{
+    color:white;
+} */
