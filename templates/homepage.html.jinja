@@ -122,7 +122,17 @@
                         <a href="/sign_in"><button type="button" class="btn btn-outline-warning btn-lg px-3 gap-5">Sign
                                 In</button></a>
                     </div>
-                    <p class="text-center mt-5"><svg viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" width="30" height="30"><path d="M9.854 8.854l.353-.354-.707-.707-.354.353.708.708zM7.5 10.5l-.354.354.354.353.354-.353L7.5 10.5zM5.854 8.146L5.5 7.793l-.707.707.353.354.708-.708zm3.292 0l-2 2 .708.708 2-2-.708-.708zm-1.292 2l-2-2-.708.708 2 2 .708-.708zM8 10.5V4H7v6.5h1z" fill="currentColor"></path></svg> Scroll to Learn More <svg viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" width="30" height="30"><path d="M9.854 8.854l.353-.354-.707-.707-.354.353.708.708zM7.5 10.5l-.354.354.354.353.354-.353L7.5 10.5zM5.854 8.146L5.5 7.793l-.707.707.353.354.708-.708zm3.292 0l-2 2 .708.708 2-2-.708-.708zm-1.292 2l-2-2-.708.708 2 2 .708-.708zM8 10.5V4H7v6.5h1z" fill="currentColor"></path></svg></p>
+                    <p class="text-center mt-5"><svg viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"
+                            width="30" height="30">
+                            <path
+                                d="M9.854 8.854l.353-.354-.707-.707-.354.353.708.708zM7.5 10.5l-.354.354.354.353.354-.353L7.5 10.5zM5.854 8.146L5.5 7.793l-.707.707.353.354.708-.708zm3.292 0l-2 2 .708.708 2-2-.708-.708zm-1.292 2l-2-2-.708.708 2 2 .708-.708zM8 10.5V4H7v6.5h1z"
+                                fill="currentColor"></path>
+                        </svg> Scroll to Learn More <svg viewBox="0 0 15 15" fill="none"
+                            xmlns="http://www.w3.org/2000/svg" width="30" height="30">
+                            <path
+                                d="M9.854 8.854l.353-.354-.707-.707-.354.353.708.708zM7.5 10.5l-.354.354.354.353.354-.353L7.5 10.5zM5.854 8.146L5.5 7.793l-.707.707.353.354.708-.708zm3.292 0l-2 2 .708.708 2-2-.708-.708zm-1.292 2l-2-2-.708.708 2 2 .708-.708zM8 10.5V4H7v6.5h1z"
+                                fill="currentColor"></path>
+                        </svg></p>
 
                     {%endif%}
                 </div>
@@ -137,28 +147,31 @@
         {%else%}
 
         <div class="row">
-        <div class="col-4">
-        <img class="border border-warning img-fluid" src="static/images/previewbrowse.png">
-        <p>
-        </p>
-        <p class="text-center">Search through the plethera of colleges available,<br> to find what fits you and what is available to you.</p>
-        </div>
-        <div class="col-4">
-        <img class="border border-warning img-fluid" src="static/images/previewparameters.png">
-        <p>
-        </p>
-        <p class="text-center">Enter information to easily find colleges that fit to your <br>preferences and, later add to a list of choices.</p>
-        </div>
-        <div class="col-4">
-        <img class="border border-warning img-fluid" src="static/images/previewanalystics.png">
-        <p>
-        </p>
-        <p class="text-center">From the list you added your colleges you're able to see <br>if you reached the academic requirments.</p>
-        </div>
+            <div class="col-4">
+                <img class="border border-warning img-fluid" src="static/images/previewbrowse.png">
+                <p>
+                </p>
+                <p class="text-center">Search through the plethera of colleges available,<br> to find what fits you and
+                    what is available to you.</p>
+            </div>
+            <div class="col-4">
+                <img class="border border-warning img-fluid" src="static/images/previewparameters.png">
+                <p>
+                </p>
+                <p class="text-center">Enter information to easily find colleges that fit to your <br>preferences and,
+                    later add to a list of choices.</p>
+            </div>
+            <div class="col-4">
+                <img class="border border-warning img-fluid" src="static/images/previewanalystics.png">
+                <p>
+                </p>
+                <p class="text-center">From the list you added your colleges you're able to see <br>if you reached the
+                    academic requirments.</p>
+            </div>
         </div>
 
-  
-        <div class="b-example-divider py-5"></div>    
+
+        <div class="b-example-divider py-5"></div>
 
 
         <div class="container col-6 my-5" id="sign_up">
@@ -182,12 +195,18 @@
                         <input type="password" name="password" class="form-control" id="floatingPassword"
                             placeholder="password" required>
                         <label for="floatingPassword">Password</label>
+                        <button type="button" id="togglePassword" class="btn btn-outline-warning">
+                            Show/hide password
+                        </button>
                     </div>
 
                     <div class="form-floating my-3">
                         <input type="password" name="confirm_password" class="form-control" id="floatingPassword2"
                             placeholder="password" required>
                         <label for="floatingPassword2">Re-Enter Password</label>
+                        <button type="button" id="toggleRePassword" class="btn btn-outline-warning">
+                            Show/hide password
+                        </button>
                     </div>
 
                     <div class="d-flex justify-content-center">
@@ -240,5 +259,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
+    {# Password script #}
+    <script src="/static/scripts/password.js"></script>
 
 </html>

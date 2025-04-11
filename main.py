@@ -50,7 +50,7 @@ if __name__ == '__main__':
 ## User Login Manager
 login_manager = flask_login.LoginManager()
 login_manager.init_app(app)
-login_manager.login_view=("/sign_in")
+login_manager.login_view = ("/sign_in")
 
 ## Define user class
 class User:

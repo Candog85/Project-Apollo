@@ -1,138 +1,154 @@
 @import url('https://fonts.googleapis.com/css2?family=Marcellus+SC&display=swap');
 
-*{
-    --bs-warning-rgb:var(--bs-btn-color)
+* {
+    --bs-warning-rgb: var(--bs-btn-color)
 }
 
 ::placeholder {
     color: red;
 }
 
+#togglePassword,
+#toggleRePassword {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    border: none;
+    /* background: none; */
+}
+
 .marcellus-sc-regular {
     font-family: "Marcellus SC", serif;
     font-weight: 400;
     font-style: normal;
-  }  
-
-:root{
-    --bs-emphasis-color:#DEB64B;
-    --bs-body-bg:#202020;
-    --bs-secondary-color:#ffffff; 
 }
 
-.btn-outline-warning{
+:root {
+    --bs-emphasis-color: #DEB64B;
+    --bs-body-bg: #202020;
+    --bs-secondary-color: #ffffff;
+}
+
+.btn-outline-warning {
     --bs-btn-color: #DEB64B;
     --bs-btn-border-color: #DEB64B;
     /* --bs-btn-hover-bg: #DEB64B; */
 }
 
-body{
+body {
     background-color: #202020;
     color: white;
 }
-.navbar ul{
+
+/* Navbar styling */
+
+.navbar ul {
     list-style-type: none;
     overflow: hidden;
 }
-.navbar a{
+
+.navbar a {
     display: block;
     text-align: center;
     padding: 15px;
     text-decoration: none;
 }
-.navbar a:hover{
+
+.navbar a:hover {
     color: #202020;
     background-color: #DEB64B;
 }
-.navbar li{
+
+.navbar li {
     float: center;
 }
+
 .navbar a.btn {
     padding: 7.5px;
 }
 
 .text-center {
     text-align: center;
-  }
+}
+
 /* mouse over link */
 a:hover {
     color: #202020;
 }
-@media screen and (max-width: 600px) {
-    
-  }
 
-.custom-txt{
-    color:#DEB64B
+@media screen and (max-width: 600px) {}
+
+.custom-txt {
+    color: #DEB64B
 }
 
-#brand-name:hover{
+#brand-name:hover {
     background-color: #212529;
     color: #DEB64B;
 }
 
-.card{
+.card {
     color: #ffffff;
 }
 
-.form-control{
-    color:#ffffff
+.form-control {
+    color: #ffffff
 }
 
-hr{
+hr {
     margin: 0;
-    color:#DEB64B;
+    color: #DEB64B;
 }
 
-.custom-button{
+.custom-button {
     color: #DEB64B;
     background-color: transparent;
     border-color: #DEB64B;
 }
 
-.custom-button:hover{
+.custom-button:hover {
     color: #202020;
     background-color: #DEB64B;
 
 }
 
-.form-control:focus{
+.form-control:focus {
     color: #ffffff;
 }
 
-#cog{
-    color:#DEB64B;
-}
-
-#cog:hover{
-    color: #202020;
-}
-
-#magnifying-glass{
+#cog {
     color: #DEB64B;
 }
 
-#magnifying-glass:hover{
+#cog:hover {
     color: #202020;
 }
 
-#graph{
-    color:#DEB64B;
-}
-
-#graph:hover{
-    color: #202020;
-}
-
-#logout{
+#magnifying-glass {
     color: #DEB64B;
 }
 
-#logout:hover{
+#magnifying-glass:hover {
     color: #202020;
 }
 
-#active-page{
+#graph {
+    color: #DEB64B;
+}
+
+#graph:hover {
+    color: #202020;
+}
+
+#logout {
+    color: #DEB64B;
+}
+
+#logout:hover {
+    color: #202020;
+}
+
+#active-page {
     background-color: #DEB64B;
     color: black;
 }
