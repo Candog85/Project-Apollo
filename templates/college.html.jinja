@@ -16,6 +16,7 @@
     <meta name="generator" content="Hugo 0.122.0">
     <link rel="shortcut icon" href="../static/logo/apollo_logo.png" type="image/x-icon">
 
+
 </head>
 
 <body>
@@ -25,43 +26,61 @@
     <div class="container row mx-auto">
 
         <div class="col-12 my-5">
-            <div class="row">
-
-                <div class="">
-
-                    <div class="text-center">
-                        <h5 class="h1 custom-txt">{{college['name']}}</h5>
-                        <p class="text-secondary fs-5">{{college['city']}}, {{college['state']}}</p>
-                    </div>
-
-                    <div class="text-center mx-5 my-5">
-                        <h2 class="h3">Tuition: {{college['tuition']}}</h2>
-                    </div>
-
-                    <div class="text-center mx-5 my-5">
-                        <h2 class="h3">Admission Rate: {{college['admission_rate']}}</h2>
-                    </div>
-
-                    <div class="text-center mx-5 my-5">
-                        <h2 class="h3">Students Enrolled: {{college['size']}}</h2>
-                    </div>
-
-                    {%if added==False%}
-                    <form class="d-flex flex-column justify-content-center align-items-center mb-5" method="post" action="/college/{{college['id']}}/add">
-                        <button type="submit" class="btn btn-outline-warning w-50 py-2">Add to List</button>
-                    </form>
-                    {%elif added==True%}
-                    <form class="d-flex flex-column justify-content-center align-items-center mb-5" method="post" action="/college/{{college['id']}}/remove">
-                        <button type="submit" class="btn btn-outline-warning w-50 py-2">Remove from List</button>
-                    </form>
-                    {%endif%}
-
-                    <a href="/analytics" class="btn btn-outline-warning w-50 py-2 d-block mx-auto">View your List</a>
-                </div>
-
+            <!-- College header -->
+            <div class="text-center mb-4">
+                <h1 class="custom-txt fw-bold">{{ college['name'] }}</h1>
+                <p class="text-secondary fs-5">{{ college['city'] }}, {{ college['state'] }}</p>
             </div>
 
+            <!-- Stats cards -->
+            <div class="row">
+                <!-- Tuition Card -->
+                <div class="col-12 col-md-4 mb-4">
+                    <div class="card text-white shadow h-100 college-stats">
+                        <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                            <h5 class="card-title">Tuition</h5>
+                            <p class="display-6 fw-bold">{{ college['tuition'] }}</p>
+                        </div>
+                    </div>
+                </div>
 
+                <!-- Admission Rate Card -->
+                <div class="col-12 col-md-4 mb-4">
+                    <div class="card text-white shadow h-100 college-stats">
+                        <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                            <h5 class="card-title">Admission Rate</h5>
+                            <p class="display-6 fw-bold">{{ college['admission_rate'] }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Students Enrolled Card -->
+                <div class="col-12 col-md-4 mb-4">
+                    <div class="card text-white shadow h-100 college-stats">
+                        <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                            <h5 class="card-title">Students Enrolled</h5>
+                            <p class="display-6 fw-bold">{{ college['size'] }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="d-flex flex-column flex-md-row justify-content-center align-items-center gap-3 mt-4">
+                {% if not added %}
+                <form method="post" action="/college/{{ college['id'] }}/add" class="w-100 w-md-auto">
+                    <button type="submit" class="btn btn-outline-warning px-4 py-2">Add to List</button>
+                </form>
+                {% else %}
+                <form method="post" action="/college/{{ college['id'] }}/remove" class="w-100 w-md-auto">
+                    <button type="submit" class="btn btn-outline-danger px-4 py-2">Remove from List</button>
+                </form>
+                {% endif %}
+                <a href="/analytics" class="btn btn-outline-secondary px-4 py-2">View Your List</a>
+            </div>
         </div>
+
     </div>
-    {# btn btn-secondary col-3 mx-auto #}
+</body>
+
+</html>

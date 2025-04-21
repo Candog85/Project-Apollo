@@ -76,6 +76,13 @@ a:hover {
     color: #202020;
 }
 
+/* College Stats Cards */
+.college-stats {
+    border-color: #DEB64B;
+    border-width: 2px;
+    background-color: #212529;
+}
+
 @media screen and (max-width: 600px) {}
 
 .custom-txt {
