@@ -183,6 +183,7 @@ def login_page():
 # Browse colleges
 @app.route("/browse", methods=["Post", "GET"])
 def browse():
+    
     #Browse area
     page = int(request.args.get('page', '1'))
     query = request.args.get('query')
@@ -220,12 +221,30 @@ def browse():
 # Analytics page (college and user graphs for comparison and analysis)
 @app.route("/analytics", methods=["Post", "GET"])
 def analytics_page():
-    return render_template('analytics.html.jinja')
+    
+    customer_id=flask_login.current_user.id
+
+    conn = connect_db()
+    cursor = conn.cursor()
+    
+    cursor.execute(f"""
+
+    SELECT `name`, `tuition`, `admission_rate`, `average_sat`, `size`, `city`, `state`, `longitude`, `latitude`
+    FROM `CollegeList`
+    LEFT JOIN `Colleges`
+    ON `CollegeList`.`college_id` = `Colleges`.`id`
+    AND `CollegeList`.`user_id`= %s 
+    WHERE `name` 
+            """,(customer_id))
+    
+    colleges=cursor.fetchall()
+    
+    return render_template('analytics.html.jinja', colleges=colleges)
 
 @app.route('/plot.png')
 def plot():
-    #Constant id (change to dynamic later)
-    customer_id=1
+    #User id (dynamic)
+    customer_id=flask_login.current_user.id
 
     #Settings for which graph to generate (will change dynamically)
     comparing_catagory=1
@@ -265,7 +284,7 @@ def plot():
     FROM `CollegeList`
     LEFT JOIN `Colleges`
     ON `CollegeList`.`college_id` = `Colleges`.`id`
-    AND `CollegeList`.`user_id`= %s 
+    WHERE `CollegeList`.`user_id`= %s 
             """,(customer_id))
 
     #Stores college results
