@@ -88,16 +88,16 @@
                             placeholder="password" required value="{{results['password']}}">
                         <label for="floatingPassword">Password</label>
                         <button type="button" id="togglePassword" class="btn btn-outline-warning">
-                            Show/hide password
+                            Show password
                         </button>
                     </div>
 
                     <div class="form-floating my-3">
-                        <input type="password" name="confirm_password" class="form-control" id="floatingPassword"
-                            placeholder="password" required>
+                        <input type="password" name="confirm_password" class="form-control" id="floatingPassword2"
+                            placeholder="Re-enter password" required>
                         <label for="floatingPassword">Re-Enter Password</label>
                         <button type="button" id="toggleRePassword" class="btn btn-outline-warning">
-                            Show/hide password
+                            Show password
                         </button>
                     </div>
 
@@ -146,10 +146,10 @@
         crossorigin="anonymous"></script>
     {# Password script #}
     <script src="/static/scripts/password.js"></script>
-        <script>
-const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
-</script>
+    <script>
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    </script>
 
 
 </body>

@@ -1,6 +1,5 @@
 <!doctype html>
 <html lang="en" data-bs-theme="dark">
-<html lang="en" data-bs-theme="dark">
 
 <head>
   <meta charset="utf-8">
@@ -48,7 +47,7 @@
               required value="{{ request.form.get('password', '') }}">
             <label for="floatingPassword">Password</label>
             <button type="button" id="togglePassword" class="btn btn-outline-warning">
-              Show/hide password
+              Show password
             </button>
           </div>
           <br>
@@ -71,10 +70,10 @@
     crossorigin="anonymous"></script>
   {# Password script #}
   <script src="/static/scripts/password.js"></script>
-      <script>
-const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
-</script>
+  <script>
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+  </script>
 
 
 </body>

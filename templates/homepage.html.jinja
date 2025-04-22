@@ -196,16 +196,16 @@
                             placeholder="password" required>
                         <label for="floatingPassword">Password</label>
                         <button type="button" id="togglePassword" class="btn btn-outline-warning">
-                            Show/Hide Password
+                            Show Password
                         </button>
                     </div>
 
                     <div class="form-floating my-3">
                         <input type="password" name="confirm_password" class="form-control" id="floatingPassword2"
                             placeholder="password" required>
-                        <label for="floatingPassword2">Re-Enter Password</label>
+                        <label for="floatingPassword">Re-Enter Password</label>
                         <button type="button" id="toggleRePassword" class="btn btn-outline-warning">
-                            Show/Hide Password
+                            Show Password
                         </button>
                     </div>
 
@@ -261,8 +261,9 @@
         crossorigin="anonymous"></script>
 
     <script>
-const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
-</script>
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    </script>
+    <script src="/static/scripts/password.js"></script>
 
 </html>

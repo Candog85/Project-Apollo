@@ -1,25 +1,19 @@
 // Declare variables and link to HTML elements
 let togglePassword = document.getElementById('togglePassword');
 let toggleRePassword = document.getElementById('toggleRePassword');
-let passwordField = document.getElementById('floatingPassword');
-let passwordIcon = document.getElementById('passwordIcon');
+let initialPasswordField = document.getElementById('floatingPassword');
+let confirmPasswordField = document.getElementById('floatingPassword2');
 
-// Toggle button func (enter pwd)
+// Toggle initial password visibility 
 togglePassword.addEventListener('click', function () {
-    // Toggle the type attribute
-    let type = passwordField.type === 'password' ? 'text' : 'password';
-    passwordField.type = type;
-
-    // Change button text based on visibility
-    togglePassword.textContent = isPassword ? 'Hide Password' : 'Show Password';
+    let type = initialPasswordField.type === 'password' ? 'text' : 'password';
+    initialPasswordField.type = type;
+    togglePassword.textContent = type === 'password' ? 'Show Password' : 'Hide Password';
 });
 
-// Toggle button func (re-enter pwd)
+// Toggle re-enter password visibility
 toggleRePassword.addEventListener('click', function () {
-    // Toggle the type attribute
-    let type = passwordField.type === 'password' ? 'text' : 'password';
-    passwordField.type = type;
-
-    // Change button text based on visibility
-    togglePassword.textContent = isPassword ? 'Hide Password' : 'Show Password';
+    let type = confirmPasswordField.type === 'password' ? 'text' : 'password';
+    confirmPasswordField.type = type;
+    toggleRePassword.textContent = type === 'password' ? 'Show Password' : 'Hide Password';
 });
