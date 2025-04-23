@@ -229,12 +229,11 @@ def analytics_page():
     
     cursor.execute(f"""
 
-    SELECT `name`, `tuition`, `admission_rate`, `average_sat`, `size`, `city`, `state`, `longitude`, `latitude`
+    SELECT `id`, `name`, `tuition`, `admission_rate`, `average_sat`, `size`, `city`, `state`, `longitude`, `latitude`
     FROM `CollegeList`
     LEFT JOIN `Colleges`
     ON `CollegeList`.`college_id` = `Colleges`.`id`
-    AND `CollegeList`.`user_id`= %s 
-    WHERE `name` 
+    WHERE `CollegeList`.`user_id`= %s 
             """,(customer_id))
     
     colleges=cursor.fetchall()
@@ -517,6 +516,23 @@ def remove_college(college_id):
                    """)
     
     return redirect(f"/college/{college_id}")
+
+@app.route("/analytics/<college_id>/remove", methods=["POST", "GET"])
+def remove_list_college(college_id):
+    
+    customer_id=flask_login.current_user.id
+    
+    conn=connect_db()
+    cursor=conn.cursor()
+    
+    cursor.execute(f"""
+                   
+    DELETE FROM `CollegeList`
+    WHERE `user_id`= {customer_id} AND `college_id`= {college_id}
+                   
+                   """)
+    
+    return redirect("/analytics")
 
 # User input on settings page
 @app.route("/settings", methods=["POST", "GET"])

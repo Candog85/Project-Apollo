@@ -4,7 +4,7 @@
 <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>College Analytics</title>
+        <title>Apollo</title>
         <script src="/docs/5.3/assets/js/color-modes.js"></script>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
                 integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
@@ -31,7 +31,7 @@
 
                 <div class="container col-6">
                         <form id="search_form" class="d-flex mt-3 " role="search">
-                                {%if query==None%}
+                                {%if query=='None'%}
                                 <input name="query" class="form-control me-2" type="text" placeholder="Search"
                                         aria-label="Search">
                                 {%else%}
@@ -45,6 +45,7 @@
                         <div class="container mt-5">
                                 <nav aria-label="row justify-content-center mx-auto text-center">
                                         <ul class="pagination mx-auto justify-content-center">
+
                                                 {%if page==1%}
                                                 <li class="page-item"><button form="search_form" name="page" value="2"
                                                                 type="submit"
@@ -70,6 +71,7 @@
                                                                 value="{{page+1}}" type="submit"
                                                                 class="page-link btn btn-outline-warning custom-button mx-2">Next</button>
                                                 </li>
+
                                                 {%elif page==2%}
                                                 <li class="page-item"><button form="search_form" name="page"
                                                                 value="{{page-1}}" type="submit"
@@ -99,6 +101,7 @@
                                                                 value="{{page+1}}" type="submit"
                                                                 class="page-link btn btn-outline-warning custom-button mx-2">Next</button>
                                                 </li>
+
                                                 {%else%}
                                                 <li class="page-item"><button form="search_form" name="page"
                                                                 value="{{page-1}}" type="submit"
@@ -130,6 +133,7 @@
                                                 </li>
                                                 {%endif%}
                         </div>
+
                         <div class="container row my-5">
 
                                 {%for college in colleges%}
@@ -139,9 +143,12 @@
                                                 <div class="card-body">
 
                                                         <div class="">
-                                                                <h5 class="card-title">{{college['name']}}</h5>
-                                                                <p class="card-text text-secondary">{{college['city']}}
-                                                                        , {{college['state']}}</p>
+                                                                <h5 class="card-title">
+                                                                        {{college['name']}}</h5>
+                                                                <p class="card-text text-secondary">
+                                                                        {{college['city']}}
+                                                                        , {{college['state']}}
+                                                                </p>
                                                         </div>
                                                 </div>
                                                 <div class="card-footer">
@@ -155,12 +162,10 @@
                                                 </div>
                                         </div>
                                 </div>
+                                {%endfor%}
                         </div>
                 </div>
-                </div>
-                </div>
 
-                {%endfor%}
 
                 <div class="container mt-5">
                         <nav aria-label="row justify-content-center mx-auto text-center">
