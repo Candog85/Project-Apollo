@@ -574,6 +574,40 @@ def settings():
     
     return render_template("settings.html.jinja", results=results)
 
+# Update user college prefs
+@app.route("/settings/update", methods=["POST", "GET"])
+@flask_login.login_required
+def update():
+    customer_id = flask_login.current_user.id
+    conn = connect_db()
+    cursor = conn.cursor()
+    
+    try:
+        sat_score = int(request.form["sat_score"])
+        tuition_budget = int(request.form["tuition_budget"].replace(",", "").replace("$", ""))
+        zip_code = int(request.form["zip_code"])
+        population_preferences = int(request.form["population_preferences"])
+        
+        cursor.execute("""          
+            UPDATE `User` 
+            SET `sat_score`=%s, 
+                `tuition_budget`=%s, 
+                `zip_code`=%s,
+                `population_preferences`=%s
+            WHERE id = %s;
+        """, (sat_score, tuition_budget, zip_code, population_preferences, customer_id))
+        
+        conn.commit()
+        flash("College parameters updated successfully!", "success")
+    
+    except Exception as e:
+        print("Update error:", e)  # Fallback
+        flash("One or more of your fields are invalid!", 'error')
+    
+    return redirect("/settings")
+
+
+# Update user settings
 @app.route("/settings/update_user", methods=["POST"])
 @flask_login.login_required
 def update_user():

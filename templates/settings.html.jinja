@@ -39,7 +39,7 @@
         <form action="/settings/update" method="post">
             <div class="form-floating my-4">
                 <input type="number" name="sat_score" class="form-control" id="floatingInput" required
-                    value="{{results['sat_score']}}">
+                    value="{{results['sat_score']}}" min="0">
                 <label for="floatingInput">SAT Score</label>
             </div>
 
@@ -51,22 +51,21 @@
 
             <div class="form-floating my-4">
                 <input type="number" name="zip_code" class="form-control" id="floatingInput" required
-                    value="{{results['zip_code']}}">
+                    value="{{results['zip_code']}}" min="0">
                 <label for="floatingInput">Zip code</label>
             </div>
 
             <div class="form-floating my-4">
-                <input type="number" name="population_preferences" class="form-control" id="floatingInput" required
-                    value="{{results['population_preferences']}}">
+                <input type="text" name="population_preferences" class="form-control" id="populationInput" required
+                    value="{{ results['population_preferences'] }}" min="0" step="1">
                 <label for="floatingInput">Population preferences</label>
             </div>
 
-            <button class="btn btn-outline-warning w-100 py-2" type="submit">Submit</button>
+            <button class="btn btn-outline-warning w-100 py-2" type="submit">Update Parameters</button>
         </form>
     </div>
 
     </form>
-    </div>
 
     <div class="mt-5 b-example-divider py-5"></div>
 
@@ -144,14 +143,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
         integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
         crossorigin="anonymous"></script>
-    {# Password script #}
-    <script src="/static/scripts/password.js"></script>
-    <script>
-        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
-    </script>
-
-
+    {# Script #}
+    <script src="/static/scripts/script.js"></script>
 </body>
 
 </html>

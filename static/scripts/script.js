@@ -1,3 +1,4 @@
+/// Show/hide password functions
 // Declare variables and link to HTML elements
 let togglePassword = document.getElementById('togglePassword');
 let toggleRePassword = document.getElementById('toggleRePassword');
@@ -17,3 +18,8 @@ toggleRePassword.addEventListener('click', function () {
     confirmPasswordField.type = type;
     toggleRePassword.textContent = type === 'password' ? 'Show Password' : 'Hide Password';
 });
+/// End of show/hide pwd funcs
+
+// Tooltip
+const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))

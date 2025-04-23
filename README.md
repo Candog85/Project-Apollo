@@ -1,11 +1,13 @@
 # Simplifying the College Search Process Through Digestible Data
-Simplify the search for the college of your dreams. With your grades and interests, find what's best for you.
+
+## Apollo: Guiding your Future
+
+Lost scholars can turn to our app for guidance. Using college parameters such as **tuition**, **SAT score**, and **population preferences**, we guide future college scholars through the tedious search for the college of their dreams.
 
 <hr>
 
-## ⚠️ CURRENTLY A WORK IN PROGRESS!
+## ⚠️ CURRENTLY A WORK IN PROGRESS
 
 <hr>
 
-*brought to you by Kerdon Chapman, Farhan Chowdury, and Noel Singh!*
-*Brooklyn Navy Yard STEAM Center*
+*brought to you by Kerdon Chapman, Farhan Chowdury, and Noel Singh of the Brooklyn Navy Yard STEAM Center!*
