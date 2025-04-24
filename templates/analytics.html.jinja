@@ -21,19 +21,71 @@
 
     {% include "components/navbar.html.jinja" %}
 
-    {{colleges}}
+    {# Debugging stuff #}
+    {# {{colleges}} #}
+    {# {{empty}} #}
 
     {%if colleges==()%}
-<main>
-    <div class="container d-flex justify-content-center row mx-auto" style="margin-top: 25vh;">
+    <main>
+        <div class="container d-flex justify-content-center row mx-auto" style="margin-top: 25vh;">
 
-        <h1 class="display-5 fw-bold text-center col-12 my-5"> Click Below to Start Adding Colleges to
-            Your List</h1>
+            <h1 class="display-5 fw-bold text-center col-12 my-5"> Click Below to Start Adding Colleges to
+                Your List</h1>
 
-        <a href="/browse" class="mx-auto btn btn-outline-warning custom-button col-3">Browse Colleges</a>
+            <a href="/browse" class="mx-auto btn btn-outline-warning custom-button col-3">Browse Colleges</a>
+
+        </div>
+    </main>
+
+    {%elif empty==0%}
+
+    <main>
+        <div class="container d-flex justify-content-center row mx-auto" style="margin-top: 25vh;">
+
+            <h1 class="display-5 fw-bold text-center col-12 my-5"> All colleges on your list are invalid!</h1>
+
+            <a href="/browse" class="mx-auto btn btn-outline-warning custom-button col-3">Browse Colleges</a>
+
+        </div>
+    </main>
+
+    <div class="d-flex justify-content-center container row my-5 mx-auto">
+
+        {%for college in colleges%}
+
+        <div class="col-4 my-3" style="height: 200px;">
+            <div class="card h-100">
+                <div class="card-body">
+
+                    <div class="">
+                        <h5 class="card-title">
+                            {{college['name']}}</h5>
+                        <p class="card-text text-secondary">
+                            {{college['city']}}
+                            , {{college['state']}}
+                        </p>
+                    </div>
+                </div>
+                <div class="card-footer d-flex flex-row">
+
+                    <div>
+                        <a href="/college/{{college['id']}}" class="btn btn-outline-warning custom-button">View
+                            College</a>
+                    </div>
+
+
+                    <div class="ms-auto">
+                        <a href="/analytics/{{college['id']}}/remove" class="btn btn-outline-danger">Remove College</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        {%endfor%}
 
     </div>
-</main>
+
     {%else%}
 
     <main class="container row g-4 mx-auto">
@@ -84,11 +136,9 @@
         {%endfor%}
 
     </div>
-    </div>
 
     {%endif%}
 
-    {# Scripts #}
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
         crossorigin="anonymous"></script>

@@ -222,6 +222,8 @@ def browse():
 @app.route("/analytics", methods=["Post", "GET"])
 def analytics_page():
     
+    empty=0
+    
     customer_id=flask_login.current_user.id
 
     conn = connect_db()
@@ -238,7 +240,145 @@ def analytics_page():
     
     colleges=cursor.fetchall()
     
-    return render_template('analytics.html.jinja', colleges=colleges)
+    #User id (dynamic)
+    customer_id=flask_login.current_user.id
+
+    #Settings for which graph to generate (will change dynamically)
+    comparing_catagory=1
+
+    compare_sat=False
+    compare_tuition=False
+    compare_distance=False
+
+    if comparing_catagory==1:
+        compare_sat=True
+        
+    elif comparing_catagory==2:
+        compare_tuition=True
+        
+    elif comparing_catagory==3:
+        compare_distance=True
+
+    if compare_sat==True:
+        comparing="Student SAT Score vs College SAT Admission Requirements"
+        
+    elif compare_tuition==True:
+        comparing="Student Tuition Budget vs Average College Tuition"
+
+    elif compare_distance==True:
+        comparing="Distance between Colleges and User's Zip Code"
+        
+
+
+    #Database connection
+    conn = connect_db()
+    cursor=conn.cursor()
+
+    #Selects college info from every college on the user's list
+    cursor.execute(f"""
+
+    SELECT `name`, `tuition`, `admission_rate`, `average_sat`, `size`, `city`, `state`, `longitude`, `latitude`
+    FROM `CollegeList`
+    LEFT JOIN `Colleges`
+    ON `CollegeList`.`college_id` = `Colleges`.`id`
+    WHERE `CollegeList`.`user_id`= %s 
+            """,(customer_id))
+
+    #Stores college results
+    college_results=cursor.fetchall()
+
+    #Selects user's info based on their id
+    cursor.execute(f"""
+                    
+    SELECT `first_name`, `sat_score`, `tuition_budget`, `zip_code`
+    FROM `User`
+    WHERE `id` = %s  
+                    
+                    """,(customer_id))
+
+    #Stores user info, then converts into a single dictionary
+    student_results=cursor.fetchall()
+    student_results=student_results[0]
+
+    if compare_distance==True:
+        names=[]
+        
+    else:
+        #Initializes name list with first index being the user's name
+        names=[student_results['first_name']]
+
+
+    #If each setting is selected, data list is set to the selected data comparisor
+    if compare_sat==True:
+        data=[student_results['sat_score']]
+
+    elif compare_tuition==True:
+        data=[student_results['tuition_budget']]
+
+    if compare_distance==True:
+        data=[]
+
+    for college in college_results:
+        names.append(college["name"])
+
+        if compare_sat==True:
+            if college["average_sat"]==None:
+                names.remove(college["name"])
+                empty+=0
+            else:
+                data.append(college["average_sat"])
+                empty+=1
+
+        elif compare_tuition==True:
+            if college["tuition"]==None:
+                names.remove(college["name"])
+                empty+=0
+            else:
+                data.append(college['tuition'])
+                empty+=1
+                
+        elif compare_distance==True:
+            
+            cursor.execute(f"""
+                        
+            SELECT `lat`, `lng`
+            FROM `Locations`
+            WHERE `zip` = %s               
+                        
+                        """, (student_results['zip_code']))
+            
+            student_coordinates=cursor.fetchone()
+            
+            def haversine(lon1, lat1, lon2, lat2):
+                """
+                Calculate the great circle distance in kilometers between two points 
+                on the earth (specified in decimal degrees)
+                """
+                # convert decimal degrees to radians 
+                lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
+
+                # haversine formula 
+                dlon = lon2 - lon1 
+                dlat = lat2 - lat1 
+                a = sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2
+                c = 2 * asin(sqrt(a)) 
+                r = 3956 # Radius of earth in kilometers. Use 3956 for miles. Determines return value units.
+                return c * r
+            
+            print(college_results)
+            print(student_coordinates)
+            
+            print(college['longitude'])
+            print(college['latitude'])
+            
+            data.append(int(haversine(student_coordinates['lng'], student_coordinates['lat'], college['longitude'], college['latitude'])))
+
+    assert data
+    
+    # for entry in data:
+        
+
+    return render_template('analytics.html.jinja', colleges=colleges, empty=empty)
 
 @app.route('/plot.png')
 def plot():
@@ -328,13 +468,13 @@ def plot():
 
         if compare_sat==True:
             if college["average_sat"]==None:
-                data.append(0)
+                names.remove(college["name"])
             else:
                 data.append(college["average_sat"])
 
         elif compare_tuition==True:
             if college["tuition"]==None:
-                data.append(0)
+                names.remove(college["name"])
             else:
                 data.append(college['tuition'])
                 
@@ -434,7 +574,7 @@ def plot():
         subplot.xaxis.set_tick_params(rotation=315)
 
     fig.savefig("graph1.png", dpi='figure')
-    
+
     output = io.BytesIO()
     FigureCanvas(fig).print_png(output)
     return Response(output.getvalue(), mimetype='image/png')
