@@ -250,6 +250,10 @@ hr {
     color: #DEB64B;
 }
 
+.custom-border {
+    border-color: #DEB64B;
+}
+
 /* .underline {
     text-decoration: underline;
     text-decoration-color: #202020;

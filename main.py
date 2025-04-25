@@ -252,21 +252,24 @@ def analytics_page():
 
     if comparing_catagory==1:
         compare_sat=True
+        comparing="average_sat"
         
     elif comparing_catagory==2:
         compare_tuition=True
+        comparing="tuition"
         
     elif comparing_catagory==3:
         compare_distance=True
+        comparing="tuition_budget"
 
     if compare_sat==True:
-        comparing="Student SAT Score vs College SAT Admission Requirements"
+        title="Student SAT Score vs College SAT Admission Requirements"
         
     elif compare_tuition==True:
-        comparing="Student Tuition Budget vs Average College Tuition"
+        title="Student Tuition Budget vs Average College Tuition"
 
     elif compare_distance==True:
-        comparing="Distance between Colleges and User's Zip Code"
+        title="Distance between Colleges and User's Zip Code"
         
 
 
@@ -375,10 +378,13 @@ def analytics_page():
 
     assert data
     
-    # for entry in data:
+    if empty==0:
+        empty=True
+    else:
+        empty=False
         
 
-    return render_template('analytics.html.jinja', colleges=colleges, empty=empty)
+    return render_template('analytics.html.jinja', colleges=colleges, empty=empty, comparing=comparing)
 
 @app.route('/plot.png')
 def plot():

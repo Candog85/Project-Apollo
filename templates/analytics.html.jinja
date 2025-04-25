@@ -20,8 +20,11 @@
 
     {# Debugging stuff #}
     {# {{colleges}} #}
+    {# {{comparing}} #}
     {# {{empty}} #}
 
+
+    {# If there are no colleges on the list #}
     {%if colleges==()%}
     <main>
         <div class="container d-flex justify-content-center row mx-auto" style="margin-top: 25vh;">
@@ -34,55 +37,27 @@
         </div>
     </main>
 
-    {%elif empty==0%}
+    {# Else #}
+    {%else%}
+
+    {# If every college on the list is invalid #}
+    {%if empty==True%}
 
     <main>
-        <div class="container d-flex justify-content-center row mx-auto" style="margin-top: 25vh;">
+        <div class="container d-flex justify-content-center row mx-auto" style="margin-top: 15vh;">
 
-            <h1 class="display-5 fw-bold text-center col-12 my-5"> All colleges on your list are invalid!</h1>
+            <div class="mt-5 mb-2">
+                <h1 class="display-5 fw-bold text-center col-12"> All colleges on your list are invalid!</h1>
+                <p class="fs-4 fw-bold text-center col-12 text-secondary">Please add valid colleges or remove invalid
+                    colleges below</p>
+            </div>
 
             <a href="/browse" class="mx-auto btn btn-outline-warning custom-button col-3">Browse Colleges</a>
 
         </div>
     </main>
 
-    <div class="d-flex justify-content-center container row my-5 mx-auto">
-
-        {%for college in colleges%}
-
-        <div class="col-4 my-3" style="height: 200px;">
-            <div class="card h-100">
-                <div class="card-body">
-
-                    <div class="">
-                        <h5 class="card-title">
-                            {{college['name']}}</h5>
-                        <p class="card-text text-secondary">
-                            {{college['city']}}
-                            , {{college['state']}}
-                        </p>
-                    </div>
-                </div>
-                <div class="card-footer d-flex flex-row">
-
-                    <div>
-                        <a href="/college/{{college['id']}}" class="btn btn-outline-warning custom-button">View
-                            College</a>
-                    </div>
-
-
-                    <div class="ms-auto">
-                        <a href="/analytics/{{college['id']}}/remove" class="btn btn-outline-danger">Remove College</a>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-        {%endfor%}
-
-    </div>
-
+    {# Else #}
     {%else%}
 
     <main class="container row g-4 mx-auto">
@@ -97,12 +72,45 @@
         </div>
     </main>
 
+    {%endif%}
     <div class="d-flex justify-content-center container row my-5 mx-auto">
 
         {%for college in colleges%}
 
+        {%if college[comparing]==None%}
         <div class="col-4 my-3" style="height: 200px;">
-            <div class="card h-100">
+            <div class="card h-100 border-danger">
+                <div class="card-body">
+
+                    <div class="">
+                        <h5 class="card-title text-danger">
+                            {{college['name']}}</h5>
+                        <p class="card-text text-danger">
+                            {{college['city']}}
+                            , {{college['state']}}
+                        </p>
+                    </div>
+                </div>
+                <div class="card-footer d-flex flex-row border-danger">
+
+                    <div>
+                        <a href="/college/{{college['id']}}" class="btn btn-danger">View
+                            College</a>
+                    </div>
+
+
+                    <div class="ms-auto">
+                        <a href="/analytics/{{college['id']}}/remove" class="btn btn-outline-danger">Remove College</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        {%elif college[comparing]!=None%}
+
+        <div class="col-4 my-3" style="height: 200px;">
+            <div class="card h-100 custom-border">
                 <div class="card-body">
 
                     <div class="">
@@ -129,6 +137,7 @@
                 </div>
             </div>
         </div>
+        {%endif%}
 
         {%endfor%}
 
