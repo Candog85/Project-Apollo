@@ -7,6 +7,8 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 from math import radians, cos, sin, asin, sqrt
 import io
+from datetime import datetime
+
 
 # Declare Flask application
 app = Flask(__name__)
@@ -37,7 +39,7 @@ def connect_db():
 # Homepage initialization
 @app.route("/")
 def homepage():
-    return render_template("homepage.html.jinja")
+    return render_template("homepage.html.jinja", now=datetime.now())
 
 if __name__ == '__main__':
     app.run(debug=True)

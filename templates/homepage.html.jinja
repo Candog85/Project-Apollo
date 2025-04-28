@@ -60,7 +60,21 @@
         <div class="b-example-divider py-5"></div>
         <p>
         </p>
+
         {%if current_user.is_authenticated%}
+        <div class="container my-5">
+            <div class="card text-bg-dark shadow-lg border-warning">
+                <div class="card-body text-center">
+                    {% set hour = now.hour %}
+                    {% if hour < 12 %} {% set greeting="Good Morning" %} {% elif hour < 18 %} {% set
+                        greeting="Good Afternoon" %} {% else %} {% set greeting="Good Evening" %} {% endif %} <h2
+                        class="card-title display-6 custom-txt mb-3">{{ greeting }} and Welcome Back to Apollo</h2>
+                        <p class="lead mb-2">Current Local Time: {{ now.strftime('%I:%M %p') }}</p>
+                        <p class="lead mb-2">Today's Date: {{ now.strftime('%A, %B %d, %Y') }}</p>
+                        <p class="text-warning fw-semibold mt-3">We're excited to guide your future!</p>
+                </div>
+            </div>
+        </div>
 
         {%else%}
 
