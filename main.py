@@ -6,11 +6,7 @@ import flask_login
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 from math import radians, cos, sin, asin, sqrt
-import matplotlib.pyplot as plt
-import base64
-from io import BytesIO
 import io
-import random
 
 # Declare Flask application
 app = Flask(__name__)
