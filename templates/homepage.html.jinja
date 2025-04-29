@@ -68,10 +68,10 @@
                     {% set hour = now.hour %}
                     {% if hour < 12 %} {% set greeting="Good Morning" %} {% elif hour < 18 %} {% set
                         greeting="Good Afternoon" %} {% else %} {% set greeting="Good Evening" %} {% endif %} <h2
-                        class="card-title display-6 custom-txt mb-3">{{ greeting }} and Welcome Back to Apollo</h2>
+                        class="card-title display-6 custom-txt mb-3">{{ greeting }}</h2>
                         <p class="lead mb-2">Current Local Time: {{ now.strftime('%I:%M %p') }}</p>
                         <p class="lead mb-2">Today's Date: {{ now.strftime('%A, %B %d, %Y') }}</p>
-                        <p class="text-warning fw-semibold mt-3">We're excited to guide your future!</p>
+                        <p class="text-warning fw-semibold mt-3">Thank you for choosing Apollo to guide your future!</p>
                 </div>
             </div>
         </div>
@@ -79,26 +79,34 @@
         {%else%}
 
         <div class="row">
+
             <div class="col-4">
                 <img class="border border-warning img-fluid" src="static/images/previewbrowse.png">
                 <p>
                 </p>
-                <p class="text-center">Search through the plethera of colleges available,<br> to find what fits you and
+                <h1 class="h3 mb-4 fw-bold text-center custom-txt">Find your College
+                </h1>
+                <p class="text-center">Search through the plethera of colleges available<br> to find what fits you and
                     what is available to you.</p>
             </div>
             <div class="col-4">
                 <img class="border border-warning img-fluid" src="static/images/previewparameters.png">
                 <p>
                 </p>
-                <p class="text-center">Enter information to easily find colleges that fit to your <br>preferences and,
-                    later add to a list of choices.</p>
+                <h1 class="h3 mb-4 fw-bold text-center custom-txt">Tailor to your Needs
+                </h1>
+                <p class="text-center">Enter information to easily find colleges that fit your <br>preferences and
+                    later add to a list of choices afterwards.</p>
             </div>
             <div class="col-4">
-                <img class="border border-warning img-fluid" src="static/images/previewanalystics.png">
+                <img class="border border-warning img-fluid" src="static/images/previewanalytics.png">
                 <p>
                 </p>
-                <p class="text-center">From the list you added your colleges you're able to see <br>if you reached the
-                    academic requirments.</p>
+                <h1 class="h3 mb-4 fw-bold text-center custom-txt">Compare and Choose
+                </h1>
+                <p class="text-center">After adding your colleges, compare your scores and other preferences to
+                    theirs,
+                    and see if you meet their requirments.</p>
             </div>
         </div>
 
@@ -109,7 +117,10 @@
         <div class="container col-6 my-5" id="sign_up">
             <main class="form-signin w-100 m-auto">
                 <form action="/sign_up" method="post" class="">
-                    <h1 class="h3 mb-4 fw-bold text-center custom-txt">Please Sign Up</h1>
+                    <h1 class="h3 mb-4 fw-bold text-center custom-txt">Sign Up Today
+                    </h1>
+                    <p class="mb-4 text-center text-muted text-secondary-emphasis">And start looking for the right
+                        college!</p>
 
                     {% for message in get_flashed_messages() %}
                     <div class="alert alert-primary" role="alert">
