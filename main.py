@@ -216,9 +216,7 @@ def browse():
     return render_template("browse.html.jinja", colleges=colleges, page=page, query=query, customer_id=customer_id)
     # Note: For now, the database connection and data fetcher are placeholders. This WILL be changed later as neccessary.  
 
-# Analytics page (college and user graphs for comparison and analysis)
-@app.route("/analytics", methods=["Post", "GET"])
-def analytics_page():
+def graph_data(comparing_category):
     
     empty=0
     
@@ -241,25 +239,25 @@ def analytics_page():
     #User id (dynamic)
     customer_id=flask_login.current_user.id
 
-    #Settings for which graph to generate (will change dynamically)
-    comparing_catagory=1
-
     compare_sat=False
     compare_tuition=False
     compare_distance=False
 
-    if comparing_catagory==1:
+    if comparing_category==1:
         compare_sat=True
         comparing="average_sat"
+        category="SAT scores"
         
-    elif comparing_catagory==2:
+    elif comparing_category==2:
         compare_tuition=True
         comparing="tuition"
+        category="Tuition"
         
-    elif comparing_catagory==3:
+    elif comparing_category==3:
         compare_distance=True
-        comparing="tuition_budget"
-
+        comparing="distance"
+        category="Distance"
+        
     if compare_sat==True:
         title="Student SAT Score vs College SAT Admission Requirements"
         
@@ -380,145 +378,79 @@ def analytics_page():
         empty=True
     else:
         empty=False
+    
+    d={}
+    d["colleges"]=colleges
+    d["empty"]=empty
+    d["comparing"]=comparing
+    d["category"]=category
+    d["data"]=data
+    d["names"]=names
+    
+    d["compare_tuition"]=compare_tuition
+    d["compare_sat"]=compare_sat
+    d["compare_distance"]=compare_distance
         
+    return (d)
 
-    return render_template('analytics.html.jinja', colleges=colleges, empty=empty, comparing=comparing)
+# Analytics page (college and user graphs for comparison and analysis)
+@app.route("/analytics", methods=["Post", "GET"])
+def analytics_page():
+
+    comparing_category=request.args.get('category', )
+    
+    if comparing_category==None:
+        comparing_category=1
+    else:
+        comparing_category=int(comparing_category)
+        
+    customer_id=flask_login.current_user.id
+    
+    conn=connect_db()
+    cursor=conn.cursor()
+    
+    cursor.execute(f"""
+                   
+    UPDATE `User`
+    SET `comparing_category` = %s
+    WHERE `id` = %s
+                   
+                   """,(comparing_category,customer_id))
+
+    d=graph_data(comparing_category)      
+
+    return render_template('analytics.html.jinja', colleges=d["colleges"], empty=d["empty"], comparing=d["comparing"], category=d["category"])
 
 @app.route('/plot.png')
 def plot():
-    #User id (dynamic)
+    
+    #Initialization
     customer_id=flask_login.current_user.id
-
-    #Settings for which graph to generate (will change dynamically)
-    comparing_catagory=1
-
-    compare_sat=False
-    compare_tuition=False
-    compare_distance=False
-
-    if comparing_catagory==1:
-        compare_sat=True
-        
-    elif comparing_catagory==2:
-        compare_tuition=True
-        
-    elif comparing_catagory==3:
-        compare_distance=True
-
-    if compare_sat==True:
-        comparing="Student SAT Score vs College SAT Admission Requirements"
-        
-    elif compare_tuition==True:
-        comparing="Student Tuition Budget vs Average College Tuition"
-
-    elif compare_distance==True:
-        comparing="Distance between Colleges and User's Zip Code"
-        
-
-
-    #Database connection
     conn = connect_db()
-    cursor=conn.cursor()
-
-    #Selects college info from every college on the user's list
-    cursor.execute(f"""
-
-    SELECT `name`, `tuition`, `admission_rate`, `average_sat`, `size`, `city`, `state`, `longitude`, `latitude`
-    FROM `CollegeList`
-    LEFT JOIN `Colleges`
-    ON `CollegeList`.`college_id` = `Colleges`.`id`
-    WHERE `CollegeList`.`user_id`= %s 
-            """,(customer_id))
-
-    #Stores college results
-    college_results=cursor.fetchall()
-
-    #Selects user's info based on their id
-    cursor.execute(f"""
-                    
-    SELECT `first_name`, `sat_score`, `tuition_budget`, `zip_code`
-    FROM `User`
-    WHERE `id` = %s  
-                    
-                    """,(customer_id))
-
-    #Stores user info, then converts into a single dictionary
-    student_results=cursor.fetchall()
-    student_results=student_results[0]
-
-    if compare_distance==True:
-        names=[]
-        
-    else:
-        #Initializes name list with first index being the user's name
-        names=[student_results['first_name']]
-
-
-
-    #If each setting is selected, data list is set to the selected data comparisor
-    if compare_sat==True:
-        data=[student_results['sat_score']]
-
-    elif compare_tuition==True:
-        data=[student_results['tuition_budget']]
-
-    if compare_distance==True:
-        data=[]
-
-    print(college_results)
-
-    for college in college_results:
-        names.append(college["name"])
-
-        if compare_sat==True:
-            if college["average_sat"]==None:
-                names.remove(college["name"])
-            else:
-                data.append(college["average_sat"])
-
-        elif compare_tuition==True:
-            if college["tuition"]==None:
-                names.remove(college["name"])
-            else:
-                data.append(college['tuition'])
-                
-        elif compare_distance==True:
-            
-            cursor.execute(f"""
-                        
-            SELECT `lat`, `lng`
-            FROM `Locations`
-            WHERE `zip` = %s               
-                        
-                        """, (student_results['zip_code']))
-            
-            student_coordinates=cursor.fetchone()
-            
-            def haversine(lon1, lat1, lon2, lat2):
-                """
-                Calculate the great circle distance in kilometers between two points 
-                on the earth (specified in decimal degrees)
-                """
-                # convert decimal degrees to radians 
-                lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
-
-                # haversine formula 
-                dlon = lon2 - lon1 
-                dlat = lat2 - lat1 
-                a = sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2
-                c = 2 * asin(sqrt(a)) 
-                r = 3956 # Radius of earth in kilometers. Use 3956 for miles. Determines return value units.
-                return c * r
-            
-            print(college_results)
-            print(student_coordinates)
-            
-            print(college['longitude'])
-            print(college['latitude'])
-            
-            data.append(int(haversine(student_coordinates['lng'], student_coordinates['lat'], college['longitude'], college['latitude'])))
-
-    assert data
+    cursor = conn.cursor()
+    
+    #Get the user's compared category from the database
+    cursor.execute("""
+                   
+    SELECT `comparing_category` FROM `User` 
+    WHERE `id`=%s
+                   
+                   """,(customer_id))
+    
+    comparing_category=cursor.fetchone()
+    
+    comparing_category=comparing_category['comparing_category']
+    
+    #Runs the graph data generation script
+    d=graph_data(comparing_category)
+    
+    #Stores data from graph data script
+    names=d["names"]
+    data=d["data"]
+    compare_tuition=d["compare_tuition"]
+    compare_sat=d["compare_sat"]
+    compare_distance=d["compare_distance"]
+    
 
     #Creates figure
     fig=Figure(figsize=(10,6), facecolor='#202020', edgecolor='#ffffff')
@@ -547,17 +479,23 @@ def plot():
     subplot.xaxis.label.set_color('#DEB64B')
     subplot.yaxis.label.set_color('#DEB64B')
     
-    if compare_tuition:
+    #Creates a bar graph in the subplot
+    bar=subplot.bar(names,data,color='#202020', edgecolor='#DEB64B')
+        
+    # Changes the first bar to gold
+    bar[0].set_color('#DEB64B')
+    
+    #Rotates the College labels to 
+    subplot.xaxis.set_tick_params(rotation=315)
+    
+    if compare_tuition==True:
 
         #Label names
         subplot.set_xlabel('Colleges')
         subplot.set_ylabel('Tuition')
         
-        #Creates a bar graph in the subplot
-        bar=subplot.bar(names,data,color='#202020', edgecolor='#DEB64B')
-        
         #Formats to use currency
-        subplot.yaxis.set_major_formatter('${x:1.2f}')
+        subplot.yaxis.set_major_formatter('${x:,.0f}')
     
     elif compare_sat==True:
         
@@ -565,17 +503,9 @@ def plot():
         subplot.set_xlabel('Colleges')
         subplot.set_ylabel('SAT Score')
         
-        # Create a bar graph in the subplot
-        bar=subplot.bar(names,data,color='#202020', edgecolor='#DEB64B')
-        
-        # Changes the first bar to gold
-        bar[0].set_color('#DEB64B')
-        
         # Changes the y label range to fit SAT scores
         subplot.set_yticks((1600, 1400, 1200, 1000, 800, 600, 400, 200))
         
-        #Rotates the College labels to 
-        subplot.xaxis.set_tick_params(rotation=315)
 
     fig.savefig("graph1.png", dpi='figure')
 

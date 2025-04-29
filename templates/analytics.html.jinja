@@ -21,6 +21,7 @@
     {# Debugging stuff #}
     {# {{colleges}} #}
     {# {{comparing}} #}
+    {# {{category}} #}
     {# {{empty}} #}
 
 
@@ -41,7 +42,7 @@
     {%else%}
 
     {# If every college on the list is invalid #}
-    {%if empty==True%}
+        {%if empty==True%}
 
     <main>
         <div class="container d-flex justify-content-center row mx-auto" style="margin-top: 15vh;">
@@ -58,7 +59,7 @@
     </main>
 
     {# Else #}
-    {%else%}
+        {%else%}
 
     <main class="container row g-4 mx-auto">
 
@@ -67,17 +68,49 @@
             <p class="lead mb-4 text-center">Add Colleges to Your List, Generate Graphs</p>
         </div>
 
+        {# Generated Graph #}
         <div class="container flex-column d-flex align-items-center justify-content-center">
-            <img class="col-12" src="/plot.png" alt="my plot">
+            <img class="col-12 border border-warning px-5 py-5" src="/plot.png" alt="my plot">
         </div>
     </main>
 
-    {%endif%}
+        {%endif%}
+
+    {# Change category #}
+    <div class="d-flex justify-content-center container my-5 mx-auto">
+        <div class="dropdown col-8">
+            <button class="btn custom-button-inverted dropdown-toggle col-12 fs-4" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false">{{category}}
+            </button>
+
+            <form id="comparing-dropdown">
+
+                <ul class="dropdown-menu col-12" style="position: static;">
+                    <li>
+                        <button form="comparing-dropdown" name="category"
+                            class="dropdown-item custom-txt fs-5" value="1">SAT scores</button>
+                    </li>
+                    <li>
+                        <button form="comparing-dropdown" name="category"
+                            class="dropdown-item custom-txt fs-5" value="2">Tuition</button>
+                    </li>
+                    <li>
+                        <button form="comparing-dropdown" name="category"
+                            class="dropdown-item custom-txt fs-5" value="3">Distance</button>
+                    </li>
+                </ul>
+
+            </form>
+        </div>
+    </div>
+
     <div class="d-flex justify-content-center container row my-5 mx-auto">
 
+        {# Individual college cards #}
         {%for college in colleges%}
 
-        {%if college[comparing]==None%}
+        {# If the college is invalid #}
+            {%if college[comparing]==None%}
         <div class="col-4 my-3" style="height: 200px;">
             <div class="card h-100 border-danger">
                 <div class="card-body">
@@ -107,7 +140,8 @@
             </div>
         </div>
 
-        {%elif college[comparing]!=None%}
+        {# Else if the college is valid #}
+            {%elif college[comparing]!=None%}
 
         <div class="col-4 my-3" style="height: 200px;">
             <div class="card h-100 custom-border">
@@ -137,8 +171,7 @@
                 </div>
             </div>
         </div>
-        {%endif%}
-
+            {%endif%}
         {%endfor%}
 
     </div>

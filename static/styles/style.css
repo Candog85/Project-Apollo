@@ -190,9 +190,22 @@ hr {
     border-color: #DEB64B;
 }
 
+.custom-button-inverted {
+    color: #202020;
+    background-color:  #DEB64B;
+    border-color: transparent;
+}
+
 .custom-button:hover {
     color: #202020;
     background-color: #DEB64B;
+
+}
+
+.custom-button-inverted:hover {
+    color: #DEB64B;
+    background-color: #202020;
+    border-color: #DEB64B;
 
 }
 
@@ -250,7 +263,7 @@ hr {
     color: #DEB64B;
 }
 
-.custom-border {
+.custom-border{
     border-color: #DEB64B;
 }
 
