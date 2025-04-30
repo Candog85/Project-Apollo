@@ -8,7 +8,7 @@ from matplotlib.figure import Figure
 from math import radians, cos, sin, asin, sqrt
 import io
 from datetime import datetime
-
+import math
 
 # Declare Flask application
 app = Flask(__name__)
@@ -533,14 +533,14 @@ def college(college_id):
     if college['tuition']==None:
         college['tuition']="N/A"
     else:
-        college['tuition']=f"${college['tuition']:,.2f}"
+        college['tuition']=f"${college['tuition']:,.0f}"
     
     if college['admission_rate']==None:
         college['admission_rate']="N/A"
     else:
-        college['admission_rate']=(f"{college['admission_rate']*100}%")
+        college['admission_rate']=(f"{college['admission_rate']*100:,.0f}%")
         
-    college['size']=f"{college['size']:,}"
+    college['size']=f"{college['size']:,.0f}"
     
     cursor.execute(f"""
                    
