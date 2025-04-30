@@ -18,21 +18,6 @@
 
     {% include "components/navbar.html.jinja" %}
 
-    {% for category, message in get_flashed_messages(with_categories=true) %}
-
-    {%if category=="error"%}
-    <div class="alert alert-danger" role="alert">
-        {{ message }}
-    </div>
-
-    {%elif category=="success"%}
-    <div class="alert alert-warning" role="alert">
-        {{ message }}
-    </div>
-    {%endif%}
-
-    {% endfor %}
-
     <div class="container col-6 mt-5">
         <h1 class="h3 mb-3 fw-bold text-center custom-txt">College Parameters</h1>
         <p class="mb-4 text-center text-muted text-secondary-emphasis">Change your college preferences to find

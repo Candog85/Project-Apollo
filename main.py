@@ -566,6 +566,24 @@ def add_college(college_id):
     cursor=conn.cursor()
     
     cursor.execute(f"""
+
+    SELECT `id`
+    FROM `CollegeList`
+    LEFT JOIN `Colleges`
+    ON `CollegeList`.`college_id` = `Colleges`.`id`
+    WHERE `CollegeList`.`user_id`= %s 
+            """,(customer_id))
+    
+    length=cursor.fetchall()
+    
+    length
+    
+    if len(length)==5:
+        
+        flash("You can only have up to 5 colleges on a list!", 'error')
+        return redirect (f"/college/{college_id}")
+    
+    cursor.execute(f"""
                    
     INSERT INTO `CollegeList` (`user_id`, `college_id`)
     VALUES (%s, %s)
