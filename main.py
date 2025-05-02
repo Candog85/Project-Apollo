@@ -678,7 +678,7 @@ def update():
         sat_score = int(request.form["sat_score"])
         tuition_budget = int(request.form["tuition_budget"].replace(",", "").replace("$", ""))
         zip_code = int(request.form["zip_code"])
-        population_preferences = int(request.form["population_preferences"])
+        population_preferences = int(request.form["population_preferences"].replace(",", ""))
         
         cursor.execute("""          
             UPDATE `User` 
