@@ -227,7 +227,7 @@ def graph_data(comparing_category):
     
     cursor.execute(f"""
 
-    SELECT `id`, `name`, `tuition`, `admission_rate`, `average_sat`, `size`, `city`, `state`, `longitude`, `latitude`
+    SELECT `id`, `name`, `tuition`, `admission_rate`, `average_sat`, `population`, `city`, `state`, `longitude`, `latitude`
     FROM `CollegeList`
     LEFT JOIN `Colleges`
     ON `CollegeList`.`college_id` = `Colleges`.`id`
@@ -241,7 +241,7 @@ def graph_data(comparing_category):
 
     compare_sat=False
     compare_tuition=False
-    compare_distance=False
+    compare_population=False
 
     if comparing_category==1:
         compare_sat=True
@@ -254,9 +254,9 @@ def graph_data(comparing_category):
         category="Tuition"
         
     elif comparing_category==3:
-        compare_distance=True
-        comparing="distance"
-        category="Distance"
+        compare_population=True
+        comparing="population"
+        category="Population"
         
     if compare_sat==True:
         title="Student SAT Score vs College SAT Admission Requirements"
@@ -264,8 +264,8 @@ def graph_data(comparing_category):
     elif compare_tuition==True:
         title="Student Tuition Budget vs Average College Tuition"
 
-    elif compare_distance==True:
-        title="Distance between Colleges and User's Zip Code"
+    elif compare_population==True:
+        title="Difference Between User's Prefered Popupation and College's Population"
         
 
 
@@ -276,7 +276,7 @@ def graph_data(comparing_category):
     #Selects college info from every college on the user's list
     cursor.execute(f"""
 
-    SELECT `name`, `tuition`, `admission_rate`, `average_sat`, `size`, `city`, `state`, `longitude`, `latitude`
+    SELECT `name`, `tuition`, `admission_rate`, `average_sat`, `population`, `city`, `state`, `longitude`, `latitude`
     FROM `CollegeList`
     LEFT JOIN `Colleges`
     ON `CollegeList`.`college_id` = `Colleges`.`id`
@@ -289,7 +289,7 @@ def graph_data(comparing_category):
     #Selects user's info based on their id
     cursor.execute(f"""
                     
-    SELECT `first_name`, `sat_score`, `tuition_budget`, `zip_code`
+    SELECT `first_name`, `sat_score`, `tuition_budget`, `zip_code`, `population_preferences`
     FROM `User`
     WHERE `id` = %s  
                     
@@ -298,14 +298,9 @@ def graph_data(comparing_category):
     #Stores user info, then converts into a single dictionary
     student_results=cursor.fetchall()
     student_results=student_results[0]
-
-    if compare_distance==True:
-        names=[]
-        
-    else:
-        #Initializes name list with first index being the user's name
-        names=[student_results['first_name']]
-
+    
+    #Initializes name list with first index being the user's name
+    names=[student_results['first_name']]
 
     #If each setting is selected, data list is set to the selected data comparisor
     if compare_sat==True:
@@ -314,8 +309,8 @@ def graph_data(comparing_category):
     elif compare_tuition==True:
         data=[student_results['tuition_budget']]
 
-    if compare_distance==True:
-        data=[]
+    if compare_population==True:
+        data=[student_results['population_preferences']]
 
     for college in college_results:
         names.append(college["name"])
@@ -336,41 +331,42 @@ def graph_data(comparing_category):
                 data.append(college['tuition'])
                 empty+=1
                 
-        elif compare_distance==True:
+        elif compare_population==True:
             
-            cursor.execute(f"""
+            if college["population"]==None:
+                names.remove(college["name"])
+                empty+=0
+            else:
+                data.append(college['population'])
+                empty+=1
+            
+            # cursor.execute(f"""
                         
-            SELECT `lat`, `lng`
-            FROM `Locations`
-            WHERE `zip` = %s               
+            # SELECT `lat`, `lng`
+            # FROM `Locations`
+            # WHERE `zip` = %s               
                         
-                        """, (student_results['zip_code']))
+            #             """, (student_results['zip_code']))
             
-            student_coordinates=cursor.fetchone()
+            # student_coordinates=cursor.fetchone()
             
-            def haversine(lon1, lat1, lon2, lat2):
-                """
-                Calculate the great circle distance in kilometers between two points 
-                on the earth (specified in decimal degrees)
-                """
-                # convert decimal degrees to radians 
-                lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
+            # def haversine(lon1, lat1, lon2, lat2):
+            #     """
+            #     Calculate the great circle distance in kilometers between two points 
+            #     on the earth (specified in decimal degrees)
+            #     """
+            #     # convert decimal degrees to radians 
+            #     lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
 
-                # haversine formula 
-                dlon = lon2 - lon1 
-                dlat = lat2 - lat1 
-                a = sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2
-                c = 2 * asin(sqrt(a)) 
-                r = 3956 # Radius of earth in kilometers. Use 3956 for miles. Determines return value units.
-                return c * r
-            
-            print(college_results)
-            print(student_coordinates)
-            
-            print(college['longitude'])
-            print(college['latitude'])
-            
-            data.append(int(haversine(student_coordinates['lng'], student_coordinates['lat'], college['longitude'], college['latitude'])))
+            #     # haversine formula 
+            #     dlon = lon2 - lon1 
+            #     dlat = lat2 - lat1 
+            #     a = sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2
+            #     c = 2 * asin(sqrt(a)) 
+            #     r = 3956 # Radius of earth in kilometers. Use 3956 for miles. Determines return value units.
+            #     return c * r
+        
+            # data.append(int(haversine(student_coordinates['lng'], student_coordinates['lat'], college['longitude'], college['latitude'])))
 
     assert data
     
@@ -386,10 +382,10 @@ def graph_data(comparing_category):
     d["category"]=category
     d["data"]=data
     d["names"]=names
-    
     d["compare_tuition"]=compare_tuition
     d["compare_sat"]=compare_sat
-    d["compare_distance"]=compare_distance
+    d["compare_population"]=compare_population
+    # d["compare_distance"]=compare_distance
         
     return (d)
 
@@ -397,6 +393,19 @@ def graph_data(comparing_category):
 @app.route("/analytics", methods=["Post", "GET"])
 def analytics_page():
 
+    customer_id=flask_login.current_user.id
+    
+    conn=connect_db()
+    cursor=conn.cursor()
+    
+    cursor.execute(f"""
+           
+    SELECT `comparing_category` from `User`
+    WHERE `id` = %s        
+                   
+                   """, (customer_id))
+  
+    
     comparing_category=request.args.get('category', )
     
     if comparing_category==None:
@@ -404,10 +413,7 @@ def analytics_page():
     else:
         comparing_category=int(comparing_category)
         
-    customer_id=flask_login.current_user.id
     
-    conn=connect_db()
-    cursor=conn.cursor()
     
     cursor.execute(f"""
                    
@@ -449,7 +455,8 @@ def plot():
     data=d["data"]
     compare_tuition=d["compare_tuition"]
     compare_sat=d["compare_sat"]
-    compare_distance=d["compare_distance"]
+    compare_population=d["compare_population"]
+    # compare_distance=d["compare_distance"]
     
 
     #Creates figure
@@ -488,10 +495,12 @@ def plot():
     #Rotates the College labels to 
     subplot.xaxis.set_tick_params(rotation=315)
     
+    #Sets x-label
+    subplot.set_xlabel('Colleges')
+    
     if compare_tuition==True:
 
         #Label names
-        subplot.set_xlabel('Colleges')
         subplot.set_ylabel('Tuition')
         
         #Formats to use currency
@@ -500,13 +509,20 @@ def plot():
     elif compare_sat==True:
         
         # Label names
-        subplot.set_xlabel('Colleges')
         subplot.set_ylabel('SAT Score')
         
         # Changes the y label range to fit SAT scores
         subplot.set_yticks((1600, 1400, 1200, 1000, 800, 600, 400, 200))
+    
+    elif compare_population==True:
         
-
+        # Label names
+        subplot.set_ylabel('Population')
+        
+        #Formats to whole numbers
+        subplot.yaxis.set_major_formatter('{x:,.0f}')
+        
+        
     fig.savefig("graph1.png", dpi='figure')
 
     output = io.BytesIO()
@@ -540,7 +556,7 @@ def college(college_id):
     else:
         college['admission_rate']=(f"{college['admission_rate']*100:,.0f}%")
         
-    college['size']=f"{college['size']:,.0f}"
+    college['population']=f"{college['population']:,.0f}"
     
     cursor.execute(f"""
                    
@@ -754,7 +770,6 @@ def update_user():
         print(e)
 
     return redirect("/settings")
-
 
 # Log out
 @app.route('/logout')
