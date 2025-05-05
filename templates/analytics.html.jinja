@@ -42,7 +42,7 @@
     {%else%}
 
     {# If every college on the list is invalid #}
-        {%if empty==True%}
+    {%if empty==True%}
 
     <main>
         <div class="container d-flex justify-content-center row mx-auto" style="margin-top: 15vh;">
@@ -57,10 +57,10 @@
 
         </div>
     </main>
-    
+
 
     {# Else #}
-        {%else%}
+    {%else%}
 
     <main class="container row g-4 mx-auto">
 
@@ -75,7 +75,7 @@
         </div>
     </main>
 
-        {%endif%}
+    {%endif%}
 
     {# Change category #}
     <div class="d-flex justify-content-center container my-5 mx-auto">
@@ -84,24 +84,30 @@
                 data-bs-toggle="dropdown" aria-expanded="false">{{category}}
             </button>
 
-            <form id="comparing-dropdown">
+            {# <form id="comparing-dropdown"> #}
 
-                <ul class="dropdown-menu col-12" style="position: static;">
+                <ul class="dropdown-menu col-12 no-underline" style="position: static;">
                     <li>
-                        <button form="comparing-dropdown" name="category"
-                            class="dropdown-item custom-txt fs-5" value="1">SAT scores</button>
+                        <a href="/analytics/category_change/1">
+                            <button form="comparing-dropdown" name="category" class="dropdown-item custom-txt fs-5"
+                                value="1">SAT scores</button>
+                        </a>
                     </li>
                     <li>
-                        <button form="comparing-dropdown" name="category"
-                            class="dropdown-item custom-txt fs-5" value="2">Tuition</button>
+                        <a href="/analytics/category_change/2">
+                            <button form="comparing-dropdown" name="category" class="dropdown-item custom-txt fs-5"
+                                value="2">Tuition</button>
+                        </a>
                     </li>
                     <li>
-                        <button form="comparing-dropdown" name="category"
-                            class="dropdown-item custom-txt fs-5" value="3">Population</button>
+                        <a href="/analytics/category_change/3">
+                            <button form="comparing-dropdown" name="category" class="dropdown-item custom-txt fs-5"
+                                value="3">Population</button>
+                        </a>
                     </li>
                 </ul>
 
-            </form>
+            {# </form> #}
         </div>
     </div>
 
@@ -113,7 +119,7 @@
         {%for college in colleges%}
 
         {# If the college is invalid #}
-            {%if college[comparing]==None%}
+        {%if college[comparing]==None%}
         <div class="col-4 my-3" style="height: 200px;">
             <div class="card h-100 border-danger">
                 <div class="card-body">
@@ -144,7 +150,7 @@
         </div>
 
         {# Else if the college is valid #}
-            {%elif college[comparing]!=None%}
+        {%elif college[comparing]!=None%}
 
         <div class="col-4 my-3" style="height: 200px;">
             <div class="card h-100 custom-border">
@@ -174,7 +180,7 @@
                 </div>
             </div>
         </div>
-            {%endif%}
+        {%endif%}
         {%endfor%}
 
     </div>

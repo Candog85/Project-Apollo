@@ -390,7 +390,7 @@ def graph_data(comparing_category):
     return (d)
 
 # Analytics page (college and user graphs for comparison and analysis)
-@app.route("/analytics", methods=["Post", "GET"])
+@app.route("/analytics", methods=["POST", "GET"])
 def analytics_page():
 
     customer_id=flask_login.current_user.id
@@ -406,14 +406,7 @@ def analytics_page():
                    """, (customer_id))
   
     
-    comparing_category=request.args.get('category', )
-    
-    if comparing_category==None:
-        comparing_category=1
-    else:
-        comparing_category=int(comparing_category)
-        
-    
+    comparing_category=(cursor.fetchone()['comparing_category'])
     
     cursor.execute(f"""
                    
@@ -426,6 +419,25 @@ def analytics_page():
     d=graph_data(comparing_category)      
 
     return render_template('analytics.html.jinja', colleges=d["colleges"], empty=d["empty"], comparing=d["comparing"], category=d["category"])
+
+@app.route(f"/analytics/category_change/<category>", methods=["POST", "GET"])
+def category_change(category):
+
+    customer_id=flask_login.current_user.id
+    
+    conn=connect_db()
+    cursor=conn.cursor()
+    
+    cursor.execute(f"""
+                   
+    UPDATE `User`
+    SET `comparing_category` = %s
+    WHERE `id` = %s
+                   
+                   """,(category,customer_id))
+    
+    return redirect("/analytics")
+
 
 @app.route('/plot.png')
 def plot():
