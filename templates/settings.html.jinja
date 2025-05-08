@@ -11,6 +11,7 @@
     <meta name="author" content="Kerdon Chapman, Farhan Chowdury, Noel Singh">
     <link rel="shortcut icon" href="../static/logo/apollo_logo.png" type="image/x-icon">
     <link rel="stylesheet" href="../static/styles/settings.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.12.1/font/bootstrap-icons.min.css">
     <title>User and College Settings</title>
 </head>
 
@@ -72,21 +73,23 @@
                         <label for="floatingInput">Username</label>
                     </div>
 
-                    <div class="form-floating my-3">
+                    <div class="form-floating my-3 position-relative">
                         <input type="password" name="password" class="form-control" id="floatingPassword"
                             placeholder="password" required value="{{results['password']}}">
                         <label for="floatingPassword">Password</label>
-                        <button type="button" id="togglePassword" class="btn btn-outline-warning">
-                            Show password
+                        <button type="button" id="togglePassword"
+                            class="btn btn-outline-warning position-absolute top-50 end-0 translate-middle-y me-2">
+                            <i class="bi bi-eye"></i>
                         </button>
                     </div>
 
-                    <div class="form-floating my-3">
+                    <div class="form-floating my-3 position-relative">
                         <input type="password" name="confirm_password" class="form-control" id="floatingPassword2"
                             placeholder="Re-enter password" required>
-                        <label for="floatingPassword">Re-Enter Password</label>
-                        <button type="button" id="toggleRePassword" class="btn btn-outline-warning">
-                            Show password
+                        <label for="floatingPassword2">Re-Enter Password</label>
+                        <button type="button" id="toggleRePassword"
+                            class="btn btn-outline-warning position-absolute top-50 end-0 translate-middle-y me-2">
+                            <i class="bi bi-eye"></i>
                         </button>
                     </div>
 
