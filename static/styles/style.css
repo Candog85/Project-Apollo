@@ -267,7 +267,12 @@ hr {
     border-color: #DEB64B;
 }
 
-.no-underline a{
+.sii,
+.sii>* {
+    scale: 95%;
+}
+
+.no-underline a {
     text-decoration: none;
 }
 
