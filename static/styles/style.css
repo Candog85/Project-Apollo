@@ -213,6 +213,26 @@ hr {
     color: #ffffff;
 }
 
+#linkedin {
+    color: #DEB64B;
+    
+}
+
+#linkedin:hover{
+    color:#202020;
+    background-color: #DEB64B;
+}
+
+#github {
+    color: #DEB64B;
+}
+
+#github:hover {
+    color: #202020;
+    background-color: #DEB64B;
+
+}
+
 #cog {
     color: #DEB64B;
 }
@@ -245,6 +265,15 @@ hr {
     color: #202020;
 }
 
+#credits {
+    --bs-btn-color: #DEB64B;
+}
+
+#credits:hover {
+    color:#202020;
+    background-color:#DEB64B
+}
+
 #active-page {
     background-color: #DEB64B;
     color: black;
@@ -267,6 +296,10 @@ hr {
     border-color: #DEB64B;
 }
 
+footer {
+    max-height: 15px;
+}
+
 .sii,
 .sii>* {
     scale: 95%;
@@ -275,6 +308,7 @@ hr {
 .no-underline a {
     text-decoration: none;
 }
+
 
 /* .underline {
     text-decoration: underline;

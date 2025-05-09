@@ -789,3 +789,8 @@ def update_user():
 def logout():
     flask_login.logout_user()
     return redirect('/')
+
+@app.route('/credits')
+@flask_login.login_required
+def credits():
+    return render_template("credits.html.jinja")
