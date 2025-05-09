@@ -724,7 +724,7 @@ def update():
         print("Update error:", e)  # Fallback
         flash("One or more of your fields are invalid!", 'error')
     
-    return redirect("/settings")
+    return redirect("/analytics")
 
 
 # Update user settings
