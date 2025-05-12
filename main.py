@@ -178,26 +178,36 @@ def login_page():
         conn.close()
     return render_template("sign_in.html.jinja")
 
-# Browse colleges
-@app.route("/browse", methods=["Post", "GET"])
-def browse():
+# Browse Colleges
+@app.route("/browse/<page>", methods=["Post", "GET"])
+def browse(page):
     
     #Browse area
-    page = int(request.args.get('page', '1'))
-    query = request.args.get('query')
     
     customer_id=flask_login.current_user.id
 
+    page = int(page)
+    
     conn = connect_db()
     cursor = conn.cursor()
     
+    cursor.execute(f"""
+                   
+    SELECT `query`
+    FROM `User`
+    WHERE `id` = %s               
+                   
+                   """,(customer_id))
+    
+    query=cursor.fetchone()['query']
+    
     if query==None:
-       cursor.execute(f"""
-        
+        cursor.execute(f"""
+
         SELECT * FROM `Colleges`
-        LIMIT 16 OFFSET %s
-        
-        """,((page-1) * 16))
+        LIMIT 16 OFFSET {(page-1) * 16}
+
+        """)
     
     else:
         cursor.execute(f"""
@@ -210,12 +220,69 @@ def browse():
     
     colleges=cursor.fetchall()
     
+    cursor.execute(f"""
+                   
+    UPDATE `User` 
+    SET `page` = %s
+    WHERE id = %s
+                   
+                   """,(page, customer_id))
+    
     cursor.close()
     conn.close()
     
     return render_template("browse.html.jinja", colleges=colleges, page=page, query=query, customer_id=customer_id)
     # Note: For now, the database connection and data fetcher are placeholders. This WILL be changed later as neccessary.  
 
+# Search Colleges
+@app.route("/browse/search", methods=["POST", "GET"])
+def search():
+    
+    customer_id=flask_login.current_user.id
+    
+    conn=connect_db()
+    cursor=conn.cursor()
+    
+    page=1
+    
+    query=request.form["query"]
+    
+    cursor.execute("""
+                    
+    UPDATE `User`
+    SET `query` = %s, `page` = %s
+    WHERE `id` = %s                
+    
+                    
+                    """,(query, page, customer_id))
+
+    assert query
+    
+    return redirect(f"/browse/{page}")
+
+# Reset Page and Query
+@app.route("/browse_reset", methods=["POST", "GET"])
+def reset():
+    
+    customer_id=flask_login.current_user.id
+    
+    conn=connect_db()
+    cursor=conn.cursor()
+    
+    query=None
+    
+    page=1
+    
+    cursor.execute(f"""
+                   
+    UPDATE `User`
+    SET `query`= %s, `page`= %s 
+    WHERE id = %s;             
+                   """,(query, page, customer_id))
+    
+    return redirect("/browse/1")
+
+# Get Data for Graph Generation
 def graph_data(comparing_category):
     
     empty=0
@@ -420,6 +487,7 @@ def analytics_page():
 
     return render_template('analytics.html.jinja', colleges=d["colleges"], empty=d["empty"], comparing=d["comparing"], category=d["category"])
 
+# Category Switch for Analytics
 @app.route(f"/analytics/category_change/<category>", methods=["POST", "GET"])
 def category_change(category):
 
@@ -438,7 +506,7 @@ def category_change(category):
     
     return redirect("/analytics")
 
-
+# Plot Graph Image
 @app.route('/plot.png')
 def plot():
     
@@ -541,6 +609,7 @@ def plot():
     FigureCanvas(fig).print_png(output)
     return Response(output.getvalue(), mimetype='image/png')
 
+# Individual College Page
 @app.route("/college/<college_id>", methods=["POST", "GET"])
 def college(college_id):
     
@@ -548,6 +617,15 @@ def college(college_id):
     
     conn = connect_db()
     cursor = conn.cursor()
+    
+    cursor.execute(f"""
+                   
+    SELECT `page` from `User`
+    WHERE `id` = %s               
+                   
+                   """,(customer_id))
+    
+    page=cursor.fetchone()['page']
     
     cursor.execute(f"""
                    
@@ -583,8 +661,9 @@ def college(college_id):
     else:
         added=True    
     
-    return render_template("college.html.jinja", college_id=college_id, college=college, added=added)
+    return render_template("college.html.jinja", college_id=college_id, college=college, added=added, page=page)
 
+# Add College from College Page
 @app.route("/college/<college_id>/add", methods=["POST", "GET"])
 def add_college(college_id):
     
@@ -620,6 +699,7 @@ def add_college(college_id):
     
     return redirect(f"/college/{college_id}")
 
+# Remove College from College Page
 @app.route("/college/<college_id>/remove", methods=["POST", "GET"])
 def remove_college(college_id):
     
@@ -637,6 +717,7 @@ def remove_college(college_id):
     
     return redirect(f"/college/{college_id}")
 
+# Remove College from Analytics Page
 @app.route("/analytics/<college_id>/remove", methods=["POST", "GET"])
 def remove_list_college(college_id):
     
