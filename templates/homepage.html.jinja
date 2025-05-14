@@ -22,15 +22,15 @@
     <main>
         {%if current_user.is_authenticated%}
         <div class="container my-5">
-            <div class="card text-bg-dark shadow-lg border-warning sii">
+            <div class=" img-fluid">
                 <div class="card-body text-center">
                     {% set hour = now.hour %}
                     {% if hour < 12 %} {% set greeting="Good Morning" %} {% elif hour < 18 %} {% set
                         greeting="Good Afternoon" %} {% else %} {% set greeting="Good Evening" %} {% endif %} <h2
-                        class="card-title display-6 custom-txt mb-3">{{ greeting }}</h2>
+                        class="card-title display-6 custom-txt mb-3 fw-bold">{{ greeting }}</h2>
                         <p class="lead mb-2">Current Local Time: {{ now.strftime('%I:%M %p') }}</p>
                         <p class="lead mb-2">Today's Date: {{ now.strftime('%A, %B %d, %Y') }}</p>
-                        <p class="text-warning fw-semibold mt-3">Thank you for choosing us as your guide to your future!
+                        <p class=" fw-semibold mb-2">Thank you for choosing us as your guide to your future!
                         </p>
                 </div>
             </div>
@@ -199,8 +199,9 @@
             </main>
             {%endif%}
         </div>
- {% include "components/footer.html.jinja" %}
+ 
     </main>
+    {% include "components/footer.html.jinja" %}
 
     <script src="/docs/5.3/assets/js/color-modes.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
