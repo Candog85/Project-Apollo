@@ -20,26 +20,35 @@
 
 
     <main>
-        {%if current_user.is_authenticated%}
-        <div class="container my-5">
-            <div class=" img-fluid">
-                <div class="card-body text-center">
-                    {% set hour = now.hour %}
-                    {% if hour < 12 %} {% set greeting="Good Morning" %} {% elif hour < 18 %} {% set
-                        greeting="Good Afternoon" %} {% else %} {% set greeting="Good Evening" %} {% endif %} <h2
-                        class="card-title display-6 custom-txt mb-3 fw-bold">{{ greeting }}</h2>
-                        <p class="lead mb-2">Current Local Time: {{ now.strftime('%I:%M %p') }}</p>
-                        <p class="lead mb-2">Today's Date: {{ now.strftime('%A, %B %d, %Y') }}</p>
-                        <p class=" fw-semibold mb-2">Thank you for choosing us as your guide to your future!
-                        </p>
-                </div>
-            </div>
-        </div>
-        {%endif%}
 
         <div class="my-4">
             <div class="px-4 py-5 my-5 text-center">
                 <img class="d-block mx-auto mb-4" src="static/logo/apollo_logo.png" alt="" width="225px" height="225px">
+
+                {%if current_user.is_authenticated%}
+                <div class="container my-5">
+                    <div class=" img-fluid">
+                        <div class="card-body text-center">
+                            {% set hour = now.hour %}
+                            {% if hour < 12 %} {% set greeting="Good Morning" %} {% elif hour < 18 %} {% set
+                                greeting="Good Afternoon" %} {% else %} {% set greeting="Good Evening" %} {% endif %}
+                                <h2 class="card-title display-6 custom-txt mb-3 fw-bold">{{ greeting }}</h2>
+                                <p class="lead mb-2">Current Local Time: {{ now.strftime('%I:%M %p') }}</p>
+                                <p class="lead mb-2">Today's Date: {{ now.strftime('%A, %B %d, %Y') }}</p>
+                                <p class="fw-bold fs-4 lead mb-4">Thank You for Choosing us as Your Guide to Your Future!
+                                </p>
+                        </div>
+                    </div>
+                </div>
+
+            {# me: cousin you so kevin 
+            kevin: sybau
+            cou: no i didnt? 
+            gurt: yo#}
+
+                
+                {%else%}
+
                 <h1 class="display-5 fw-bold text-body-emphasis custom-txt">Guiding Your Future!</h1>
                 <div class="col-lg-6 mx-auto">
                     <p class="lead mb-4">Our goal is for our fellow young adults striving for their degree to unlock
@@ -48,6 +57,8 @@
                         step-by-step
                         process, and to take off that stress off their shoulders.</p>
                     <br>
+                {%endif%}
+
                     {%if current_user.is_authenticated%}
                     <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
                         <a href="/settings"><button type="button"
@@ -199,7 +210,7 @@
             </main>
             {%endif%}
         </div>
- 
+
     </main>
     {% include "components/footer.html.jinja" %}
 
