@@ -2,80 +2,84 @@
 <html lang="en" data-bs-theme="dark">
 
 <head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="/static/styles/style.css">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Change personal information and college preferences.">
     <meta name="author" content="Kerdon Chapman, Farhan Chowdury, Noel Singh">
-    <link rel="shortcut icon" href="../static/logo/apollo_logo.png" type="image/x-icon">
-    <link rel="stylesheet" href="../static/styles/settings.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.12.1/font/bootstrap-icons.min.css">
     <title>User and College Settings</title>
+    <link rel="shortcut icon" href="../static/logo/apollo_logo.png" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/styles/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.12.1/font/bootstrap-icons.min.css">
 </head>
 
 <body>
 
+    {# Navbar and flash messages #}
     {% include "components/navbar.html.jinja" %}
+    {% include "components/flashes.html.jinja" %}
 
-    {% include "components/flashes.html.jinja"%}
 
-    <div class="container col-6 mt-5">
-        <h1 class="h3 mb-3 fw-bold text-center custom-txt">College Parameters</h1>
-        <p class="mb-4 text-center text-muted text-secondary-emphasis">Change your college preferences to find
-            the right place!</p>
-        <form action="/settings/update" method="post">
-            <div class="form-floating my-4">
-                <input type="number" name="sat_score" class="form-control" id="floatingInput" required
-                    value="{{results['sat_score']}}" min="0">
-                <label for="floatingInput">SAT Score</label>
-            </div>
-
-            <div class="form-floating my-4">
-                <input type="text" name="tuition_budget" class="form-control" id="floatingInput" required
-                    value="{{results['tuition_budget']}}">
-                <label for="floatingInput">Tuition</label>
-            </div>
-
-            <div class="form-floating my-4">
-                <input type="number" name="zip_code" class="form-control" id="floatingInput" required
-                    value="{{results['zip_code']}}" min="0">
-                <label for="floatingInput">Zip code</label>
-            </div>
-
-            <div class="form-floating my-4">
-                <input type="text" name="population_preferences" class="form-control" id="populationInput" required
-                    value="{{ results['population_preferences'] }}" min="0" step="1">
-                <label for="floatingInput">Population preferences</label>
-            </div>
-
-            <button class="btn btn-outline-warning w-100 py-2" type="submit">Update Parameters</button>
-        </form>
-        <a href="/browse_reset" class="btn btn-outline-warning w-100 py-2 my-3">Scroll Through Options</a>
-
-    </div>
-
-    </form>
-
-    <div class="mt-5 b-example-divider py-5"></div>
-
-    <div class="container col-6 mt-5">
-        <main class="form-signin w-100 m-auto">
-            <form action="/settings/update_user" method="post">
-
-                <div class="container mt-5">
-                    <h1 class="h3 mb-3 fw-bold text-center custom-txt">Account settings</h1>
-                    <p class="mb-4 text-center text-muted text-secondary-emphasis">Change your personal details</p>
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-8 col-lg-6">
+                <h1 class="h3 text-center fw-bold custom-txt">College Parameters</h1>
+                <p class="text-center text-muted">Change your college preferences to find the right
+                    place!</p>
+                <form action="/settings/update" method="post">
                     <div class="form-floating my-3">
-                        <input type="text" name="username" class="form-control" id="floatingInput"
-                            placeholder="JohnDoe123" required value="{{results['username']}}">
+                        <input type="number" name="sat_score" class="form-control" id="floatingInput" required
+                            value="{{ results['sat_score'] }}" min="0">
+                        <label for="floatingInput">SAT Score</label>
+                    </div>
+
+                    <div class="form-floating my-3">
+                        <input type="text" name="tuition_budget" class="form-control" id="floatingInput" required
+                            value="{{ results['tuition_budget'] }}">
+                        <label for="floatingInput">Tuition</label>
+                    </div>
+
+
+                    <div class="form-floating my-3">
+                        <input type="number" name="zip_code" class="form-control" id="floatingInput" required
+                            value="{{ results['zip_code'] }}" min="0">
+                        <label for="floatingInput">Zip Code</label>
+                    </div>
+
+                    <div class="form-floating my-3">
+                        <input type="text" name="population_preferences" class="form-control" id="populationInput"
+                            required value="{{ results['population_preferences'] }}">
+                        <label for="populationInput">Population Preferences</label>
+                    </div>
+
+                    <button class="btn btn-outline-warning w-100 py-2" type="submit">Update
+                        Parameters</button>
+                </form>
+
+                <a href="/browse" class="btn btn-outline-warning w-100 py-2 my-3">Scroll Through
+                    Options</a>
+            </div>
+        </div>
+
+        <!-- Divider -->
+        <hr class="my-5 border-secondary">
+
+        <!-- Account Settings Section -->
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-10 col-lg-8">
+                <h3 class="h3 text-center fw-bold custom-txt">Account Settings</h3>
+                <p class="text-center text-muted">Change your personal details</p>
+                <form action="/settings/update_user" method="post">
+                    <div class="form-floating my-3">
+                        <input type="text" name="username" class="form-control" id="floatingInput" required
+                            value="{{ results['username'] }}">
                         <label for="floatingInput">Username</label>
                     </div>
 
                     <div class="form-floating my-3 position-relative">
-                        <input type="password" name="password" class="form-control" id="floatingPassword"
-                            placeholder="password" required value="{{results['password']}}">
+                        <input type="password" name="password" class="form-control" id="floatingPassword" required
+                            value="{{ results['password'] }}">
                         <label for="floatingPassword">Password</label>
                         <button type="button" id="togglePassword"
                             class="btn btn-outline-warning position-absolute top-50 end-0 translate-middle-y me-2">
@@ -85,7 +89,7 @@
 
                     <div class="form-floating my-3 position-relative">
                         <input type="password" name="confirm_password" class="form-control" id="floatingPassword2"
-                            placeholder="Re-enter password" required>
+                            required>
                         <label for="floatingPassword2">Re-Enter Password</label>
                         <button type="button" id="toggleRePassword"
                             class="btn btn-outline-warning position-absolute top-50 end-0 translate-middle-y me-2">
@@ -93,43 +97,50 @@
                         </button>
                     </div>
 
-                    <div class="d-flex justify-content-center">
-                        <div class="form-floating mx-1 my-3 col-6">
-                            <input type="text" name="first_name" class="form-control" id="floatingInput"
-                                placeholder="John" required value="{{results['first_name']}}">
-                            <label for="floatingInput">First Name</label>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" name="first_name" class="form-control" id="floatingInput" required
+                                    value="{{ results['first_name'] }}">
+                                <label for="floatingInput">First Name</label>
+                            </div>
                         </div>
-
-                        <div class="form-floating mx-1 my-3 col-6">
-                            <input type="text" name="last_name" class="form-control" id="floatingInput"
-                                placeholder="Doe" required value="{{results['last_name']}}">
-                            <label for="floatingInput">Last Name</label>
-                        </div>
-                    </div>
-
-                    <div class="d-flex justify-content-center">
-                        <div class="form-floating mx-1 my-3 col-8">
-                            <input type="email" name="email" class="form-control" id="floatingInput"
-                                placeholder="name@example.com" required value="{{results['email']}}">
-                            <label for="floatingInput">Email Address</label>
-                        </div>
-
-                        <div class="form-floating mx-1 my-3 col-4">
-                            <input type="number" name="zip_code" class="form-control" id="floatingInput"
-                                placeholder="12345" required value="{{results['zip_code']}}">
-                            <label for="floatingInput">Zip Code</label>
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" name="last_name" class="form-control" id="floatingInput" required
+                                    value="{{ results['last_name'] }}">
+                                <label for="floatingInput">Last Name</label>
+                            </div>
                         </div>
                     </div>
 
-                    <button class="btn btn-outline-warning w-100 py-2" type="submit">Update Info</button>
-                    <br><br>
-            </form>
-        </main>
+                    <div class="row g-3 mt-3">
+                        <div class="col-md-8">
+                            <div class="form-floating">
+                                <input type="email" name="email" class="form-control" id="floatingInput" required
+                                    value="{{ results['email'] }}">
+                                <label for="floatingInput">Email Address</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-floating">
+                                <input type="number" name="zip_code" class="form-control" id="floatingInput" required
+                                    value="{{ results['zip_code'] }}">
+                                <label for="floatingInput">Zip Code</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-outline-warning w-100 py-2 mt-4" type="submit">Update Info</button>
+                </form>
+            </div>
+        </div>
     </div>
 
-    </div>
+    {# Footer #}
     {% include "components/footer.html.jinja" %}
 
+    <!-- JS -->
     <script src="/docs/5.3/assets/js/color-modes.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
@@ -139,7 +150,6 @@
         crossorigin="anonymous"></script>
     <script src="/static/scripts/script.js"></script>
     <script src="/static/scripts/password.js"></script>
-
 </body>
 
 </html>

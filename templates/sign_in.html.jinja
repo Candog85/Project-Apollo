@@ -2,50 +2,47 @@
 <html lang="en" data-bs-theme="dark">
 
 <head>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  <link rel="stylesheet" href="/static/styles/style.css">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Sign in to Apollo and let us guide your future.">
   <meta name="author" content="Kerdon Chapman, Farhan Chowdury, Noel Singh">
+  <title>Sign In to Apollo</title>
   <link rel="shortcut icon" href="../static/logo/apollo_logo.png" type="image/x-icon">
   <link rel="stylesheet" href="../static/styles/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.12.1/font/bootstrap-icons.min.css">
-  <title>Sign In to Apollo</title>
 </head>
 
 <body>
   {% include "components/navbar.html.jinja" %}
 
+  <!-- Flash messages -->
   {% for message in get_flashed_messages() %}
-  <div class="alert alert-danger" role="alert">
-    {{ message }}
+  <div class="container mt-3">
+    <div class="alert alert-danger text-center" role="alert">
+      {{ message }}
+    </div>
   </div>
   {% endfor %}
 
-  <!-- Sign in Form -->
-  <br>
-  <div class="rounded">
-    <div class="card-body">
-      <h1 class="h3 mb-3 fw-bold text-center custom-txt">Sign In</h1>
-      <p class="text-center text-muted lead mb-4">Access your account to explore colleges and find the most suitable
-        institutions.
-      </p>
+  <!-- Sign In Section -->
+  <div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="card w-100 shadow-lg" style="max-width: 420px;">
+      <div class="card-body p-4">
+        <h3 class="h3 fw-bold text-center">Sign In</h3>
+        <p class="text-center text-muted mb-4">Access your account to explore colleges and find the most
+          suitable institutions.</p>
 
-
-      <div class="container col-6">
-        <br>
         <form action="/sign_in" method="post">
-          <div class="form-floating">
-            <input type="text" name="username" class="form-control asd" id="floatingInput" placeholder="username"
-              required value="{{ request.form.get('username', '') }}">
+          <div class="form-floating mb-3">
+            <input type="text" name="username" class="form-control" id="floatingInput" placeholder="Username" required
+              value="{{ request.form.get('username', '') }}">
             <label for="floatingInput">Username</label>
           </div>
-          <p>
-          </p>
-          <div class="form-floating">
-            <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="password"
+
+          <div class="form-floating mb-3 position-relative">
+            <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password"
               required value="{{ request.form.get('password', '') }}">
             <label for="floatingPassword">Password</label>
             <button type="button" id="togglePassword"
@@ -53,29 +50,28 @@
               <i class="bi bi-eye"></i>
             </button>
           </div>
-          <br>
-          <div>
-            <button class="btn btn-outline-warning w-100 py-2" type="submit">Log In</button>
-          </div>
+
+          <button class="btn btn-outline-warning w-100 py-2 mb-3" type="submit">Log In</button>
         </form>
+
+        <div class="text-center">
+          <small class="text-muted">Don't have an account?
+            <a href="/#sign_up" class="link-warning text-decoration-none">Sign Up</a>
+          </small>
+        </div>
       </div>
     </div>
-
-
-    <!-- Sign Up Link -->
-    <div class="text-center mt-3">
-      <p>Don't have an account? <a class="link-custom" href="/#sign_up">Sign Up</a></p>
-    </div>
   </div>
+
+  {% include "components/footer.html.jinja" %}
+
+  <!-- Scripts -->
   <script src="/docs/5.3/assets/js/color-modes.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
     crossorigin="anonymous"></script>
   <script src="/static/scripts/script.js"></script>
   <script src="/static/scripts/password.js"></script>
-
-
 </body>
- {% include "components/footer.html.jinja" %}
 
 </html>
