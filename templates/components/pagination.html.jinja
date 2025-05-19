@@ -1,0 +1,43 @@
+{# Pagnation Container #}
+<div class="container mt-5">
+    <nav aria-label="row justify-content-center mx-auto text-center">
+        <ul class="pagination mx-auto justify-content-center no-underline">
+
+            <li class="page-item">
+
+                <a href="/browse/{{page-1}}">
+                    <button class="page-link btn btn-outline-warning custom-button mx-2">Previous</button>
+                </a>
+
+            </li>
+
+            {%for x in range(page_range[0], page_range[1])%}
+
+            {%if x==page%}
+
+            <li class="page-item">
+                <a href="/browse/{{x}}">
+                    <button id="active-page" class="page-link btn btn-outline-warning custom-button mx-2">{{x}}</button>
+                </a>
+            </li>
+
+            {%else%}
+
+            <li class="page-item">
+                <a href="/browse/{{x}}">
+                    <button class="page-link btn btn-outline-warning custom-button mx-2">{{x}}</button>
+                </a>
+            </li>
+            {%endif%}
+
+
+            {%endfor%}
+
+            <li class="page-item">
+                <a href="/browse/{{page+1}}">
+                    <button class="page-link btn btn-outline-warning custom-button mx-2">Next</button>
+                </a>
+            </li>
+
+
+</div>

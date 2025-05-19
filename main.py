@@ -65,7 +65,6 @@ class User:
     def get_id(self):
         return str(self.id)
     
-
 # Load User Session
 @login_manager.user_loader
 def load_user(id):
@@ -188,6 +187,7 @@ def browse(page):
 
     page = int(page)
     
+    
     conn = connect_db()
     cursor = conn.cursor()
     
@@ -201,6 +201,31 @@ def browse(page):
     
     query=cursor.fetchone()['query']
     
+    if query==None:
+        cursor.execute(f"""
+
+        SELECT `id` FROM `Colleges`
+
+        """)
+    
+    else:
+        cursor.execute(f"""
+        
+        SELECT `id` FROM `Colleges`
+        WHERE `name` LIKE '%{query}%'
+        
+        """)
+    
+    length=math.ceil((len(cursor.fetchall()))/16)
+    
+    if page>length or page<1:
+        flash("This page does not exist!","error")
+        if page>length:
+            return redirect(f"/browse/{length}")
+        else:
+            return redirect(f"/browse/1")
+        
+
     if query==None:
         cursor.execute(f"""
 
@@ -219,6 +244,17 @@ def browse(page):
         """)
     
     colleges=cursor.fetchall()
+
+    if page<4:
+        page_range=[1,6]
+        if page_range[1]>length:
+            page_range[1]=length+1
+    
+    elif page>=3:
+        page_range=[page-2, page+3]
+        if page+1>=length:
+            page_range=[length-4, length+1]
+            
     
     cursor.execute(f"""
                    
@@ -231,7 +267,7 @@ def browse(page):
     cursor.close()
     conn.close()
     
-    return render_template("browse.html.jinja", colleges=colleges, page=page, query=query, customer_id=customer_id)
+    return render_template("browse.html.jinja", colleges=colleges, page=page, query=query, length=length, page_range=page_range)
     # Note: For now, the database connection and data fetcher are placeholders. This WILL be changed later as neccessary.  
 
 # Search Colleges
@@ -620,12 +656,14 @@ def college(college_id):
     
     cursor.execute(f"""
                    
-    SELECT `page` from `User`
+    SELECT * from `User`
     WHERE `id` = %s               
                    
                    """,(customer_id))
     
-    page=cursor.fetchone()['page']
+    student=cursor.fetchone()
+    
+    page=student['page']
     
     cursor.execute(f"""
                    
@@ -806,7 +844,6 @@ def update():
         flash("One or more of your fields are invalid!", 'error')
     
     return redirect("/analytics")
-
 
 # Update user settings
 @app.route("/settings/update_user", methods=["POST"])
