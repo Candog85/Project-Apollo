@@ -674,6 +674,12 @@ def college(college_id):
     
     college=cursor.fetchone()
     
+    college_tuition=college['tuition']
+
+    college_sat=college['average_sat']
+
+    college_population=college['population']
+
     if college['tuition']==None:
         college['tuition']="N/A"
     else:
@@ -683,9 +689,17 @@ def college(college_id):
         college['admission_rate']="N/A"
     else:
         college['admission_rate']=(f"{college['admission_rate']*100:,.0f}%")
-        
-    college['population']=f"{college['population']:,.0f}"
     
+    if college['population']==None:
+        college['population']="N/A"
+    else:
+        college['population']=f"{college['population']:,.0f}"
+
+    if college['average_sat']==None:
+        college['average_sat']="N/A"
+    else:
+        college['average_sat']=f"{college['average_sat']:.0f}"
+
     cursor.execute(f"""
                    
     SELECT * from `CollegeList`
@@ -699,7 +713,13 @@ def college(college_id):
     else:
         added=True    
     
-    return render_template("college.html.jinja", college_id=college_id, college=college, added=added, page=page)
+    cursor.execute(f"""
+                                 
+    SELECT * from `User` WHERE `id` = %s
+            """, (customer_id))
+    user = cursor.fetchone()
+
+    return render_template("college.html.jinja", user=user, college_population=college_population, college_tuition=college_tuition, college_sat=college_sat, college_id=college_id, college=college, added=added, page=page)
 
 # Add College from College Page
 @app.route("/college/<college_id>/add", methods=["POST", "GET"])
@@ -913,3 +933,9 @@ def credits():
 def logout():
     flask_login.logout_user()
     return redirect('/')
+
+@app.route('/credits')
+@flask_login.login_required
+def credits():
+    return render_template("credits.html.jinja")
+

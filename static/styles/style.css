@@ -119,6 +119,9 @@ body {
 
 /* Navbar styling */
 
+
+
+
 .navbar ul {
     list-style-type: none;
     overflow: hidden;
@@ -272,6 +275,18 @@ hr {
 #credits:hover {
     color: #202020;
     background-color: #DEB64B
+}
+
+#arrowdown {
+    color: rgb(68, 255, 0);
+}
+
+#arrowup {
+    color: red;
+}
+
+#dash {
+    color: #aaaaaa;
 }
 
 #active-page {

@@ -17,71 +17,155 @@
 <body>
 
     {% include "components/navbar.html.jinja" %}
-    
-   <a href="/browse/{{page}}"><button class="btn btn-outline-warning px-4 py-2 mt-5 ms-5"> <svg viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" width="30" height="30">
-    <path d="M1.5 7.5l4-4m-4 4l4 4m-4-4H14" stroke="currentColor"></path></svg></button></a>
+
+    <a href="/browse/{{page}}"><button class="btn btn-outline-warning px-4 py-2 mt-5 ms-5"> <svg viewBox="0 0 15 15"
+                fill="none" xmlns="http://www.w3.org/2000/svg" width="30" height="30">
+                <path d="M1.5 7.5l4-4m-4 4l4 4m-4-4H14" stroke="currentColor"></path>
+            </svg></button></a>
 
     {% include "components/flashes.html.jinja" %}
 
     <div class="container row mx-auto">
-           
-            <!-- College header -->
-            <div class="text-center mb-4">
-                <h1 class="custom-txt fw-bold">{{ college['name'] }}</h1>
-                <p class="text-secondary fs-5">{{ college['city'] }}, {{ college['state'] }}</p>
-            </div>
 
-            <!-- Stats cards -->
-            <div class="row">
-                <!-- Tuition Card -->
-                <div class="col-12 col-md-4 mb-4">
-                    <div class="card text-white shadow h-100 college-stats">
+        <!-- College header -->
+        <div class="text-center mb-4">
+            <h1 class="custom-txt fw-bold">{{ college['name'] }}</h1>
+            <p class="text-secondary fs-5">{{ college['city'] }}, {{ college['state'] }}</p>
+        </div>
+
+        <!-- Stats cards -->
+        <div class="row">
+            <!-- Tuition Card -->
+            <div class="col-12 col-md-4 mb-4 ms-auto">
+                <div class="card text-white shadow h-100 college-stats">
+                    {%if college_tuition %}
+
+                    {%if college_tuition < user['tuition_budget']%} <svg class="position-absolute" id="arrowdown" viewBox="0 0 15 15" fill="none"
+                        xmlns="http://www.w3.org/2000/svg" width="30" height="30">
+                        <path d="M7.5 13.5l4-4m-4 4l-4-4m4 4V1" stroke="currentColor"></path>
+                        </svg>
+                        {%elif college_tuition > user['tuition_budget']%}
+                        <svg id="arrowup" class="position-absolute" viewBox="0 0 15 15" fill="none"
+                            xmlns="http://www.w3.org/2000/svg" width="30" height="30">
+                            <path
+                                d="M7.5 1.5l.354-.354L7.5.793l-.354.353.354.354zm-.354.354l4 4 .708-.708-4-4-.708.708zm0-.708l-4 4 .708.708 4-4-.708-.708zM7 1.5V14h1V1.5H7z"
+                                fill="currentColor"></path>
+                        </svg>
+                        {%else%}
+                        <svg class="position-absolute" id="dash" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" width="30"
+                            height="30">
+                            <path d="M1 7.5h13" stroke="currentColor"></path>
+                        </svg>
+                        {%endif%}
+
+                        {%endif%}
                         <div class="card-body d-flex flex-column justify-content-center align-items-center">
                             <h5 class="card-title">Tuition</h5>
                             <p class="display-6 fw-bold">{{ college['tuition'] }}</p>
                         </div>
+                </div>
+            </div>
+
+            <!-- Admission Rate Card -->
+            <div class="col-12 col-md-4 mb-4 me-auto">
+                <div class="card text-white shadow h-100 college-stats">
+                    <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                        <h5 class="card-title">Admission Rate</h5>
+                        <p class="display-6 fw-bold">{{ college['admission_rate'] }}</p>
                     </div>
                 </div>
+            </div>
 
-                <!-- Admission Rate Card -->
-                <div class="col-12 col-md-4 mb-4">
-                    <div class="card text-white shadow h-100 college-stats">
-                        <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                            <h5 class="card-title">Admission Rate</h5>
-                            <p class="display-6 fw-bold">{{ college['admission_rate'] }}</p>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Students Enrolled Card -->
-                <div class="col-12 col-md-4 mb-4">
-                    <div class="card text-white shadow h-100 college-stats">
+        </div>
+
+        <div class="row">
+
+            <!-- Students Enrolled Card -->
+            <div class="col-12 col-md-4 mb-4 ms-auto">
+                <div class="card text-white shadow h-100 college-stats">
+                    {%if college['population'] %}
+
+                    {%if college_population < user['population_preferences']%} <svg class="position-absolute" id="arrowdown" viewBox="0 0 15 15" fill="none"
+                        xmlns="http://www.w3.org/2000/svg" width="30" height="30">
+                        <path d="M7.5 13.5l4-4m-4 4l-4-4m4 4V1" stroke="currentColor"></path>
+                        </svg>
+                        {%elif college_population > user['population_preferences']%}
+                        <svg id="arrowup" class="position-absolute" viewBox="0 0 15 15" fill="none"
+                            xmlns="http://www.w3.org/2000/svg" width="30" height="30">
+                            <path
+                                d="M7.5 1.5l.354-.354L7.5.793l-.354.353.354.354zm-.354.354l4 4 .708-.708-4-4-.708.708zm0-.708l-4 4 .708.708 4-4-.708-.708zM7 1.5V14h1V1.5H7z"
+                                fill="currentColor"></path>
+                        </svg>
+                        {%else%}
+                        <svg class="position-absolute" id="dash" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" width="30"
+                            height="30">
+                            <path d="M1 7.5h13" stroke="currentColor"></path>
+                        </svg>
+                        {%endif%}
+
+                        {%endif%}
                         <div class="card-body d-flex flex-column justify-content-center align-items-center">
                             <h5 class="card-title">Students Enrolled</h5>
-                            <p class="display-6 fw-bold">{{ college['size'] }}</p>
+                            <p class="display-6 fw-bold">{{ college['population'] }}</p>
                         </div>
-                    </div>
                 </div>
             </div>
 
-            <!-- Actions -->
-            <div class="d-flex flex-column flex-md-row justify-content-center align-items-center gap-3 mt-4">
-                {% if not added %}
-                <form method="post" action="/college/{{ college['id'] }}/add" class="w-100 w-md-auto">
-                    <button type="submit" class="btn btn-outline-warning px-4 py-2">Add to List</button>
-                </form>
-                {% else %}
-                <form method="post" action="/college/{{ college['id'] }}/remove" class="w-100 w-md-auto">
-                    <button type="submit" class="btn btn-outline-danger px-4 py-2">Remove from List</button>
-                </form>
-                {% endif %}
-                <a href="/analytics" class="btn btn-outline-warning px-4 py-2">View Your List</a>
+            <!--SAT Scores-->
+            <div class="col-12 col-md-4 mb-4 me-auto">
+                <div class="card text-white shadow h-100 college-stats">
+
+                    {%if college_sat %}
+
+                    {%if college_sat < user['sat_score']%} <svg class="position-absolute" id="arrowdown"
+                        viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" width="30" height="30">
+                        <path d="M7.5 13.5l4-4m-4 4l-4-4m4 4V1" stroke="currentColor"></path>
+                        </svg>
+                        {%elif college_sat > user['sat_score']%}
+                        <svg id="arrowup" class="position-absolute" viewBox="0 0 15 15" fill="none"
+                            xmlns="http://www.w3.org/2000/svg" width="30" height="30">
+                            <path
+                                d="M7.5 1.5l.354-.354L7.5.793l-.354.353.354.354zm-.354.354l4 4 .708-.708-4-4-.708.708zm0-.708l-4 4 .708.708 4-4-.708-.708zM7 1.5V14h1V1.5H7z"
+                                fill="currentColor"></path>
+                        </svg>
+                        {%else%}
+                        <svg class="position-absolute" id="dash" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" width="30"
+                            height="30">
+                            <path d="M1 7.5h13" stroke="currentColor"></path>
+                        </svg>
+                        {%endif%}
+
+                        {%endif%}
+
+                        <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                            <h5 class="card-title">Average SAT</h5>
+                            <p class="display-6 fw-bold">{{ college['average_sat'] }}</p>
+                        </div>
+                </div>
             </div>
         </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="d-flex flex-column flex-md-row justify-content-center align-items-center gap-3 mt-4 container">
+        {% if not added %}
+        <form method="post" action="/college/{{ college['id'] }}/add" class="w-100 w-md-auto">
+            <button type="submit" class="btn btn-outline-warning px-4 py-2">Add to List</button>
+        </form>
+        {% else %}
+        <form method="post" action="/college/{{ college['id'] }}/remove" class="w-100 w-md-auto">
+            <button type="submit" class="btn btn-outline-danger px-4 py-2">Remove from List</button>
+        </form>
+        {% endif %}
+        <a href="/analytics" class="btn btn-outline-warning px-4 py-2 my-5">View List</a>
+    </div>
+    </div>
 
     </div>
     {% include "components/footer.html.jinja" %}
 
     <script src="/docs/5.3/assets/js/color-modes.js"></script>
 </body>
+
 </html>
