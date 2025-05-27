@@ -86,29 +86,32 @@
                 <div class="card text-white shadow h-100 college-stats">
                     {%if college['population'] %}
 
-                    {%if college_population < user['population_preferences']%} <svg class="position-absolute" id="arrowdown" viewBox="0 0 15 15" fill="none"
+                        {%if student['population_preferences']!=None%}
+
+                            {%if college_population < user['population_preferences']%} <svg class="position-absolute" id="arrowdown" viewBox="0 0 15 15" fill="none"
                         xmlns="http://www.w3.org/2000/svg" width="30" height="30">
                         <path d="M7.5 13.5l4-4m-4 4l-4-4m4 4V1" stroke="currentColor"></path>
                         </svg>
-                        {%elif college_population > user['population_preferences']%}
+                            {%elif college_population > user['population_preferences']%}
                         <svg id="arrowup" class="position-absolute" viewBox="0 0 15 15" fill="none"
                             xmlns="http://www.w3.org/2000/svg" width="30" height="30">
                             <path
                                 d="M7.5 1.5l.354-.354L7.5.793l-.354.353.354.354zm-.354.354l4 4 .708-.708-4-4-.708.708zm0-.708l-4 4 .708.708 4-4-.708-.708zM7 1.5V14h1V1.5H7z"
                                 fill="currentColor"></path>
                         </svg>
-                        {%else%}
+                            {%else%}
                         <svg class="position-absolute" id="dash" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" width="30"
                             height="30">
                             <path d="M1 7.5h13" stroke="currentColor"></path>
                         </svg>
-                        {%endif%}
+                            {%endif%}
 
                         {%endif%}
                         <div class="card-body d-flex flex-column justify-content-center align-items-center">
                             <h5 class="card-title">Students Enrolled</h5>
                             <p class="display-6 fw-bold">{{ college['population'] }}</p>
                         </div>
+                    {%endif%}
                 </div>
             </div>
 
