@@ -1,5 +1,5 @@
 # All imports
-from flask import Flask, render_template, request, redirect, flash, Response
+from flask import Flask, render_template, request, redirect, flash, Response, session
 import pymysql
 from dynaconf import Dynaconf
 import flask_login
@@ -206,144 +206,167 @@ def login_page():
     return render_template("sign_in.html.jinja")
 
 # Browse Colleges
-@app.route("/browse/<page>", methods=["Post", "GET"])
+@app.route("/browse/<page>", methods=["GET"])
+@flask_login.login_required
 def browse(page):
-    
-    #Browse area
-    
-    customer_id=flask_login.current_user.id
-
+    customer_id = flask_login.current_user.id
     page = int(page)
-    
-    
     conn = connect_db()
     cursor = conn.cursor()
-    
-    cursor.execute(f"""
-                   
-    SELECT `query`
-    FROM `User`
-    WHERE `id` = %s               
-                   
-                   """,(customer_id))
-    
-    query=cursor.fetchone()['query']
-    
-    if query==None:
-        cursor.execute(f"""
 
-        SELECT `id` FROM `Colleges`
+    # Get current filters from session
+    filters = session.get("filters", {})
+    query = filters.get("query", "") # Get query from filters
 
-        """)
-    
-    else:
-        cursor.execute(f"""
-        
-        SELECT `id` FROM `Colleges`
-        WHERE `name` LIKE '%{query}%'
-        
-        """)
-    
-    length=math.ceil((len(cursor.fetchall()))/16)
-    
-    if page>length or page<1:
-        flash("This page does not exist!","error")
-        if page>length:
-            return redirect(f"/browse/{length}")
-        else:
-            return redirect(f"/browse/1")
-        
+    sql = "SELECT * FROM `Colleges` WHERE 1=1"
+    params = []
+    sql_parts = []
 
-    if query==None:
-        cursor.execute(f"""
+    if query:
+        sql_parts.append("`name` LIKE %s")
+        params.append(f"%{query}%")
 
-        SELECT * FROM `Colleges`
-        LIMIT 16 OFFSET {(page-1) * 16}
+    # Apply filters
+    def add_range(col, min_val_key, max_val_key, factor=1):
+        min_val = filters.get(min_val_key)
+        max_val = filters.get(max_val_key)
+        if min_val:
+            try:
+                sql_parts.append(f"`{col}` >= %s")
+                params.append(float(min_val) * factor)
+            except ValueError:
+                pass # Ignore invalid input
+        if max_val:
+            try:
+                sql_parts.append(f"`{col}` <= %s")
+                params.append(float(max_val) * factor)
+            except ValueError:
+                pass # Ignore invalid input
 
-        """)
-    
-    else:
-        cursor.execute(f"""
-        
-        SELECT * FROM `Colleges`
-        WHERE `name` LIKE '%{query}%'
-        LIMIT 16 OFFSET {(page-1) * 16}
-        
-        """)
-    
-    colleges=cursor.fetchall()
 
-    if page<4:
-        page_range=[1,6]
-        if page_range[1]>length:
-            page_range[1]=length+1
-    
-    elif page>=3:
-        page_range=[page-2, page+3]
-        if page+1>=length:
-            page_range=[length-4, length+1]
-            
-    
-    cursor.execute(f"""
-                   
-    UPDATE `User` 
-    SET `page` = %s
-    WHERE id = %s
-                   
-                   """,(page, customer_id))
-    
-    cursor.close()
-    conn.close()
-    
-    return render_template("browse.html.jinja", colleges=colleges, page=page, query=query, length=length, page_range=page_range)
-    # Note: For now, the database connection and data fetcher are placeholders. This WILL be changed later as neccessary.  
+    add_range("tuition", "tuition_min", "tuition_max")
+    add_range("average_sat", "sat_min", "sat_max")
+    add_range("population", "pop_min", "pop_max")
+    add_range("admission_rate", "admit_min", "admit_max", 0.01) # Admission rate is stored as decimal
+
+    city = filters.get("city")
+    if city:
+        sql_parts.append("`city` = %s")
+        params.append(city)
+
+    state = filters.get("state")
+    if state:
+        sql_parts.append("`state` = %s")
+        params.append(state)
+
+
+    if sql_parts:
+        sql += " AND " + " AND ".join(sql_parts)
+
+    # Get college count for pagination
+    count_sql = "SELECT COUNT(*) FROM `Colleges` WHERE 1=1"
+    count_params = []
+    if sql_parts:
+         count_sql += " AND " + " AND ".join(sql_parts)
+         count_params = params # Use the same parameters for count
+
+    cursor.execute(count_sql, count_params)
+    total_colleges = cursor.fetchone()["COUNT(*)"]
+    length = math.ceil(total_colleges / 16)
+
+    # Ensure page is within valid range
+    # Redirect to page 1 if page is less than 1
+    if page < 1:
+        flash("Invalid page number.", "error")
+        return redirect("/browse/1")
+
+    # Redirect to the last page if current page is beyond the last page, ONLY if there are colleges
+    if length > 0 and page > length:
+        flash("This page does not exist!", "error")
+        return redirect(f"/browse/{length}")
+
+    # If length is 0, any page request (including page 1) should just render the empty results
+    # No redirect needed if length is 0
+
+    # Add LIMIT and OFFSET for pagination
+    # Only apply LIMIT/OFFSET if there are colleges to display
+    colleges = []
+    if total_colleges > 0:
+        sql += " LIMIT 16 OFFSET %s"
+        params.append((page - 1) * 16)
+        cursor.execute(sql, params)
+        colleges = cursor.fetchall()
+
+
+    # Calculate page range for pagination display
+    start_page = max(1, page - 2)
+    end_page = min(length, page + 2)
+    # Adjust start/end if near the boundaries
+    if page <= 3:
+        end_page = min(length, 5)
+    if length > 5 and page >= length - 2: # Only adjust if there are enough pages to shift
+        start_page = max(1, length - 4)
+
+    # Ensure page_range is not empty if length is 0, maybe show [1] or [] depending on desired UI
+    page_range = list(range(start_page, end_page + 1))
+    if length == 0:
+        page_range = [1] # Or [] if you don't want to show page 1 when no results
+
+
+    return render_template("browse.html.jinja",
+        colleges=colleges, page=page, query=query, length=length,
+        page_range=page_range, filters=filters) # Pass filters back to template to pre-fill form
+
 
 # Search Colleges
-@app.route("/browse/search", methods=["POST", "GET"])
+@app.route("/browse/search", methods=["POST"]) # Changed to POST only as it's a form submission
+@flask_login.login_required
 def search():
-    
-    customer_id=flask_login.current_user.id
-    
-    conn=connect_db()
-    cursor=conn.cursor()
-    
-    page=1
-    
-    query=request.form["query"]
-    
-    cursor.execute("""
-                    
-    UPDATE `User`
-    SET `query` = %s, `page` = %s
-    WHERE `id` = %s                
-    
-                    
-                    """,(query, page, customer_id))
+    customer_id = flask_login.current_user.id
+    conn = connect_db()
+    cursor = conn.cursor()
 
-    assert query
-    
-    return redirect(f"/browse/{page}")
+    # Retrieve all filter values from the form
+    filters = {
+        "query": request.form.get("query", ""),
+        "tuition_min": request.form.get("tuition_min", ""),
+        "tuition_max": request.form.get("tuition_max", ""),
+        "sat_min": request.form.get("sat_min", ""),
+        "sat_max": request.form.get("sat_max", ""),
+        "pop_min": request.form.get("pop_min", ""),
+        "pop_max": request.form.get("pop_max", ""),
+        "admit_min": request.form.get("admit_min", ""),
+        "admit_max": request.form.get("admit_max", ""),
+        "city": request.form.get("city", ""),
+        "state": request.form.get("state", "")
+    }
+
+    # Store filters in the session
+    session["filters"] = filters
+
+    # Update user's page to 1 in the database (optional, but keeps existing logic)
+    cursor.execute("""
+        UPDATE `User`
+        SET `page` = %s
+        WHERE `id` = %s
+    """, (1, customer_id))
+
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    # Redirect to the first page of browse results
+    return redirect("/browse/1")
 
 # Reset Page and Query
 @app.route("/browse_reset", methods=["POST", "GET"])
 def reset():
-    
-    customer_id=flask_login.current_user.id
-    
-    conn=connect_db()
-    cursor=conn.cursor()
-    
-    query=None
-    
-    page=1
-    
-    cursor.execute(f"""
-                   
-    UPDATE `User`
-    SET `query`= %s, `page`= %s 
-    WHERE id = %s;             
-                   """,(query, page, customer_id))
-    
+    # Clear all filters from the session
+    if "filters" in session:
+        del session["filters"]
+
+    # Redirect to the first page of browse results
+    flash("Your preferences have been reset. Why not start a new search?", 'info')
     return redirect("/browse/1")
 
 # Get Data for Graph Generation
@@ -756,7 +779,8 @@ def college(college_id):
             """, (customer_id))
     user = cursor.fetchone()
 
-    return render_template("college.html.jinja", user=user, student=student, college_population=college_population, college_tuition=college_tuition, college_sat=college_sat, college_id=college_id, college=college, added=added, page=page, empty=empty)
+    return render_template("college.html.jinja", user=user, college_population=college_population, college_tuition=college_tuition, college_sat=college_sat, college_id=college_id, college=college, added=added, page=page)
+
 
 # Add College from College Page
 @app.route("/college/<college_id>/add", methods=["POST", "GET"])

@@ -324,6 +324,66 @@ footer {
     text-decoration: none;
 }
 
+/* Style for the state dropdown button */
+/* Style for the default dropdown button */
+.bootstrap-select .dropdown-toggle {
+    background-color: #202020;
+    /* Dark background */
+    color: #ffffff;
+    /* White text */
+    border-color: #FFFFFF;
+    /* Optional: adjust border color */
+}
+
+/* Style for the dropdown menu itself */
+.bootstrap-select .dropdown-menu {
+    background-color: #202020;
+    /* Dark background for the menu */
+}
+
+/* Style for individual options in the dropdown menu */
+.bootstrap-select .dropdown-menu li a {
+    color: #ffffff;
+    /* White text for options */
+    background-color: transparent;
+    /* Ensure no default background interferes */
+}
+
+/* Style for hovered/active option */
+.bootstrap-select .dropdown-menu li.active a {
+    color: #202020;
+    /* Dark text */
+    background-color: #FFFFFF;
+    /* Light background */
+}
+
+/* Style for the selected item text displayed in the button */
+.bootstrap-select .filter-option-inner-inner {
+    color: #ffffff;
+    /* Ensure selected text in the button is white */
+}
+
+/* Style for the search input within the dropdown */
+.bootstrap-select .bs-searchbox input {
+    background-color: #202020;
+    /* Darker background for input */
+    color: #ffffff;
+    /* White text for input */
+    border-color: #FFFFFF;
+    /* Optional: adjust border color */
+}
+
+.bootstrap-select .bs-searchbox input::placeholder {
+    color: #FFFFFF;
+    /* Lighter color for placeholder text */
+}
+
+.bootstrap-select .dropdown-menu li a:hover {
+    color: #202020;
+    /* Dark text on hover */
+    background-color: #FFFFFF;
+    /* Light background on hover */
+}
 
 /* .underline {
     text-decoration: underline;

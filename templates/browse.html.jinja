@@ -12,6 +12,8 @@
         <meta name="author" content="Kerdon Chapman, Farhan Chowdury, Noel Singh">
         <link rel="shortcut icon" href="../static/logo/apollo_logo.png" type="image/x-icon">
         <link rel="stylesheet" href="../static/styles/settings.css">
+        <link rel="stylesheet"
+                href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta2/dist/css/bootstrap-select.min.css">
         <title>Browse Colleges on Apollo</title>
 </head>
 
@@ -31,31 +33,137 @@
                 </div>
 
                 {# Search Container #}
-                <div class="container col-8 justify-content-center">
-                        <form class="d-flex flex-row col-12 mx-auto " action="/browse/search" method="post">
+                <div class="container col-10">
+                        <form class="row g-3" action="/browse/search" method="post">
 
-                                {# Search Bar #}
-                                {%if query==None%}
+                                <!-- Search Bar -->
+                                <div class="col-md-6 p-2">
+                                        <h3 class="h3 custom-txt">Search for a College...</h3>
+                                        <input name="query" value="{{ filters.query or '' }}" class="form-control"
+                                                type="text" placeholder="Search by name" aria-label="Search">
+                                </div>
 
-                                <input class="form-control" name="query" class="form-control me-2" type="text"
-                                        placeholder="Search" aria-label="Search">
+                                {# Additional Options #}
+                                <div class="row" id="additional-options">
+                                        <!-- Tuition Range -->
+                                        <div class="col-md-6">
+                                                <div class="row p-2">
+                                                        <h4 class="h4 custom-txt">Tuition Range</h4>
+                                                        <div class="col">
+                                                                <input type="number" name="tuition_min"
+                                                                        class="form-control" placeholder="Minimum"
+                                                                        value="{{ filters.tuition_min or '' }}">
+                                                        </div>
+                                                        <div class="col">
+                                                                <input type="number" name="tuition_max"
+                                                                        class="form-control" placeholder="Maximum"
+                                                                        value="{{ filters.tuition_max or '' }}">
+                                                        </div>
+                                                </div>
+                                        </div>
 
-                                {%else%}
+                                        <!-- SAT Range -->
+                                        <div class="col-md-6">
+                                                <div class="row p-2">
+                                                        <h4 class="h4 custom-txt">SAT Range</h4>
+                                                        <div class="col">
+                                                                <input type="number" name="sat_min" class="form-control"
+                                                                        placeholder="Minimum"
+                                                                        value="{{ filters.sat_min or '' }}">
+                                                        </div>
+                                                        <div class="col">
+                                                                <input type="number" name="sat_max" class="form-control"
+                                                                        placeholder="Maximum"
+                                                                        value="{{ filters.sat_max or '' }}">
+                                                        </div>
+                                                </div>
+                                        </div>
 
-                                <input value="{{query}}" name="query" class="form-control me-2" type="text"
-                                        placeholder="Search" aria-label="Search">
+                                        <!-- Population Range -->
+                                        <div class="col-md-6">
+                                                <div class="row p-2">
+                                                        <h4 class="h4 custom-txt">Population Range</h4>
+                                                        <div class="col">
+                                                                <input type="number" name="pop_min" class="form-control"
+                                                                        placeholder="Minimum"
+                                                                        value="{{ filters.pop_min or '' }}">
+                                                        </div>
+                                                        <div class="col">
+                                                                <input type="number" name="pop_max" class="form-control"
+                                                                        placeholder="Maximum"
+                                                                        value="{{ filters.pop_max or '' }}">
+                                                        </div>
+                                                </div>
+                                        </div>
 
-                                {%endif%}
+                                        <!-- Admission Rate Range -->
+                                        <div class="col-md-6">
+                                                <div class="row p-2">
+                                                        <h4 class="h4 custom-txt">Admission Rate Range</h4>
+                                                        <div class="col">
+                                                                <input type="number" name="admit_min"
+                                                                        class="form-control" placeholder="Minimum (%)"
+                                                                        step="0.1"
+                                                                        value="{{ filters.admit_min or '' }}">
+                                                        </div>
+                                                        <div class="col">
+                                                                <input type="number" name="admit_max"
+                                                                        class="form-control" placeholder="Maximum (%)"
+                                                                        step="0.1"
+                                                                        value="{{ filters.admit_max or '' }}">
+                                                        </div>
+                                                </div>
+                                        </div>
 
-                                {# Submit Button #}
-                                <button class="btn btn-outline-warning custom-button ms-2"
-                                        type="submit">Search!</button>
-                                {# Clear Query Button #}
-                                <button class="btn btn-outline-secondary ms-2" type="reset">Clear
-                                        Query</button>
+                                        <!-- City Textbox -->
+                                        <div class="col-md-6">
+                                                <div class="row p-2">
+                                                        <h4 class="h4 custom-txt">City</h4>
+                                                        <div class="col">
+                                                                <input type="text" name="city" class="form-control"
+                                                                        placeholder="City"
+                                                                        value="{{ filters.city or '' }}">
+                                                        </div>
+                                                </div>
+                                        </div>
 
+                                        <!-- State Searchable Dropdown -->
+                                        <div class="col-md-6">
+                                                <div class="row p-2">
+                                                        <h4 class="h4 custom-txt">State/Territory</h4>
+                                                        <div class="col">
+                                                                <select class="form-select form-control back selectpicker"
+                                                                        name="state" data-live-search="true"
+                                                                        title="Select State" id="state-dropdown">
+                                                                        <option class="state-text" value="">Any</option>
+                                                                        {% for s in
+                                                                        ["AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA","HI","ID","IL","IN","IA","KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY","NC","ND","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VT","VA","WA","WV","WI","WY","DC","PR","GU","VI","AS","MH","MP"]
+                                                                        %}
+                                                                        <option class="state-text" value="{{ s }}" {% if
+                                                                                filters.state==s %}selected{% endif %}>
+                                                                                {{
+                                                                                s }}</option>
+                                                                        {% endfor %}
+                                                                </select>
+
+                                                        </div>
+                                                </div>
+
+                                        </div>
+                                </div>
+
+
+                                <!-- Buttons -->
+                                <div class="col-12">
+                                        <button class="btn btn-outline-warning me-2" type="submit">Search!</button>
+                                        <button class="btn btn-outline-secondary me-2" type="reset">Clear
+                                                query</button>
+                                        <a href="/browse_reset" class="btn btn-outline-danger">Reset search</a>
+                                </div>
                         </form>
                 </div>
+
+
 
                 <div class="container mt-5">
 
@@ -99,6 +207,8 @@
 
 
         </main>
+
+        {# Scripts #}
         <script src="/docs/5.3/assets/js/color-modes.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
                 integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
@@ -107,6 +217,15 @@
                 integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
                 crossorigin="anonymous"></script>
         <script src="/static/scripts/script.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script
+                src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta2/dist/js/bootstrap-select.min.js"></script>
+        <script>
+                $(function () {
+                        $('.selectpicker').selectpicker();
+                });
+        </script>
+        {# End of scripts #}
 
 </body>
 
