@@ -31,6 +31,10 @@
         <div class="text-center mb-4">
             <h1 class="custom-txt fw-bold">{{ college['name'] }}</h1>
             <p class="text-secondary fs-5">{{ college['city'] }}, {{ college['state'] }}</p>
+            {# Display college website ONLY IF available #}
+            {% if college['website'] %}
+            <a class="btn btn-outline-warning px-4 py-2" href="{{ college['website'] }}">Visit Website</a>
+            {% endif %}
         </div>
 
         <!-- Stats cards -->
@@ -40,8 +44,8 @@
                 <div class="card text-white shadow h-100 college-stats">
                     {%if college_tuition %}
 
-                    {%if college_tuition < user['tuition_budget']%} <svg class="position-absolute" id="arrowdown" viewBox="0 0 15 15" fill="none"
-                        xmlns="http://www.w3.org/2000/svg" width="30" height="30">
+                    {%if college_tuition < user['tuition_budget']%} <svg class="position-absolute" id="arrowdown"
+                        viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" width="30" height="30">
                         <path d="M7.5 13.5l4-4m-4 4l-4-4m4 4V1" stroke="currentColor"></path>
                         </svg>
                         {%elif college_tuition > user['tuition_budget']%}
@@ -52,8 +56,8 @@
                                 fill="currentColor"></path>
                         </svg>
                         {%else%}
-                        <svg class="position-absolute" id="dash" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" width="30"
-                            height="30">
+                        <svg class="position-absolute" id="dash" viewBox="0 0 15 15" fill="none"
+                            xmlns="http://www.w3.org/2000/svg" width="30" height="30">
                             <path d="M1 7.5h13" stroke="currentColor"></path>
                         </svg>
                         {%endif%}
@@ -87,13 +91,14 @@
                 <div class="card text-white shadow h-100 college-stats">
                     {%if college['population'] %}
 
-                        {%if student['population_preferences']!=None%}
+                    {%if student['population_preferences']!=None%}
 
-                            {%if college_population < user['population_preferences']%} <svg class="position-absolute" id="arrowdown" viewBox="0 0 15 15" fill="none"
-                        xmlns="http://www.w3.org/2000/svg" width="30" height="30">
+                    {%if college_population < user['population_preferences']%} <svg class="position-absolute"
+                        id="arrowdown" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" width="30"
+                        height="30">
                         <path d="M7.5 13.5l4-4m-4 4l-4-4m4 4V1" stroke="currentColor"></path>
                         </svg>
-                            {%elif college_population > user['population_preferences']%}
+                        {%elif college_population > user['population_preferences']%}
 
                         <svg id="arrowup" class="position-absolute" viewBox="0 0 15 15" fill="none"
                             xmlns="http://www.w3.org/2000/svg" width="30" height="30">
@@ -101,15 +106,15 @@
                                 d="M7.5 1.5l.354-.354L7.5.793l-.354.353.354.354zm-.354.354l4 4 .708-.708-4-4-.708.708zm0-.708l-4 4 .708.708 4-4-.708-.708zM7 1.5V14h1V1.5H7z"
                                 fill="currentColor"></path>
                         </svg>
-                        
-                            {%else%}
 
-                        <svg class="position-absolute" id="dash" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" width="30"
-                            height="30">
+                        {%else%}
+
+                        <svg class="position-absolute" id="dash" viewBox="0 0 15 15" fill="none"
+                            xmlns="http://www.w3.org/2000/svg" width="30" height="30">
                             <path d="M1 7.5h13" stroke="currentColor"></path>
                         </svg>
 
-                            {%endif%}
+                        {%endif%}
 
                         {%endif%}
                         <div class="card-body d-flex flex-column justify-content-center align-items-center">
@@ -117,7 +122,7 @@
                             <p class="display-6 fw-bold">{{ college['population'] }}</p>
                         </div>
 
-                    {%endif%}
+                        {%endif%}
                 </div>
             </div>
 
@@ -139,8 +144,8 @@
                                 fill="currentColor"></path>
                         </svg>
                         {%else%}
-                        <svg class="position-absolute" id="dash" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" width="30"
-                            height="30">
+                        <svg class="position-absolute" id="dash" viewBox="0 0 15 15" fill="none"
+                            xmlns="http://www.w3.org/2000/svg" width="30" height="30">
                             <path d="M1 7.5h13" stroke="currentColor"></path>
                         </svg>
                         {%endif%}
