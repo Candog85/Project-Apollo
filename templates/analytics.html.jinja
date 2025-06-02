@@ -17,7 +17,7 @@
 <body>
 
     {% include "components/navbar.html.jinja" %}
-
+    {% include "components/flashes.html.jinja" %}
     {# Debugging stuff #}
     {# {{colleges}} #}
     {# {{comparing}} #}
@@ -53,7 +53,7 @@
                     colleges below</p>
             </div>
 
-            <a href="/browse" class="mx-auto btn btn-outline-warning custom-button col-3">Browse Colleges</a>
+            <a href="/browse/1" class="mx-auto btn btn-outline-warning custom-button col-3">Browse Colleges</a>
 
         </div>
     </main>
@@ -112,7 +112,7 @@
         </div>
     </div>
 
-    <p class="lead mb-4 text-center">*Colleges that Appear Red are Missing the Requested Data*</p>
+
 
     <div class="d-flex justify-content-center container row my-5 mx-auto">
 

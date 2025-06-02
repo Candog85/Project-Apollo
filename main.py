@@ -81,10 +81,10 @@ def load_user(id):
     if result is not None:
         return User(result["id"], result["name"], result["username"], result["email"])
 
-
 # Homepage initialization
 @app.route("/")
 def homepage():
+
 
     user = None
     empty = None
@@ -609,19 +609,17 @@ def analytics_page():
         f"""
     UPDATE `User`
     SET `comparing_category` = %s
-    WHERE `id` = %s          
-                   """,
-        (comparing_category, customer_id),
-    )
-    d = graph_data(comparing_category)
+    WHERE `id` = %s
+                   
+                   """,(comparing_category,customer_id))
 
-    return render_template(
-        "analytics.html.jinja",
-        colleges=d["colleges"],
-        empty=d["empty"],
-        comparing=d["comparing"],
-        category=d["category"],
-    )
+    d=graph_data(comparing_category)
+
+    if d['empty']==True:
+        flash(f"Colleges that Appear Red are Missing the Requested Data")
+
+    for college in d["colleges"]:
+        return
 
 
 # Category Switch for Analytics
@@ -846,6 +844,7 @@ def college(college_id):
         (customer_id),
     )
     user = cursor.fetchone()
+
 
     return render_template(
         "college.html.jinja",
