@@ -612,6 +612,8 @@ def analytics_page():
     WHERE `id` = %s
                    
                    """,(comparing_category,customer_id))
+    
+    d = graph_data(comparing_category=comparing_category)
 
     return render_template(
         "analytics.html.jinja",
