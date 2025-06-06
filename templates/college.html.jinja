@@ -16,6 +16,9 @@
 
 <body>
 
+    {# {{female_ratio}}
+    {{race_demographics}} #}
+
     {% include "components/navbar.html.jinja" %}
 
     <a href="/browse/{{page}}"><button class="btn btn-outline-warning px-4 py-2 mt-5 ms-5"> <svg viewBox="0 0 15 15"
@@ -108,7 +111,6 @@
                                 fill="currentColor"></path>
                         </svg>
 
-
                         {%else%}
 
                         <svg class="position-absolute" id="dash" viewBox="0 0 15 15" fill="none"
@@ -158,9 +160,31 @@
                             <h5 class="card-title">Average SAT</h5>
                             <p class="display-6 fw-bold">{{ college['average_sat'] }}</p>
                         </div>
+
+
+
+
                 </div>
             </div>
         </div>
+    </div>
+ 
+
+    <!-- Pie Charts -->
+    <div class="row justify-content-center text-center">
+        {%if female_ratio==None%}
+            <h1 class="display-6 fw-bold mt-5">Cannot Find Gender Data, No Pie Chart Generated</h1>
+            {# <img src="/static/images/gender_error.png" style="width: 300px; height: 100px;"> #}
+        {%else%}
+            <img src="/gender_graph.png" style="width: 600px;" style="background-image: url('static/images/race_error.png');">
+        {%endif%}
+
+        {%if race_demographics==True%}
+            <img src="/race_graph.png" style="width: 600px;" style="background-image: url('static/images/race_error.png');">
+        {%else%}
+            <h1 class="display-6 fw-bold mt-5">Cannot Find Gender Data, No Pie Chart Generated</h1>
+        {%endif
+        %}
     </div>
 
     <!-- Actions -->

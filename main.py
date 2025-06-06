@@ -1,5 +1,5 @@
 # All imports
-from flask import Flask, render_template, request, redirect, flash, Response, session
+from flask import Flask, render_template, request, redirect, flash, Response, session, send_file
 import pymysql
 from dynaconf import Dynaconf
 import flask_login
@@ -9,6 +9,9 @@ from math import radians, cos, sin, asin, sqrt
 import io
 from datetime import datetime
 import math
+import pandas as pd
+import matplotlib.pyplot as plt
+from matplotlib.patches import Circle, Wedge, Polygon, Ellipse
 
 # Declare Flask application
 app = Flask(__name__)
@@ -615,6 +618,8 @@ def analytics_page():
     
     d = graph_data(comparing_category=comparing_category)
 
+    d=graph_data(comparing_category)
+    
     return render_template(
         "analytics.html.jinja",
         colleges=d["colleges"],
@@ -764,6 +769,14 @@ def college(college_id):
     cursor.execute(
         f"""
                    
+    UPDATE `User` 
+    SET `current_college`=%s
+    WHERE `id` = %s               
+                   
+                   """,(college_id, customer_id))
+    
+    cursor.execute(f"""
+                   
     SELECT * from `User`
     WHERE `id` = %s               
                    
@@ -804,6 +817,13 @@ def college(college_id):
     college_sat = college["average_sat"]
 
     college_population = college["population"]
+    
+    female_ratio=college["female_ratio"]
+    
+    if (college["white_ratio"]==None) and (college["black_ratio"]==None) and (college["hispanic_ratio"]==None) and (college["asian_ratio"]==None):
+        race_demographics=False
+    else:
+        race_demographics=True
 
     if college["tuition"] == None:
         college["tuition"] = "N/A"
@@ -861,8 +881,182 @@ def college(college_id):
         added=added,
         page=page,
         student=student,
+        female_ratio=female_ratio,
+        race_demographics=race_demographics
     )
 
+@app.route('/race_graph.png')
+def race_graph():
+    
+    #Initialization
+    customer_id=flask_login.current_user.id
+    conn = connect_db()
+    cursor = conn.cursor()
+    
+    #Get user data from database
+    cursor.execute(f"""
+                   
+    SELECT * from `User`
+    WHERE `id`=%s               
+                   
+                   """,(customer_id))
+    
+    college_id=cursor.fetchone()['current_college']
+    
+    #Get race data from college
+    cursor.execute(f"""
+                   
+    SELECT white_ratio, black_ratio, hispanic_ratio, asian_ratio 
+    FROM `Colleges` 
+    WHERE `id`=%s
+                   
+                   """,(college_id))
+    
+    college=cursor.fetchone()
+    
+    #Find the percentage of unknown students
+    college["unknown_ratio"]=1-(college["white_ratio"]+college["black_ratio"]+college["hispanic_ratio"]+college["asian_ratio"])
+    
+    #Rename dictionary keys
+    college['White Ratio']=college.pop('white_ratio')
+    college['Black Ratio']=college.pop('black_ratio')
+    college['Hispanic Ratio']=college.pop('hispanic_ratio')
+    college['Asian Ratio']=college.pop('asian_ratio')
+    college['Unknown Ratio']=college.pop('unknown_ratio')
+    
+    #Creates a dataframe from college race data
+    college=pd.DataFrame.from_dict(college, orient="index")
+    
+    #Sorts data in race dataframe
+    college = college.sort_values(by=0,ascending=False)
+    
+    #Creates figure
+    fig=Figure(figsize=(7,7), facecolor='#202020', edgecolor='#ffffff')
+
+    #Set figure background color
+    fig.set_facecolor('#202020')
+    
+    #Tightens figure
+    fig.set_layout_engine("tight")
+
+    #Creates a subplot over figure
+    subplot=fig.subplots(1)
+
+    #Subplot background color
+    subplot.set_facecolor('#202020')
+    
+    #Creates a bar graph in the subplot
+    pie=subplot.pie(
+        
+        x=college[0], 
+        labels=list(college.index), 
+        colors=['#DEB64B', '#BF4E30', '#197BBD', '#DED9E2', '#77BFA3'],
+        wedgeprops={'edgecolor':'black',
+                    'linewidth': 2,
+                    'antialiased': True},
+        autopct=('%1.1f%%')
+        )
+    
+    title=subplot.set_title("Pie Chart of Race Demographics")
+    
+    title.set_color("#DEB64B")
+    
+    #Changes colors of the wedges in chart
+    pie[1][0].set_color("#DEB64B")
+    pie[1][1].set_color("#BF4E30")
+    pie[1][2].set_color("#197BBD")
+    pie[1][3].set_color("#DED9E2")
+    pie[1][4].set_color("#77BFA3")
+    
+    # fig.savefig("graph1.png", dpi='figure')
+    
+    #Return graph image in route
+    output = io.BytesIO()
+    FigureCanvas(fig).print_png(output)
+    return Response(output.getvalue(), mimetype='image/png')
+
+@app.route('/gender_graph.png')
+def gender_graph():
+    
+    #Initialization
+    customer_id=flask_login.current_user.id
+    conn = connect_db()
+    cursor = conn.cursor()
+    
+    #Get user data from database
+    cursor.execute(f"""
+                   
+    SELECT * from `User`
+    WHERE `id`=%s               
+                   
+                   """,(customer_id))
+    
+    college_id=cursor.fetchone()['current_college']
+    
+    #Get race data from college
+    cursor.execute(f"""
+                   
+    SELECT female_ratio
+    FROM `Colleges` 
+    WHERE `id`=%s
+                   
+                   """,(college_id))
+    
+    college=cursor.fetchone()
+    
+    #Creates figure
+    fig=Figure(figsize=(7,7), facecolor='#202020', edgecolor='#ffffff')
+
+    #Set figure background color
+    fig.set_facecolor('#202020')
+    
+    #Tightens figure
+    fig.set_layout_engine("tight")
+
+    #Creates a subplot over figure
+    subplot=fig.subplots(1)
+
+    #Subplot background color
+    subplot.set_facecolor('#202020')
+    
+    #Rename female ratio
+    college["Female Ratio"]=college.pop("female_ratio")
+    
+        
+    #Find the percentage of male students
+    college["Male Ratio"]=1-college["Female Ratio"]
+    
+    #Creates a dataframe from college race data
+    college=pd.DataFrame.from_dict(college, orient="index")
+    
+    #Sorts data in race dataframe
+    college = college.sort_values(by=0,ascending=False)
+    
+    
+    #Creates a bar graph in the subplot
+    pie=subplot.pie(
+        
+        x=college[0], 
+        labels=list(college.index), 
+        colors=['#DEB64B', '#BF4E30', '#197BBD', '#DED9E2', '#77BFA3'],
+        wedgeprops={'edgecolor':'black',
+                    'linewidth': 2,
+                    'antialiased': True},
+        autopct=('%1.1f%%')
+        )
+        
+    #Changes colors of the labels in chart
+    pie[1][0].set_color("#DEB64B")
+    pie[1][1].set_color("#BF4E30")
+    
+    title=subplot.set_title("Pie Chart of Gender Demographics")
+    
+    title.set_color("#DEB64B")
+        
+    #Return graph image in route
+    output = io.BytesIO()
+    FigureCanvas(fig).print_png(output)
+    return Response(output.getvalue(), mimetype='image/png')
 
 # Add College from College Page
 @app.route("/college/<college_id>/add", methods=["POST", "GET"])
