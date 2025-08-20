@@ -22,48 +22,72 @@
 
 
     <div class="container my-5">
+
         <div class="row justify-content-center">
-            <div class="col-12 col-md-8 col-lg-6">
-                <h1 class="h3 text-center fw-bold custom-txt">College Parameters</h1>
-                <p class="text-center text-muted">Change your college preferences to find the right
-                    place!</p>
-                <form action="/settings/update" method="post">
-                    <div class="form-floating my-3">
-                        <input type="number" name="sat_score" class="form-control" id="floatingInput" required
-                            value="{{ results['sat_score'] }}" min="0">
-                        <label for="floatingInput">SAT Score</label>
-                    </div>
+            <div class="col-12 col-md-10 col-lg-8">
 
-                    <div class="form-floating my-3">
-                        <input type="text" name="tuition_budget" class="form-control" id="floatingInput" required
-                            value="{{ results['tuition_budget'] }}">
-                        <label for="floatingInput">Tuition</label>
-                    </div>
+                <h3 class="h3 text-center fw-bold custom-txt">College Parameters</h1>
 
+                    <p class="text-center text-muted">Change your college preferences to find the right
+                        place!</p>
 
-                    <div class="form-floating my-3">
-                        <input type="number" name="zip_code" class="form-control" id="floatingInput" required
-                            value="{{ results['zip_code'] }}" min="0">
-                        <label for="floatingInput">Zip Code</label>
-                    </div>
+                    <form action="/settings/update" method="post">
 
-                    <div class="form-floating my-3">
-                        <input type="text" name="population_preferences" class="form-control" id="populationInput"
-                            required value="{{ results['population_preferences'] }}">
-                        <label for="populationInput">Population Preferences</label>
-                    </div>
-                    <div class="row g-2">
-                        <div class="col-md-6">
-                            <button class="btn btn-outline-warning w-100 py-2" type="submit">Update Parameters</button>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="number" name="sat_score" class="form-control" id="floatingInput"
+                                        required value="{{ results['sat_score'] }}" min="0">
+                                    <label for="floatingInput">SAT Score</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" name="tuition_budget" class="form-control" id="floatingInput"
+                                        required value="{{ results['tuition_budget'] }}">
+                                    <label for="floatingInput">Tuition Budget</label>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-md-6">
-                            <button class="btn btn-outline-secondary w-100 py-2" type="reset">Undo Changes</button>
-                        </div>
-                    </div>
-                </form>
 
-                <a href="/browse_reset" class="btn btn-outline-warning w-100 py-2 my-3">Scroll Through
-                    Options</a>
+                        <div class="row g-3 mt-1">
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="number" name="zip_code" class="form-control" id="floatingInput"
+                                        required value="{{ results['zip_code'] }}" min="0">
+                                    <label for="floatingInput">Zip Code</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="number" step="any" name="gpa" class="form-control" id="floatingInput"
+                                        required value="{{ results['gpa'] }}">
+                                    <label for="floatingInput">GPA</label>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-floating my-3">
+                            <input type="text" name="population_preferences" class="form-control" id="populationInput"
+                                required value="{{ results['population_preferences'] }}">
+                            <label for="populationInput">Population Preferences</label>
+                        </div>
+
+                        <div class="row g-2">
+                            <div class="col-md-6">
+                                <button class="btn btn-outline-warning w-100 py-2" type="submit">Update
+                                    Parameters</button>
+                            </div>
+                            <div class="col-md-6">
+                                <button class="btn btn-outline-secondary w-100 py-2" type="reset">Undo Changes</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <a href="/browse_reset" class="btn btn-outline-warning w-100 py-2 my-3">Scroll Through
+                        Options</a>
             </div>
         </div>
 

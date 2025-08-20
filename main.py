@@ -794,6 +794,7 @@ def college(college_id):
         student["sat_score"],
         student["tuition_budget"],
         student["population_preferences"],
+        student["gpa"]
     ]
 
     for parameter in parameters:
@@ -820,6 +821,8 @@ def college(college_id):
     
     female_ratio=college["female_ratio"]
     
+    college_gpa=college["gpa"]
+    
     if (college["white_ratio"]==None) and (college["black_ratio"]==None) and (college["hispanic_ratio"]==None) and (college["asian_ratio"]==None):
         race_demographics=False
     else:
@@ -844,6 +847,11 @@ def college(college_id):
         college["average_sat"] = "N/A"
     else:
         college["average_sat"] = f"{college['average_sat']:.0f}"
+    
+    if college["gpa"] == None:
+        college["gpa"] = "N/A"
+    else:
+        college["gpa"] = round((college["gpa"]), 1)
 
     cursor.execute(
         f"""
@@ -868,6 +876,8 @@ def college(college_id):
         (customer_id),
     )
     user = cursor.fetchone()
+    
+    user["gpa"] = float(user["gpa"][0]+"."+user["gpa"][1]) 
 
 
     return render_template(
@@ -876,6 +886,7 @@ def college(college_id):
         college_population=college_population,
         college_tuition=college_tuition,
         college_sat=college_sat,
+        college_gpa=college_gpa,
         college_id=college_id,
         college=college,
         added=added,
@@ -968,11 +979,10 @@ def race_graph():
     pie[1][3].set_color("#DED9E2")
     pie[1][4].set_color("#77BFA3")
     
-    # fig.savefig("graph1.png", dpi='figure')
-    
     #Return graph image in route
     output = io.BytesIO()
     FigureCanvas(fig).print_png(output)
+
     return Response(output.getvalue(), mimetype='image/png')
 
 @app.route('/gender_graph.png')
@@ -1179,10 +1189,15 @@ def settings():
 
     if results["population_preferences"] == None:
         results["population_preferences"] = 0
+        
+    if results["gpa"] == None:
+        results["gpa"] = 0
 
     results["tuition_budget"] = f"${results['tuition_budget']:,d}"
 
     results["population_preferences"] = f"{results['population_preferences']:,d}"
+
+    results["gpa"] = float(results["gpa"][0]+"."+results["gpa"][1]) 
 
     return render_template("settings.html.jinja", results=results)
 
@@ -1196,14 +1211,16 @@ def update():
     cursor = conn.cursor()
 
     try:
+        
         sat_score = int(request.form["sat_score"])
-        tuition_budget = int(
-            request.form["tuition_budget"].replace(",", "").replace("$", "")
-        )
+        
+        tuition_budget = int(request.form["tuition_budget"].replace(",", "").replace("$", ""))
+        
         zip_code = int(request.form["zip_code"])
-        population_preferences = int(
-            request.form["population_preferences"].replace(",", "")
-        )
+        
+        population_preferences = int(request.form["population_preferences"].replace(",", ""))
+        
+        gpa = int(request.form["gpa"].replace(".", ""))
 
         cursor.execute(
             """          
@@ -1211,10 +1228,11 @@ def update():
             SET `sat_score`=%s, 
                 `tuition_budget`=%s, 
                 `zip_code`=%s,
-                `population_preferences`=%s
+                `population_preferences`=%s,
+                `gpa`=%s
             WHERE id = %s;
         """,
-            (sat_score, tuition_budget, zip_code, population_preferences, customer_id),
+            (sat_score, tuition_budget, zip_code, population_preferences, gpa, customer_id),
         )
 
         conn.commit()
@@ -1223,6 +1241,8 @@ def update():
     except Exception as e:
         print("Update error:", e)  # Fallback
         flash("One or more of your fields are invalid!", "error")
+        
+        return redirect("/settings")
 
     return redirect("/analytics")
 
