@@ -512,7 +512,9 @@ def graph_data(comparing_category):
     student_results = cursor.fetchall()
     student_results = student_results[0]
     
-    student_results["gpa"] = float(student_results["gpa"][0]+"."+student_results["gpa"][1]) 
+    print(student_results["gpa"][0])
+    
+    student_results["gpa"] = float(student_results["gpa"]) 
 
 
     # Initializes name list with first index being the user's name
@@ -591,9 +593,27 @@ def graph_data(comparing_category):
 # Analytics page (college and user graphs for comparison and analysis)
 @app.route("/analytics", methods=["POST", "GET"])
 def analytics_page():
+    
     customer_id = flask_login.current_user.id
+    
     conn = connect_db()
     cursor = conn.cursor()
+    
+    cursor.execute(f"""
+                   
+    SELECT `sat_score`, `tuition_budget`, `population_preferences`, `gpa`
+    from `User`
+    WHERE `id` = %s               
+                   
+                   """,(customer_id))
+    
+    params=cursor.fetchone()
+    
+    for key,value in params.items():
+        if not value:
+            return redirect("/settings")
+        
+    
     cursor.execute(
         f"""
     SELECT `comparing_category` from `User`
@@ -601,7 +621,9 @@ def analytics_page():
                    """,
         (customer_id),
     )
+    
     comparing_category = cursor.fetchone()["comparing_category"]
+    
     cursor.execute(
         f"""
     UPDATE `User`
@@ -879,7 +901,7 @@ def college(college_id):
     )
     user = cursor.fetchone()
     
-    user["gpa"] = float(user["gpa"][0]+"."+user["gpa"][1]) 
+    user["gpa"] = float(user["gpa"]) 
 
 
     return render_template(
@@ -1191,13 +1213,11 @@ def settings():
         results["population_preferences"] = 0
         
     if results["gpa"] == None:
-        results["gpa"] = 0
+        results["gpa"] = "0.0"
 
     results["tuition_budget"] = f"${results['tuition_budget']:,d}"
 
     results["population_preferences"] = f"{results['population_preferences']:,d}"
-
-    results["gpa"] = float(results["gpa"][0]+"."+results["gpa"][1]) 
 
     return render_template("settings.html.jinja", results=results)
 
@@ -1220,7 +1240,7 @@ def update():
         
         population_preferences = int(request.form["population_preferences"].replace(",", ""))
         
-        gpa = int(request.form["gpa"].replace(".", ""))
+        gpa = float(request.form["gpa"])
 
         cursor.execute(
             """          
