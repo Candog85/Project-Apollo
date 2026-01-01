@@ -46,7 +46,6 @@ login_manager = flask_login.LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "/sign_in"
 
-
 ## Define user class
 class User:
     """User creates account and signs in.
@@ -64,7 +63,6 @@ class User:
 
     def get_id(self):
         return str(self.id)
-
 
 # Load User Session
 @login_manager.user_loader
@@ -233,7 +231,6 @@ def login_page():
         conn.close()
     return render_template("sign_in.html.jinja")
 
-
 # Browse Colleges
 @app.route("/browse/<page>", methods=["GET"])
 @flask_login.login_required
@@ -242,6 +239,18 @@ def browse(page):
     page = int(page)
     conn = connect_db()
     cursor = conn.cursor()
+
+    #Get user info for navbar
+    cursor.execute(
+                """
+                SELECT * 
+                FROM `User` 
+                WHERE `id` = %s 
+        """,
+                (customer_id),
+            )
+
+    user = cursor.fetchone()
 
     # Get current filters from session
     filters = session.get("filters", {})
@@ -350,13 +359,15 @@ def browse(page):
         length=length,
         page_range=page_range,
         filters=filters,
+        user=user
     )  # Pass filters back to template to pre-fill form
-
 
 # Search Colleges
 @app.route(
     "/browse/search", methods=["POST"]
 )  # Changed to POST only as it's a form submission
+
+# Search
 @flask_login.login_required
 def search():
     customer_id = flask_login.current_user.id
@@ -398,7 +409,6 @@ def search():
     # Redirect to the first page of browse results
     return redirect("/browse/1")
 
-
 # Reset Page and Query
 @app.route("/browse_reset", methods=["POST", "GET"])
 def reset():
@@ -409,7 +419,6 @@ def reset():
     # Redirect to the first page of browse results
     flash("Your preferences have been reset. Why not start a new search?", "info")
     return redirect("/browse/1")
-
 
 # Get Data for Graph Generation
 def graph_data(comparing_category):
@@ -588,7 +597,6 @@ def graph_data(comparing_category):
 
     return d
 
-
 # Analytics page (college and user graphs for comparison and analysis)
 @app.route("/analytics", methods=["POST", "GET"])
 def analytics_page():
@@ -600,7 +608,7 @@ def analytics_page():
     
     cursor.execute(f"""
                    
-    SELECT `sat_score`, `tuition_budget`, `population_preferences`, `gpa`
+    SELECT *
     from `User`
     WHERE `id` = %s               
                    
@@ -608,9 +616,11 @@ def analytics_page():
     
     params=cursor.fetchone()
     
+
     for key,value in params.items():
         if not value:
-            return redirect("/settings")
+            if key!='query':
+                return redirect("/settings")
         
     
     cursor.execute(
@@ -641,10 +651,9 @@ def analytics_page():
         empty=d["empty"],
         comparing=d["comparing"],
         category=d["category"],
+        user=params
     )
     # Revert code due to error!
-
-
 
 # Category Switch for Analytics
 @app.route(f"/analytics/category_change/<category>", methods=["POST", "GET"])
@@ -665,7 +674,6 @@ def category_change(category):
     )
 
     return redirect("/analytics")
-
 
 # Plot Graph Image
 @app.route("/plot.png")
@@ -778,7 +786,6 @@ def plot():
     output = io.BytesIO()
     FigureCanvas(fig).print_png(output)
     return Response(output.getvalue(), mimetype="image/png")
-
 
 # Individual College Page
 @app.route("/college/<college_id>", methods=["POST", "GET"])
@@ -919,6 +926,7 @@ def college(college_id):
         race_demographics=race_demographics
     )
 
+# Race Graph
 @app.route('/race_graph.png')
 def race_graph():
     
@@ -1008,6 +1016,7 @@ def race_graph():
 
     return Response(output.getvalue(), mimetype='image/png')
 
+# Gender Graph
 @app.route('/gender_graph.png')
 def gender_graph():
     
@@ -1173,7 +1182,6 @@ def remove_list_college(college_id):
 
     return redirect("/analytics")
 
-
 # User input on settings page
 @app.route("/settings", methods=["POST", "GET"])
 @flask_login.login_required
@@ -1196,9 +1204,9 @@ def settings():
         (customer_id),
     )
 
-    results = cursor.fetchall()
+    results = cursor.fetchone()
 
-    results = results[0]
+    user = results
 
     print(results)
 
@@ -1218,8 +1226,7 @@ def settings():
 
     results["population_preferences"] = f"{results['population_preferences']:,d}"
 
-    return render_template("settings.html.jinja", results=results)
-
+    return render_template("settings.html.jinja", results=results, user=user)
 
 # Update user college prefs
 @app.route("/settings/update", methods=["POST", "GET"])
@@ -1264,7 +1271,6 @@ def update():
         return redirect("/settings")
 
     return redirect("/analytics")
-
 
 # Update user settings
 @app.route("/settings/update_user", methods=["POST"])
@@ -1328,13 +1334,11 @@ def update_user():
 
     return redirect("/settings")
 
-
 # Developer credits and link routing
 @app.route("/credits")
 @flask_login.login_required
 def credits():
     return render_template("credits.html.jinja")
-
 
 # Log out
 @app.route("/logout")
