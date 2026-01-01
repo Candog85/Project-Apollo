@@ -36,7 +36,7 @@
 
                     {%else%}
 
-                    <a href="#sign_up" class="btn btn-outline-warning btn-lg px-4">Sign Up</a>
+                    {# <a href="#sign_up" class="btn btn-outline-warning btn-lg px-4">Sign Up</a> #}
                     <a href="/sign_in" class="btn btn-outline-warning btn-lg px-4">Sign In</a>
                     {% endif %}
 
@@ -91,7 +91,7 @@
             </div>
         </section>
        
-        {% if not current_user.is_authenticated %}
+        {# {% if not current_user.is_authenticated %}
 
         <div class="b-example-divider py-5"></div>
 
@@ -186,7 +186,7 @@
 
             </main>
         </div>
-        {% endif %}
+        {% endif %} #}
 
         {% include "components/footer.html.jinja" %}
 

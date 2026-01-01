@@ -88,7 +88,6 @@ def load_user(id):
 @app.route("/")
 def homepage():
 
-
     user = None
     empty = None
 
@@ -128,77 +127,77 @@ def homepage():
 
 
 ## Signup page
-@app.route("/sign_up", methods=["POST", "GET"])
-def signup_page():
-    """"""
+# @app.route("/sign_up", methods=["POST", "GET"])
+# def signup_page():
+#     """"""
 
-    if flask_login.current_user.is_authenticated:
-        return redirect("/")
+#     if flask_login.current_user.is_authenticated:
+#         return redirect("/")
 
-    if request.method == "POST":
+#     if request.method == "POST":
 
-        username = request.form["username"]
+#         username = request.form["username"]
 
-        password = request.form["password"]
+#         password = request.form["password"]
 
-        first_name = request.form["first_name"]
+#         first_name = request.form["first_name"]
 
-        last_name = request.form["last_name"]
+#         last_name = request.form["last_name"]
 
-        password = request.form["password"]
+#         password = request.form["password"]
 
-        first_name = request.form["first_name"]
+#         first_name = request.form["first_name"]
 
-        last_name = request.form["last_name"]
+#         last_name = request.form["last_name"]
 
-        email = request.form["email"]
+#         email = request.form["email"]
 
-        zip_code = request.form["zip_code"]
+#         zip_code = request.form["zip_code"]
 
-        confirm_password = request.form["confirm_password"]
+#         confirm_password = request.form["confirm_password"]
 
-        zip_code = request.form["zip_code"]
+#         zip_code = request.form["zip_code"]
 
-        confirm_password = request.form["confirm_password"]
+#         confirm_password = request.form["confirm_password"]
 
-        conn = connect_db()
-        cursor = conn.cursor()
+#         conn = connect_db()
+#         cursor = conn.cursor()
 
-        if len(username.strip()) > 20:
-            flash("Username must be 20 characters or less.")
-        else:
-            if len(password.strip()) < 8:
-                flash("Password must be 8 characters or longer.")
-            else:
-                if password != confirm_password:
-                    flash("Passwords do not match.")
-                else:
-                    try:
-                        cursor.execute(
-                            f"""
+#         if len(username.strip()) > 20:
+#             flash("Username must be 20 characters or less.")
+#         else:
+#             if len(password.strip()) < 8:
+#                 flash("Password must be 8 characters or longer.")
+#             else:
+#                 if password != confirm_password:
+#                     flash("Passwords do not match.")
+#                 else:
+#                     try:
+#                         cursor.execute(
+#                             f"""
                         
-                        INSERT INTO `User`
-                        (`username`, `password`, `first_name`, `last_name`, `email`, `zip_code`)
-                        VALUES
-                        (%s, %s, %s, %s, %s, %s)
-                        """,
-                            (
-                                username,
-                                password,
-                                first_name,
-                                last_name,
-                                email,
-                                zip_code,
-                            ),
-                        )
-                    except pymysql.err.IntegrityError:
-                        flash("Username or email is already in use.")
-                    else:
-                        return redirect("/sign_in")
-                    finally:
-                        cursor.close()
-                        conn.close()
-    return redirect("/#sign_up")
+#                         INSERT INTO `User`
+#                         (`username`, `password`, `first_name`, `last_name`, `email`, `zip_code`)
+#                         VALUES
+#                         (%s, %s, %s, %s, %s, %s)
+#                         """,
+#                             (
+#                                 username,
+#                                 password,
+#                                 first_name,
+#                                 last_name,
+#                                 email,
+#                                 zip_code,
+#                             ),
+#                         )
+#                     except pymysql.err.IntegrityError:
+#                         flash("Username or email is already in use.")
+#                     else:
+#                         return redirect("/sign_in")
+#                     finally:
+#                         cursor.close()
+#                         conn.close()
+#     return redirect("/#sign_up")
 
 
 ## Sign in page
